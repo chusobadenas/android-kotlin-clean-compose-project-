@@ -1,0 +1,143 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
+}
+
+// Create a variable called keystorePropertiesFile, and initialize it to your
+// keystore.properties file, in the rootProject folder.
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+
+// Initialize a new Properties() object called keystoreProperties.
+def keystoreProperties = new Properties()
+
+// Load your keystore.properties file into the keystoreProperties object.
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+android {
+    namespace "com.jesusbadenas.kotlin_clean_compose_project"
+    compileSdk rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        applicationId "com.jesusbadenas.kotlin_clean_compose_project"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+        testInstrumentationRunner rootProject.ext.testInstrumentationRunner
+        multiDexEnabled true
+    }
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
+    buildFeatures {
+        buildConfig = true
+        dataBinding = true
+        viewBinding = true
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            shrinkResources false
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+
+    lintOptions {
+        warning 'InvalidPackage'
+    }
+
+    packagingOptions {
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+    }
+
+    testOptions {
+        unitTests {
+            all {
+                useJUnitPlatform()
+            }
+            includeAndroidResources = true
+            returnDefaultValues = true
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':data')
+    api project(':domain')
+
+    implementation rootProject.ext.androidAppCompat
+    implementation rootProject.ext.androidConstraintLayout
+    implementation rootProject.ext.androidCoreKtx
+    implementation rootProject.ext.androidMaterial
+    implementation rootProject.ext.archCoreCommon
+    implementation rootProject.ext.coroutinesAndroid
+    implementation rootProject.ext.coroutinesCore
+    implementation rootProject.ext.fragment
+    implementation rootProject.ext.glide
+    implementation rootProject.ext.koinAndroid
+    implementation rootProject.ext.koinAndroidCompat
+    implementation rootProject.ext.kotlin
+    implementation rootProject.ext.lifeCycleLiveDataKtx
+    implementation rootProject.ext.lifeCycleViewModelKtx
+    implementation rootProject.ext.loggingInterceptor
+    implementation rootProject.ext.multidex
+    implementation rootProject.ext.navigationFeature
+    implementation rootProject.ext.navigationFragment
+    implementation rootProject.ext.navigationUi
+    implementation rootProject.ext.recyclerView
+    implementation rootProject.ext.retrofit
+    implementation rootProject.ext.swipeRefreshLayout
+    implementation rootProject.ext.timber
+
+    coreLibraryDesugaring rootProject.ext.desugar
+
+    kapt rootProject.ext.glideCompiler
+    kapt rootProject.ext.lifeCycleCompiler
+
+    testImplementation project(':test')
+    testImplementation rootProject.ext.archCoreTesting
+    testImplementation rootProject.ext.coroutinesTest
+    testImplementation rootProject.ext.jUnit
+    testImplementation rootProject.ext.mockk
+
+    androidTestImplementation project(':test')
+    androidTestImplementation rootProject.ext.androidXJUnitKtx
+    androidTestImplementation rootProject.ext.androidXTestCoreKtx
+    androidTestImplementation rootProject.ext.androidXTestRules
+    androidTestImplementation rootProject.ext.androidXTestRunner
+    androidTestImplementation rootProject.ext.coroutinesTest
+    androidTestImplementation rootProject.ext.espresso
+    androidTestImplementation rootProject.ext.espressoContrib
+    androidTestImplementation rootProject.ext.fragmentTest
+    androidTestImplementation rootProject.ext.mockkAndroid
+    androidTestImplementation rootProject.ext.navigationTest
+}

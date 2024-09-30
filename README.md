@@ -1,4 +1,4 @@
-# kotlin-clean-architecture-project
+# kotlin-clean-compose-project
 An Android boilerplate project using Clean Architecture with Kotlin and Jetpack Compose.
 
 ### Architecture components ###

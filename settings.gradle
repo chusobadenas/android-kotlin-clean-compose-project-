@@ -1,0 +1,2 @@
+include ':test', ':data', ':domain', ':app'
+rootProject.name='kotlin-clean-compose-project'

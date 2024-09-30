@@ -1,0 +1,75 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    namespace "com.jesusbadenas.kotlin_clean_compose_project.data"
+    compileSdk rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+        testInstrumentationRunner rootProject.ext.testInstrumentationRunner
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+
+    packagingOptions {
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':domain')
+
+    implementation rootProject.ext.androidAppCompat
+    implementation rootProject.ext.coroutinesCore
+    implementation rootProject.ext.koinAndroid
+    implementation rootProject.ext.kotlin
+    implementation rootProject.ext.loggingInterceptor
+    implementation rootProject.ext.okHttp
+    implementation rootProject.ext.retrofit
+    implementation rootProject.ext.retrofitConverterMoshi
+    implementation rootProject.ext.room
+    implementation rootProject.ext.roomKtx
+
+    kapt rootProject.ext.roomCompiler
+
+    testImplementation project(':test')
+    testImplementation rootProject.ext.archCoreTesting
+    testImplementation rootProject.ext.coroutinesTest
+    testImplementation rootProject.ext.jUnit
+    testImplementation rootProject.ext.mockk
+
+    androidTestImplementation project(':test')
+    androidTestImplementation rootProject.ext.androidXJUnitKtx
+    androidTestImplementation rootProject.ext.androidXTestCoreKtx
+    androidTestImplementation rootProject.ext.androidXTestRules
+    androidTestImplementation rootProject.ext.androidXTestRunner
+    androidTestImplementation rootProject.ext.coroutinesTest
+    androidTestImplementation rootProject.ext.mockkAndroid
+    androidTestImplementation rootProject.ext.roomTest
+}
