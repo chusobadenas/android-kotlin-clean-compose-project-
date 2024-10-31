@@ -3,11 +3,12 @@ apply from: 'dependencies.gradle'
 
 buildscript {
     ext.ANDROID_GRADLE_VERSION = '8.5.0'
-    ext.KOTLIN_VERSION = '2.0.20'
-    ext.NAV_VERSION = '2.8.1'
+    ext.KOTLIN_VERSION = '2.0.21'
+    ext.NAV_VERSION = '2.8.3'
+
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
@@ -22,16 +23,6 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-
-task {
-    wrapper(type: Wrapper) {
-        gradleVersion = '8.10.2'
+        mavenCentral()
     }
 }
