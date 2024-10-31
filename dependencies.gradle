@@ -3,10 +3,10 @@ ext {
     versionCode = 1
     versionName = "1.0"
     minSdkVersion = 23
-    targetSdkVersion = 34
-    compileSdkVersion = 34
-    buildToolsVersion = "34.0.0"
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    targetSdkVersion = 35
+    compileSdkVersion = 35
+    buildToolsVersion = "35.0.0"
+    testInstrumentationRunner = "com.jesusbadenas.kotlin_clean_compose_project.test.runner.KoinTestRunner"
 
     // Implementation
     activityVersion = '1.9.2'
@@ -67,10 +67,13 @@ ext {
 
     // Testing
     androidXJUnitVersion = '1.2.1'
-    androidXTestVersion = '1.6.2'
+    androidXTestVersion = '1.6.1'
     espressoVersion = '3.6.1'
     junitVersion = '4.13.2'
+    junitJupiterVersion = '5.11.0'
+    junitPlatformLauncherVersion = '1.11.0'
     mockkVersion = '1.13.13'
+    robolectricVersion = '4.13'
 
     androidXJUnitKtx = "androidx.test.ext:junit-ktx:$androidXJUnitVersion"
     androidXTestCoreKtx = "androidx.test:core-ktx:$androidXTestVersion"
@@ -82,9 +85,16 @@ ext {
     espressoContrib = "androidx.test.espresso:espresso-contrib:$espressoVersion"
     fragmentTest = "androidx.fragment:fragment-testing:$fragmentVersion"
     jUnit = "junit:junit:$junitVersion"
+    jUnitJupiter = "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
+    jUnitJupiterEngine = "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
+    jUnitPlatformLauncher = "org.junit.platform:junit-platform-launcher:$junitPlatformLauncherVersion"
+    jUnitVintageEngine = "org.junit.vintage:junit-vintage-engine:$junitJupiterVersion"
     koinTest = "io.insert-koin:koin-test:$koinCoreVersion"
+    koinJunit4Test = "io.insert-koin:koin-test-junit4:$koinCoreVersion"
+    koinJunit5Test = "io.insert-koin:koin-test-junit5:$koinCoreVersion"
     mockk = "io.mockk:mockk:$mockkVersion"
     mockkAndroid = "io.mockk:mockk-android:$mockkVersion"
     navigationTest = "androidx.navigation:navigation-testing:$NAV_VERSION"
+    robolectric = "org.robolectric:robolectric:$robolectricVersion"
     roomTest = "androidx.room:room-testing:$roomVersion"
 }

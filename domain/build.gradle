@@ -43,8 +43,18 @@ dependencies {
     implementation rootProject.ext.kotlin
 
     testImplementation project(':test')
+    testImplementation rootProject.ext.androidXJUnitKtx
     testImplementation rootProject.ext.archCoreTesting
     testImplementation rootProject.ext.coroutinesTest
     testImplementation rootProject.ext.jUnit
+    testImplementation rootProject.ext.jUnitJupiter
+    testImplementation rootProject.ext.koinTest
+    testImplementation rootProject.ext.koinJunit4Test
+    testImplementation rootProject.ext.koinJunit5Test
     testImplementation rootProject.ext.mockk
+    testImplementation rootProject.ext.robolectric
+
+    testRuntimeOnly rootProject.ext.jUnitJupiterEngine
+    testRuntimeOnly rootProject.ext.jUnitPlatformLauncher
+    testRuntimeOnly rootProject.ext.jUnitVintageEngine
 }

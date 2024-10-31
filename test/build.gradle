@@ -39,9 +39,15 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation rootProject.ext.androidAppCompat
+    implementation rootProject.ext.androidXJUnitKtx
+    implementation rootProject.ext.androidXTestCoreKtx
+    implementation rootProject.ext.androidXTestRunner
     implementation rootProject.ext.archCoreTesting
     implementation rootProject.ext.coroutinesTest
+    implementation rootProject.ext.koinAndroid
     implementation rootProject.ext.koinTest
+    implementation rootProject.ext.koinJunit4Test
+    implementation rootProject.ext.koinJunit5Test
     implementation rootProject.ext.kotlin
     implementation rootProject.ext.lifeCycleLiveDataKtx
 

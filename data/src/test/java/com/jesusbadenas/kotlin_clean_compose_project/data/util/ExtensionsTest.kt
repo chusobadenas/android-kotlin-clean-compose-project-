@@ -3,8 +3,8 @@ package com.jesusbadenas.kotlin_clean_compose_project.data.util
 import com.jesusbadenas.kotlin_clean_compose_project.data.api.response.UserResponse
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.model.UserEntity
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
-import org.junit.Assert
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
 class ExtensionsTest {
 
@@ -29,7 +29,7 @@ class ExtensionsTest {
         )
 
         val result = userResponse.toUser()
-        Assert.assertEquals(user, result)
+        Assertions.assertEquals(user, result)
     }
 
     @Test
@@ -44,7 +44,7 @@ class ExtensionsTest {
         )
 
         val result = userEntity.toUser()
-        Assert.assertEquals(user, result)
+        Assertions.assertEquals(user, result)
     }
 
     @Test
@@ -59,6 +59,6 @@ class ExtensionsTest {
         )
 
         val result = user.toUserEntity()
-        Assert.assertEquals(expected, result)
+        Assertions.assertEquals(expected, result)
     }
 }

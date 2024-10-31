@@ -1,24 +1,30 @@
 package com.jesusbadenas.kotlin_clean_compose_project.viewmodel
 
+import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.jesusbadenas.kotlin_clean_compose_project.di.presentationTestModule
 import com.jesusbadenas.kotlin_clean_compose_project.domain.interactor.GetUser
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
-import com.jesusbadenas.kotlin_clean_compose_project.test.CoroutinesTestRule
-import com.jesusbadenas.kotlin_clean_compose_project.test.getOrAwaitValue
-import io.mockk.MockKAnnotations
+import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
+import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
+import com.jesusbadenas.kotlin_clean_compose_project.test.extension.getOrAwaitValue
+import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.koin.core.component.inject
+import org.robolectric.annotation.Config
 
 @ExperimentalCoroutinesApi
-class UserDetailsViewModelTest {
+@RunWith(AndroidJUnit4::class)
+@Config(application = KoinTestApp::class, sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE])
+class UserDetailsViewModelTest: CustomKoinTest(presentationTestModule) {
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
@@ -26,16 +32,10 @@ class UserDetailsViewModelTest {
     @get:Rule
     val coroutineRule = CoroutinesTestRule()
 
-    @MockK
-    private lateinit var getUser: GetUser
-
-    @Before
-    fun setUp() {
-        MockKAnnotations.init(this)
-    }
+    private val getUser: GetUser by inject()
 
     @Test
-    fun testLoadUserDetailsError() = coroutineRule.runBlockingTest {
+    fun testLoadUserDetailsError() = coroutineRule.runTest {
         val exception = Exception()
         coEvery { getUser.invoke(USER_ID) } throws exception
 
@@ -46,7 +46,7 @@ class UserDetailsViewModelTest {
     }
 
     @Test
-    fun testLoadUserDetailsSuccess() = coroutineRule.runBlockingTest {
+    fun testLoadUserDetailsSuccess() = coroutineRule.runTest {
         val user = User(USER_ID)
         coEvery { getUser.invoke(USER_ID) } returns user
 

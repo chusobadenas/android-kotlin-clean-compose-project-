@@ -1,26 +1,26 @@
 package com.jesusbadenas.kotlin_clean_compose_project.domain.interactors.interactor
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.jesusbadenas.kotlin_clean_compose_project.domain.di.domainTestModule
 import com.jesusbadenas.kotlin_clean_compose_project.domain.interactor.GetUser
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepository
-import io.mockk.MockKAnnotations
+import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
+import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.koin.core.component.inject
+import org.robolectric.annotation.Config
 
-class GetUserTest {
+@RunWith(AndroidJUnit4::class)
+@Config(application = KoinTestApp::class)
+class GetUserTest: CustomKoinTest(domainTestModule) {
 
-    @MockK
-    private lateinit var userRepository: UserRepository
-
-    @Before
-    fun setUp() {
-        MockKAnnotations.init(this)
-    }
+    private val userRepository: UserRepository by inject()
 
     @Test
     fun testGetUserUseCaseSuccess() {

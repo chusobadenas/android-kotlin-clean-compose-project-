@@ -11,12 +11,16 @@ import com.jesusbadenas.kotlin_clean_compose_project.data.db.dao.UserDao
 import com.jesusbadenas.kotlin_clean_compose_project.data.util.toUser
 import com.jesusbadenas.kotlin_clean_compose_project.data.util.toUserEntity
 import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepository
-import com.jesusbadenas.kotlin_clean_compose_project.test.CoroutinesTestRule
+import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import org.junit.*
+import org.junit.After
+import org.junit.Assert
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 
 @ExperimentalCoroutinesApi

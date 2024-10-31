@@ -1,13 +1,22 @@
 package com.jesusbadenas.kotlin_clean_compose_project.data.repository
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.jesusbadenas.kotlin_clean_compose_project.data.api.APIService
 import com.jesusbadenas.kotlin_clean_compose_project.data.api.response.UserResponse
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.AppDatabase
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.dao.UserDao
+import com.jesusbadenas.kotlin_clean_compose_project.data.di.dataTestModule
 import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepository
-import com.jesusbadenas.kotlin_clean_compose_project.test.CoroutinesTestRule
-import io.mockk.*
+import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
+import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
+import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
+import io.mockk.MockKAnnotations
+import io.mockk.Runs
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.just
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertSame
@@ -15,21 +24,25 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.koin.core.component.inject
+import org.robolectric.annotation.Config
 
 @ExperimentalCoroutinesApi
-class UserDataRepositoryTest {
+@RunWith(AndroidJUnit4::class)
+@Config(application = KoinTestApp::class)
+class UserDataRepositoryTest: CustomKoinTest(dataTestModule) {
 
     @get:Rule
     val coroutineRule = CoroutinesTestRule()
-
-    @MockK
-    private lateinit var apiService: APIService
 
     @MockK
     private lateinit var database: AppDatabase
 
     @MockK
     private lateinit var userDao: UserDao
+
+    private val apiService: APIService by inject()
 
     private val userResponse = UserResponse(USER_ID)
 

@@ -1,24 +1,30 @@
 package com.jesusbadenas.kotlin_clean_compose_project.viewmodel
 
+import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.jesusbadenas.kotlin_clean_compose_project.di.presentationTestModule
 import com.jesusbadenas.kotlin_clean_compose_project.domain.interactor.GetUsers
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
-import com.jesusbadenas.kotlin_clean_compose_project.test.CoroutinesTestRule
-import com.jesusbadenas.kotlin_clean_compose_project.test.getOrAwaitValue
-import io.mockk.MockKAnnotations
+import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
+import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
+import com.jesusbadenas.kotlin_clean_compose_project.test.extension.getOrAwaitValue
+import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.koin.test.inject
+import org.robolectric.annotation.Config
 
 @ExperimentalCoroutinesApi
-class UserListViewModelTest {
+@RunWith(AndroidJUnit4::class)
+@Config(application = KoinTestApp::class, sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE])
+class UserListViewModelTest : CustomKoinTest(presentationTestModule) {
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
@@ -26,16 +32,10 @@ class UserListViewModelTest {
     @get:Rule
     val coroutineRule = CoroutinesTestRule()
 
-    @MockK
-    private lateinit var getUsers: GetUsers
-
-    @Before
-    fun setUp() {
-        MockKAnnotations.init(this)
-    }
+    private val getUsers: GetUsers by inject()
 
     @Test
-    fun testLoadUserListError() = coroutineRule.runBlockingTest {
+    fun testLoadUserListError() = coroutineRule.runTest {
         val exception = Exception()
         coEvery { getUsers.invoke() } throws exception
 
@@ -46,7 +46,7 @@ class UserListViewModelTest {
     }
 
     @Test
-    fun testLoadUserListSuccess() = coroutineRule.runBlockingTest {
+    fun testLoadUserListSuccess() = coroutineRule.runTest {
         val user = User(USER_ID)
         coEvery { getUsers.invoke() } returns listOf(user)
 
