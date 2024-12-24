@@ -9,14 +9,14 @@ import retrofit2.http.Path
  */
 interface APIService {
 
-    @GET("/android10/Sample-Data/master/Android-CleanArchitecture/users.json")
+    @GET("/users.json")
     suspend fun userDataList(): List<UserResponse>
 
-    @GET("/android10/Sample-Data/master/Android-CleanArchitecture/user_{$USER_ID}.json")
+    @GET("/user_{$USER_ID}.json")
     suspend fun userDataById(@Path(USER_ID) userId: Int): UserResponse
 
     companion object {
-        const val API_BASE_URL = "https://raw.githubusercontent.com/"
+        const val API_BASE_URL = "https://raw.githubusercontent.com/android10/Sample-Data/master/Android-CleanArchitecture/"
         private const val USER_ID = "userId"
     }
 }

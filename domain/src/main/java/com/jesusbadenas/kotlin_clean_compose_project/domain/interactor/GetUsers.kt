@@ -6,6 +6,5 @@ import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepos
 class GetUsers(
     private val userRepository: UserRepository
 ) {
-
     suspend operator fun invoke(): List<User> = userRepository.users()
 }

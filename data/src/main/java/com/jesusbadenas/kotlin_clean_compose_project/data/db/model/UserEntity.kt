@@ -8,16 +8,16 @@ import androidx.room.PrimaryKey
 data class UserEntity(
     @PrimaryKey
     val id: Int,
-    @ColumnInfo(name = "cover_url")
-    val coverUrl: String? = null,
-    @ColumnInfo(name = "full_name")
-    val fullName: String? = null,
-    @ColumnInfo(name = "email")
-    val email: String? = null,
+    @ColumnInfo(name = "cover_url", defaultValue = "''")
+    val coverUrl: String = "",
+    @ColumnInfo(name = "full_name", defaultValue = "''")
+    val fullName: String = "",
+    @ColumnInfo(name = "email", defaultValue = "''")
+    val email: String = "",
     @ColumnInfo(name = "description")
     val description: String? = null,
-    @ColumnInfo(name = "followers")
-    val followers: Int? = 0
+    @ColumnInfo(name = "followers", defaultValue = "0")
+    val followers: Int = 0
 ) {
     companion object {
         const val TABLE_NAME = "users"

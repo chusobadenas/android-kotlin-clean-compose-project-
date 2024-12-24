@@ -29,7 +29,7 @@ private const val NETWORK_INTERCEPTOR = "network_interceptor"
 val dataModule = module {
     factory { HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC } }
     factory(named(INTERNAL_SERVER_ERROR_INTERCEPTOR)) { provideInternalServerInterceptor() }
-    factory(named(NETWORK_INTERCEPTOR)) { provideNetworkInterceptor() }
+    factory(named(NETWORK_INTERCEPTOR)) { provideNetworkInterceptor(get()) }
     factory {
         provideOkHttpClient(
             androidContext(),
@@ -42,6 +42,7 @@ val dataModule = module {
     factory<UserRepository> { UserDataRepository(get(), get()) }
     single { provideRetrofit(get()) }
     single { provideDatabase(androidContext()) }
+    single { Network(androidContext()) }
 }
 
 private fun provideInternalServerInterceptor(): Interceptor = Interceptor { chain ->
@@ -53,10 +54,10 @@ private fun provideInternalServerInterceptor(): Interceptor = Interceptor { chai
     response
 }
 
-private fun provideNetworkInterceptor() = Interceptor { chain ->
+private fun provideNetworkInterceptor(network: Network) = Interceptor { chain ->
     val request = chain.request()
     val response = chain.proceed(request)
-    if (!Network.isConnected()) {
+    if (!network.isConnected()) {
         throw NetworkException()
     }
     response
