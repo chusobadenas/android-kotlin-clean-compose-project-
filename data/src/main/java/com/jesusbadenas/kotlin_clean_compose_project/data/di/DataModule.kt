@@ -8,7 +8,7 @@ import com.jesusbadenas.kotlin_clean_compose_project.data.api.Network
 import com.jesusbadenas.kotlin_clean_compose_project.data.api.exception.InternalServerErrorException
 import com.jesusbadenas.kotlin_clean_compose_project.data.api.exception.NetworkException
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.AppDatabase
-import com.jesusbadenas.kotlin_clean_compose_project.data.repository.UserDataRepository
+import com.jesusbadenas.kotlin_clean_compose_project.data.repository.UserRepositoryImpl
 import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepository
 import okhttp3.Cache
 import okhttp3.Interceptor
@@ -39,7 +39,7 @@ val dataModule = module {
         )
     }
     factory { provideAPIService(get()) }
-    factory<UserRepository> { UserDataRepository(get(), get()) }
+    factory<UserRepository> { UserRepositoryImpl(get(), get()) }
     single { provideRetrofit(get()) }
     single { provideDatabase(androidContext()) }
     single { Network(androidContext()) }

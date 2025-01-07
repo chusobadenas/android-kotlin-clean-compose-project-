@@ -9,7 +9,7 @@ import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepos
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class UserDataRepository(
+class UserRepositoryImpl(
     private val apiService: APIService,
     appDatabase: AppDatabase
 ) : UserRepository {

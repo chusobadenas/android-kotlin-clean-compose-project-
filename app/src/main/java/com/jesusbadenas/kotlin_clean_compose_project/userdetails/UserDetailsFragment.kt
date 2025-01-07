@@ -14,7 +14,6 @@ import com.jesusbadenas.kotlin_clean_compose_project.databinding.FragmentUserDet
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.viewmodel.UserDetailsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 /**
  * Fragment that shows details of a certain User.
@@ -22,9 +21,7 @@ import org.koin.core.parameter.parametersOf
 class UserDetailsFragment : Fragment() {
 
     private val navArgs: UserDetailsFragmentArgs by navArgs()
-    private val viewModel: UserDetailsViewModel by viewModel {
-        parametersOf(navArgs.userId)
-    }
+    private val viewModel: UserDetailsViewModel by viewModel()
 
     private lateinit var binding: FragmentUserDetailsBinding
 
@@ -49,13 +46,13 @@ class UserDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.loadUser()
+        viewModel.loadUser(userId = navArgs.userId)
     }
 
     private fun subscribe() {
         viewModel.retryAction.observe(viewLifecycleOwner, LiveEventObserver { load ->
             if (load) {
-                viewModel.loadUser()
+                viewModel.loadUser(userId = navArgs.userId)
             }
         })
         viewModel.user.observe(viewLifecycleOwner) { user ->

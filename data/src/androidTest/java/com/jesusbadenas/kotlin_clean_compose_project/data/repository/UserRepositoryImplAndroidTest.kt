@@ -25,7 +25,7 @@ import org.junit.runner.RunWith
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class UserDataRepositoryAndroidTest {
+class UserRepositoryImplAndroidTest {
 
     @get:Rule
     val coroutineRule = CoroutinesTestRule()
@@ -46,7 +46,7 @@ class UserDataRepositoryAndroidTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         database = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
         userDao = database.userDao()
-        userDataRepository = UserDataRepository(apiService, database)
+        userDataRepository = UserRepositoryImpl(apiService, database)
     }
 
     @After

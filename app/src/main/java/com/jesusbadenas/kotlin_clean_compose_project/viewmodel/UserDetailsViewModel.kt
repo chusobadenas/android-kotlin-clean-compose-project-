@@ -8,7 +8,6 @@ import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.domain.usecase.GetUserUseCase
 
 class UserDetailsViewModel(
-    private val userId: Int,
     private val getUserUseCase: GetUserUseCase
 ) : BaseViewModel() {
 
@@ -16,7 +15,7 @@ class UserDetailsViewModel(
     val user: LiveData<User>
         get() = _user
 
-    fun loadUser() {
+    fun loadUser(userId: Int) {
         getUserUseCase.invoke(
             scope = viewModelScope,
             coroutineExceptionHandler = coroutineExceptionHandler,

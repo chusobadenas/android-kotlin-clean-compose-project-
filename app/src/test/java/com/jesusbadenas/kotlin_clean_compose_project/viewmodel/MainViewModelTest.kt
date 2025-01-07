@@ -1,13 +1,9 @@
 package com.jesusbadenas.kotlin_clean_compose_project.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
+import com.jesusbadenas.kotlin_clean_compose_project.test.extension.getOrAwaitValue
 import io.mockk.MockKAnnotations
-import io.mockk.Runs
-import io.mockk.every
-import io.mockk.impl.annotations.MockK
-import io.mockk.just
-import io.mockk.verify
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -17,24 +13,20 @@ class MainViewModelTest {
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
-    @MockK
-    private lateinit var observer: Observer<Void>
-
-    private lateinit var mainVM: MainViewModel
+    private lateinit var viewModel: MainViewModel
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        mainVM = MainViewModel()
+        viewModel = MainViewModel()
     }
 
     @Test
     fun testOnLoadButtonClick() {
-        every { observer.onChanged(any()) } just Runs
+        viewModel.onLoadButtonClick()
 
-        mainVM.loadAction.observeForever(observer)
-        mainVM.onLoadButtonClick()
+        val result = viewModel.loadAction.getOrAwaitValue()
 
-        verify { observer.onChanged(any()) }
+        Assert.assertTrue(result.peekContent())
     }
 }

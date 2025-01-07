@@ -33,7 +33,7 @@ class UserDetailsViewModelTest : CustomKoinTest(presentationTestModule) {
 
     private val getUserUseCase: GetUserUseCase by inject()
 
-    private val viewModel = UserDetailsViewModel(userId = USER_ID, getUserUseCase = getUserUseCase)
+    private val viewModel = UserDetailsViewModel(getUserUseCase)
 
     @Test
     fun `test load user details error`() = coroutineRule.runTest {
@@ -42,6 +42,7 @@ class UserDetailsViewModelTest : CustomKoinTest(presentationTestModule) {
             getUserUseCase.execute(params = GetUserUseCase.Params(userId = USER_ID))
         } throws exception
 
+        viewModel.loadUser(USER_ID)
         val error = viewModel.uiError.getOrAwaitValue()
 
         coVerify {
@@ -57,6 +58,7 @@ class UserDetailsViewModelTest : CustomKoinTest(presentationTestModule) {
             getUserUseCase.execute(params = GetUserUseCase.Params(userId = USER_ID))
         } returns user
 
+        viewModel.loadUser(USER_ID)
         val result = viewModel.user.getOrAwaitValue()
 
         coVerify {

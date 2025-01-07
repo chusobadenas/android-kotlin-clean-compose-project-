@@ -31,7 +31,7 @@ import org.robolectric.annotation.Config
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 @Config(application = KoinTestApp::class)
-class UserDataRepositoryTest: CustomKoinTest(dataTestModule) {
+class UserRepositoryImplTest: CustomKoinTest(dataTestModule) {
 
     @get:Rule
     val coroutineRule = CoroutinesTestRule()
@@ -53,7 +53,7 @@ class UserDataRepositoryTest: CustomKoinTest(dataTestModule) {
         MockKAnnotations.init(this)
         every { database.userDao() } returns userDao
 
-        userDataRepository = UserDataRepository(apiService, database)
+        userDataRepository = UserRepositoryImpl(apiService, database)
     }
 
     @Test
