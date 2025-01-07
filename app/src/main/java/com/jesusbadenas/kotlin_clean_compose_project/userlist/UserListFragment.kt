@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jesusbadenas.kotlin_clean_compose_project.R
+import com.jesusbadenas.kotlin_clean_compose_project.common.LiveEventObserver
 import com.jesusbadenas.kotlin_clean_compose_project.common.showError
 import com.jesusbadenas.kotlin_clean_compose_project.databinding.FragmentUserListBinding
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
@@ -45,9 +46,10 @@ class UserListFragment : Fragment(), UserAdapter.OnItemClickListener {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
+        viewModel.loadUserList()
     }
 
     override fun onDestroyView() {
@@ -69,9 +71,11 @@ class UserListFragment : Fragment(), UserAdapter.OnItemClickListener {
     }
 
     private fun subscribe() {
-        viewModel.retryAction.observe(viewLifecycleOwner) {
-            viewModel.loadUserList()
-        }
+        viewModel.retryAction.observe(viewLifecycleOwner, LiveEventObserver { load ->
+            if (load) {
+                viewModel.loadUserList()
+            }
+        })
         viewModel.userList.observe(viewLifecycleOwner) { users ->
             loadUserList(users)
         }

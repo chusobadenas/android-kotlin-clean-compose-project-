@@ -1,8 +1,7 @@
-package com.jesusbadenas.kotlin_clean_compose_project.domain.interactors.interactor
+package com.jesusbadenas.kotlin_clean_compose_project.domain.usecase
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.jesusbadenas.kotlin_clean_compose_project.domain.di.domainTestModule
-import com.jesusbadenas.kotlin_clean_compose_project.domain.interactor.GetUsers
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepository
 import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
@@ -13,25 +12,28 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.core.component.inject
+import org.koin.test.inject
 import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
 @Config(application = KoinTestApp::class)
-class GetUsersTest: CustomKoinTest(domainTestModule) {
+class GetUserUseCaseTest : CustomKoinTest(domainTestModule) {
 
     private val userRepository: UserRepository by inject()
 
+    private val getUserUseCase = GetUserUseCase(userRepository)
+
     @Test
-    fun testGetUsersUseCaseSuccess() {
+    fun `test get user success`() {
         val user = User(USER_ID)
-        coEvery { userRepository.users() } returns listOf(user)
+        coEvery { userRepository.user(USER_ID) } returns user
 
-        val getUsers = GetUsers(userRepository)
-        val result = runBlocking { getUsers() }
+        val result = runBlocking {
+            getUserUseCase.execute(params = GetUserUseCase.Params(userId = USER_ID))
+        }
 
-        coVerify { userRepository.users() }
-        Assert.assertEquals(user, result[0])
+        coVerify { userRepository.user(USER_ID) }
+        Assert.assertEquals(user, result)
     }
 
     companion object {

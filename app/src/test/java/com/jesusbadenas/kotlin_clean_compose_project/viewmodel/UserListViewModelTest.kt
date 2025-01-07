@@ -4,8 +4,8 @@ import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.jesusbadenas.kotlin_clean_compose_project.di.presentationTestModule
-import com.jesusbadenas.kotlin_clean_compose_project.domain.interactor.GetUsers
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
+import com.jesusbadenas.kotlin_clean_compose_project.domain.usecase.GetUsersUseCase
 import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
 import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
 import com.jesusbadenas.kotlin_clean_compose_project.test.extension.getOrAwaitValue
@@ -13,8 +13,7 @@ import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRul
 import io.mockk.coEvery
 import io.mockk.coVerify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
+import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,30 +31,33 @@ class UserListViewModelTest : CustomKoinTest(presentationTestModule) {
     @get:Rule
     val coroutineRule = CoroutinesTestRule()
 
-    private val getUsers: GetUsers by inject()
+    private val getUsersUseCase: GetUsersUseCase by inject()
+
+    private val viewModel = UserListViewModel(getUsersUseCase)
 
     @Test
-    fun testLoadUserListError() = coroutineRule.runTest {
+    fun `test load user list error`() = coroutineRule.runTest {
         val exception = Exception()
-        coEvery { getUsers.invoke() } throws exception
+        coEvery { getUsersUseCase.execute() } throws exception
 
-        val userListVM = UserListViewModel(getUsers)
-        val error = userListVM.uiError.getOrAwaitValue()
+        viewModel.loadUserList()
+        val error = viewModel.uiError.getOrAwaitValue()
 
-        assertEquals(exception, error.throwable)
+        coVerify { getUsersUseCase.execute() }
+        Assert.assertEquals(exception, error.throwable)
     }
 
     @Test
-    fun testLoadUserListSuccess() = coroutineRule.runTest {
+    fun `test load user list success`() = coroutineRule.runTest {
         val user = User(USER_ID)
-        coEvery { getUsers.invoke() } returns listOf(user)
+        coEvery { getUsersUseCase.execute() } returns listOf(user)
 
-        val userListVM = UserListViewModel(getUsers)
-        val userList = userListVM.userList.getOrAwaitValue()
+        viewModel.loadUserList()
+        val userList = viewModel.userList.getOrAwaitValue()
 
-        coVerify { getUsers.invoke() }
-        assertFalse(userList.isNullOrEmpty())
-        assertEquals(userList[0].userId, USER_ID)
+        coVerify { getUsersUseCase.execute() }
+        Assert.assertEquals(1, userList.size)
+        Assert.assertEquals(USER_ID, userList[0].userId)
     }
 
     companion object {

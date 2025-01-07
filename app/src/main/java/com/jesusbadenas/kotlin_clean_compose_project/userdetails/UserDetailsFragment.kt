@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.jesusbadenas.kotlin_clean_compose_project.R
+import com.jesusbadenas.kotlin_clean_compose_project.common.LiveEventObserver
 import com.jesusbadenas.kotlin_clean_compose_project.common.showError
 import com.jesusbadenas.kotlin_clean_compose_project.databinding.FragmentUserDetailsBinding
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
@@ -46,10 +47,17 @@ class UserDetailsFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.loadUser()
+    }
+
     private fun subscribe() {
-        viewModel.retryAction.observe(viewLifecycleOwner) {
-            viewModel.loadUser()
-        }
+        viewModel.retryAction.observe(viewLifecycleOwner, LiveEventObserver { load ->
+            if (load) {
+                viewModel.loadUser()
+            }
+        })
         viewModel.user.observe(viewLifecycleOwner) { user ->
             loadUserDetails(user)
         }

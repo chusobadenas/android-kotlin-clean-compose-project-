@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.jesusbadenas.kotlin_clean_compose_project.R
+import com.jesusbadenas.kotlin_clean_compose_project.common.LiveEventObserver
 import com.jesusbadenas.kotlin_clean_compose_project.databinding.FragmentMainBinding
 import com.jesusbadenas.kotlin_clean_compose_project.navigation.Navigator
 import com.jesusbadenas.kotlin_clean_compose_project.viewmodel.MainViewModel
@@ -37,9 +38,11 @@ class MainFragment : Fragment() {
     }
 
     private fun subscribe() {
-        viewModel.loadAction.observe(viewLifecycleOwner) {
-            navigateToUserList()
-        }
+        viewModel.loadAction.observe(viewLifecycleOwner, LiveEventObserver { load ->
+            if (load) {
+                navigateToUserList()
+            }
+        })
     }
 
     private fun navigateToUserList() {

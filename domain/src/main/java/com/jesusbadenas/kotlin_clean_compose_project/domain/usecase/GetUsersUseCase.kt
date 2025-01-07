@@ -1,10 +1,11 @@
-package com.jesusbadenas.kotlin_clean_compose_project.domain.interactor
+package com.jesusbadenas.kotlin_clean_compose_project.domain.usecase
 
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepository
 
-class GetUser(
+class GetUsersUseCase(
     private val userRepository: UserRepository
-) {
-    suspend operator fun invoke(userId: Int): User = userRepository.user(userId)
+) : UseCaseNoParams<List<User>>() {
+
+    override suspend fun execute(): List<User> = userRepository.users()
 }

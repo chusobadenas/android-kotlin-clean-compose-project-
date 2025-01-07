@@ -1,13 +1,17 @@
 package com.jesusbadenas.kotlin_clean_compose_project.viewmodel
 
 import com.jesusbadenas.kotlin_clean_compose_project.common.BaseViewModel
+import com.jesusbadenas.kotlin_clean_compose_project.common.LiveDataEvent
 import com.jesusbadenas.kotlin_clean_compose_project.common.LiveEvent
+import com.jesusbadenas.kotlin_clean_compose_project.common.MutableLiveEvent
 
-class MainViewModel: BaseViewModel() {
+class MainViewModel : BaseViewModel() {
 
-    val loadAction = LiveEvent<Void>()
+    private val _loadAction = MutableLiveEvent<Boolean>()
+    val loadAction: LiveDataEvent<Boolean>
+        get() = _loadAction
 
     fun onLoadButtonClick() {
-        loadAction.call()
+        _loadAction.value = LiveEvent(true)
     }
 }

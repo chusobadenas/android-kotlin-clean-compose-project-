@@ -1,22 +1,26 @@
 package com.jesusbadenas.kotlin_clean_compose_project.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.jesusbadenas.kotlin_clean_compose_project.common.BaseViewModel
-import com.jesusbadenas.kotlin_clean_compose_project.domain.interactor.GetUsers
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
+import com.jesusbadenas.kotlin_clean_compose_project.domain.usecase.GetUsersUseCase
 
-class UserListViewModel(private val getUsersUseCase: GetUsers) : BaseViewModel() {
+class UserListViewModel(
+    private val getUsersUseCase: GetUsersUseCase
+) : BaseViewModel() {
 
-    val userList = MutableLiveData<List<User>>()
-
-    init {
-        loadUserList()
-    }
+    private val _userList = MutableLiveData<List<User>>()
+    val userList: LiveData<List<User>>
+        get() = _userList
 
     fun loadUserList() {
-        viewModelScope.safeLaunch {
-            userList.value = getUsersUseCase()
+        getUsersUseCase.invoke(
+            scope = viewModelScope,
+            coroutineExceptionHandler = coroutineExceptionHandler
+        ) { list ->
+            _userList.value = list
         }
     }
 }

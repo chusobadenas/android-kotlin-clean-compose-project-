@@ -33,6 +33,16 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
+
+    testOptions {
+        unitTests {
+            all {
+                useJUnitPlatform()
+            }
+            includeAndroidResources = true
+            returnDefaultValues = true
+        }
+    }
 }
 
 dependencies {

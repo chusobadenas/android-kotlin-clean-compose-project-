@@ -1,10 +1,10 @@
 package com.jesusbadenas.kotlin_clean_compose_project.domain.di
 
-import com.jesusbadenas.kotlin_clean_compose_project.domain.interactor.GetUser
-import com.jesusbadenas.kotlin_clean_compose_project.domain.interactor.GetUsers
+import com.jesusbadenas.kotlin_clean_compose_project.domain.usecase.GetUserUseCase
+import com.jesusbadenas.kotlin_clean_compose_project.domain.usecase.GetUsersUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
-    factory { GetUser(get()) }
-    factory { GetUsers(get()) }
+    factory { GetUserUseCase(get()) }
+    factory { GetUsersUseCase(get()) }
 }
