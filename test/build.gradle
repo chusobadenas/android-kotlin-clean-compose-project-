@@ -50,6 +50,7 @@ dependencies {
     implementation rootProject.ext.koinJunit5Test
     implementation rootProject.ext.kotlin
     implementation rootProject.ext.lifeCycleLiveDataKtx
+    implementation rootProject.ext.timber
 
     testImplementation rootProject.ext.jUnit
     testImplementation rootProject.ext.mockk

@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.jesusbadenas.kotlin_clean_compose_project.data.api.APIService
 import com.jesusbadenas.kotlin_clean_compose_project.data.api.response.UserResponse
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.AppDatabase
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.dao.UserDao
+import com.jesusbadenas.kotlin_clean_compose_project.data.remote.UserRemoteDataSource
 import com.jesusbadenas.kotlin_clean_compose_project.data.util.toUser
 import com.jesusbadenas.kotlin_clean_compose_project.data.util.toUserEntity
 import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepository
@@ -31,7 +31,7 @@ class UserRepositoryImplAndroidTest {
     val coroutineRule = CoroutinesTestRule()
 
     @MockK
-    private lateinit var apiService: APIService
+    private lateinit var usersRemoteDataSource: UserRemoteDataSource
 
     private val userResponse = UserResponse(USER_ID)
 
@@ -46,7 +46,7 @@ class UserRepositoryImplAndroidTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         database = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
         userDao = database.userDao()
-        userDataRepository = UserRepositoryImpl(apiService, database)
+        userDataRepository = UserRepositoryImpl(database, usersRemoteDataSource)
     }
 
     @After
@@ -55,25 +55,29 @@ class UserRepositoryImplAndroidTest {
     }
 
     @Test
-    fun testGetUsersFromDatabaseSuccess() {
+    fun `test get users from database success`() {
         val array = listOf(userResponse).map { it.toUser().toUserEntity() }.toTypedArray()
         runBlocking { userDao.insert(*array) }
 
-        val result = runBlocking { userDataRepository.users() }
+        val result = runBlocking {
+            userDataRepository.users()
+        }
 
-        Assert.assertTrue(result.isNotEmpty())
-        Assert.assertSame(result.size, 1)
-        Assert.assertSame(result[0].userId, USER_ID)
+        Assert.assertEquals(1, result.size)
+        Assert.assertEquals(USER_ID, result[0].userId)
     }
 
     @Test
-    fun testGetUserByIdFromDatabaseSuccess() {
+    fun `test get user from database success`() {
         val userEntity = userResponse.toUser().toUserEntity()
         runBlocking { userDao.insert(userEntity) }
 
-        val result = runBlocking { userDataRepository.user(USER_ID) }
+        val result = runBlocking {
+            userDataRepository.user(USER_ID)
+        }
 
-        Assert.assertSame(result.userId, USER_ID)
+        Assert.assertNotNull(result)
+        Assert.assertEquals(USER_ID, result?.userId)
     }
 
     companion object {

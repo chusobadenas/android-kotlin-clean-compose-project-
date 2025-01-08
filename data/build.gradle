@@ -65,6 +65,7 @@ dependencies {
     implementation rootProject.ext.retrofitConverterMoshi
     implementation rootProject.ext.room
     implementation rootProject.ext.roomKtx
+    implementation rootProject.ext.timber
 
     kapt rootProject.ext.roomCompiler
 

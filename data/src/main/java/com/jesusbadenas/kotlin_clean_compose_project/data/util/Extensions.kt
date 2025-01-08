@@ -24,9 +24,9 @@ fun UserEntity.toUser() = User(
 
 fun User.toUserEntity() = UserEntity(
     id = userId,
-    coverUrl = coverUrl,
-    fullName = fullName,
-    email = email,
+    coverUrl = coverUrl.orEmpty(),
+    fullName = fullName.orEmpty(),
+    email = email.orEmpty(),
     description = description,
-    followers = followers
+    followers = followers ?: 0
 )

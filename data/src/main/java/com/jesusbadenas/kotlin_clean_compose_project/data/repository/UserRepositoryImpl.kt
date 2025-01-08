@@ -1,7 +1,7 @@
 package com.jesusbadenas.kotlin_clean_compose_project.data.repository
 
-import com.jesusbadenas.kotlin_clean_compose_project.data.api.APIService
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.AppDatabase
+import com.jesusbadenas.kotlin_clean_compose_project.data.remote.UserRemoteDataSource
 import com.jesusbadenas.kotlin_clean_compose_project.data.util.toUser
 import com.jesusbadenas.kotlin_clean_compose_project.data.util.toUserEntity
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
@@ -10,8 +10,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class UserRepositoryImpl(
-    private val apiService: APIService,
-    appDatabase: AppDatabase
+    appDatabase: AppDatabase,
+    private val userRemoteDataSource: UserRemoteDataSource
 ) : UserRepository {
 
     private val userDao = appDatabase.userDao()
@@ -21,10 +21,8 @@ class UserRepositoryImpl(
             // Get from database first
             val dbUsers = userDao.getAll()
             if (dbUsers.isEmpty()) {
-                // If not found, get from API
-                apiService.userDataList().map { userResponse ->
-                    userResponse.toUser()
-                }.also { userList ->
+                // If not found, get from server
+                userRemoteDataSource.users().also { userList ->
                     val entities = userList.map { it.toUserEntity() }.toTypedArray()
                     userDao.insert(*entities)
                 }
@@ -33,12 +31,12 @@ class UserRepositoryImpl(
             }
         }
 
-    override suspend fun user(userId: Int): User =
+    override suspend fun user(userId: Int): User? =
         withContext(Dispatchers.IO) {
             // Get from database first
             userDao.findById(userId)?.toUser()
-            // If not found, get from API
-                ?: apiService.userDataById(userId).toUser().also { user ->
+            // If not found, get from server
+                ?: userRemoteDataSource.user(userId)?.also { user ->
                     userDao.insert(user.toUserEntity())
                 }
         }

@@ -1,11 +1,12 @@
 package com.jesusbadenas.kotlin_clean_compose_project.data.repository
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.jesusbadenas.kotlin_clean_compose_project.data.api.APIService
-import com.jesusbadenas.kotlin_clean_compose_project.data.api.response.UserResponse
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.AppDatabase
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.dao.UserDao
 import com.jesusbadenas.kotlin_clean_compose_project.data.di.dataTestModule
+import com.jesusbadenas.kotlin_clean_compose_project.data.remote.UserRemoteDataSource
+import com.jesusbadenas.kotlin_clean_compose_project.data.util.toUserEntity
+import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepository
 import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
 import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
@@ -19,8 +20,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.just
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.assertSame
-import org.junit.Assert.assertTrue
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -31,7 +31,7 @@ import org.robolectric.annotation.Config
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 @Config(application = KoinTestApp::class)
-class UserRepositoryImplTest: CustomKoinTest(dataTestModule) {
+class UserRepositoryImplTest : CustomKoinTest(dataTestModule) {
 
     @get:Rule
     val coroutineRule = CoroutinesTestRule()
@@ -42,9 +42,10 @@ class UserRepositoryImplTest: CustomKoinTest(dataTestModule) {
     @MockK
     private lateinit var userDao: UserDao
 
-    private val apiService: APIService by inject()
+    private val usersRemoteDataSource: UserRemoteDataSource by inject()
 
-    private val userResponse = UserResponse(USER_ID)
+    private val userResult = User(userId = USER_ID)
+    private val userEntity = userResult.toUserEntity()
 
     private lateinit var userDataRepository: UserRepository
 
@@ -53,39 +54,43 @@ class UserRepositoryImplTest: CustomKoinTest(dataTestModule) {
         MockKAnnotations.init(this)
         every { database.userDao() } returns userDao
 
-        userDataRepository = UserRepositoryImpl(apiService, database)
+        userDataRepository = UserRepositoryImpl(database, usersRemoteDataSource)
     }
 
     @Test
-    fun testGetUsersFromNetworkSuccess() {
+    fun `test get users from network success`() {
         coEvery { userDao.getAll() } returns emptyList()
-        coEvery { apiService.userDataList() } returns listOf(userResponse)
-        coEvery { userDao.insert(any()) } just Runs
+        coEvery { usersRemoteDataSource.users() } returns listOf(userResult)
+        coEvery { userDao.insert(userEntity) } just Runs
 
-        val result = runBlocking { userDataRepository.users() }
+        val result = runBlocking {
+            userDataRepository.users()
+        }
 
         coVerify { userDao.getAll() }
-        coVerify { apiService.userDataList() }
-        coVerify { userDao.insert(any()) }
+        coVerify { usersRemoteDataSource.users() }
+        coVerify { userDao.insert(userEntity) }
 
-        assertTrue(result.isNotEmpty())
-        assertSame(result.size, 1)
-        assertSame(result[0].userId, USER_ID)
+        Assert.assertEquals(1, result.size)
+        Assert.assertEquals(USER_ID, result[0].userId)
     }
 
     @Test
-    fun testGetUserByIdFromNetworkSuccess() {
+    fun `test get user from network success`() {
         coEvery { userDao.findById(USER_ID) } returns null
-        coEvery { apiService.userDataById(USER_ID) } returns userResponse
-        coEvery { userDao.insert(any()) } just Runs
+        coEvery { usersRemoteDataSource.user(USER_ID) } returns userResult
+        coEvery { userDao.insert(userEntity) } just Runs
 
-        val result = runBlocking { userDataRepository.user(USER_ID) }
+        val result = runBlocking {
+            userDataRepository.user(USER_ID)
+        }
 
         coVerify { userDao.findById(USER_ID) }
-        coVerify { apiService.userDataById(USER_ID) }
-        coVerify { userDao.insert(any()) }
+        coVerify { usersRemoteDataSource.user(USER_ID) }
+        coVerify { userDao.insert(userEntity) }
 
-        assertSame(result.userId, USER_ID)
+        Assert.assertNotNull(result)
+        Assert.assertEquals(USER_ID, result?.userId)
     }
 
     companion object {

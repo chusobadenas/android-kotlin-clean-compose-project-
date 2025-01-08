@@ -63,6 +63,7 @@ dependencies {
     testImplementation rootProject.ext.koinJunit5Test
     testImplementation rootProject.ext.mockk
     testImplementation rootProject.ext.robolectric
+    implementation rootProject.ext.timber
 
     testRuntimeOnly rootProject.ext.jUnitJupiterEngine
     testRuntimeOnly rootProject.ext.jUnitPlatformLauncher
