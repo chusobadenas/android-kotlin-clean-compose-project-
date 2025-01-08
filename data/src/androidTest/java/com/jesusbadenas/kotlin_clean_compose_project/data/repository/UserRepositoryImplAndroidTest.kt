@@ -55,7 +55,7 @@ class UserRepositoryImplAndroidTest {
     }
 
     @Test
-    fun `test get users from database success`() {
+    fun testGetUsersFromDatabaseSuccess() {
         val array = listOf(userResponse).map { it.toUser().toUserEntity() }.toTypedArray()
         runBlocking { userDao.insert(*array) }
 
@@ -68,7 +68,7 @@ class UserRepositoryImplAndroidTest {
     }
 
     @Test
-    fun `test get user from database success`() {
+    fun testGetUserFromDatabaseSuccess() {
         val userEntity = userResponse.toUser().toUserEntity()
         runBlocking { userDao.insert(userEntity) }
 
