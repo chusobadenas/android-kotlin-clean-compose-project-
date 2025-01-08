@@ -18,7 +18,7 @@ class ExtensionsTest {
     )
 
     @Test
-    fun testUserResponseConversionSuccess() {
+    fun `test transform UserResponse to User success`() {
         val userResponse = UserResponse(
             userId = 1,
             coverUrl = "https://localhost/images/1",
@@ -33,7 +33,7 @@ class ExtensionsTest {
     }
 
     @Test
-    fun testUserEntityConversionSuccess() {
+    fun `test transform UserEntity to User success`() {
         val userEntity = UserEntity(
             id = 1,
             coverUrl = "https://localhost/images/1",
@@ -48,7 +48,7 @@ class ExtensionsTest {
     }
 
     @Test
-    fun testUserConversionSuccess() {
+    fun `test transform User to UserEntity success`() {
         val expected = UserEntity(
             id = 1,
             coverUrl = "https://localhost/images/1",
