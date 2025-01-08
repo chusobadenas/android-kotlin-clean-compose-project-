@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">Kotlin Clean Architecture</string>
-  <string name="url">https://jesusbadenas.com</string>
+    <string name="app_name">Kotlin Clean Architecture</string>
+    <string name="url">https://jesusbadenas.com</string>
 
-  <string name="title_user_list">All users</string>
-  <string name="title_user_details">User details</string>
+    <string name="title_user_list">All users</string>
+    <string name="title_user_details">User details</string>
 
-  <string name="btn_text_load_data">Load Data</string>
-  <string name="btn_text_retry">Retry</string>
+    <string name="btn_text_load_data">Load Data</string>
+    <string name="btn_text_retry">Retry</string>
 
-  <string name="view_text_email">Email:</string>
-  <string name="view_text_followers">Followers:</string>
-  <string name="view_text_description">Description:</string>
-  <string name="view_cover_description">Cover</string>
+    <string name="view_text_email">Email:</string>
+    <string name="view_text_followers">Followers:</string>
+    <string name="view_text_description">Description:</string>
+    <string name="view_cover_description">Cover</string>
 
-  <string name="progress_dialog_message">Loading…</string>
-  <string name="string_content_description">Non accessible view</string>
+    <string name="progress_dialog_message">Loading…</string>
+    <string name="string_content_description">Non accessible view</string>
 
-  <!-- Exception messages -->
-  <string name="error_message_generic">An error has occurred</string>
-  <string name="error_title_generic">Oops!</string>
+    <!-- Exception messages -->
+    <string name="error_message_generic">An error has occurred</string>
+    <string name="error_title_generic">Oops!</string>
 
-  <!-- Main Activity -->
-  <string name="text_view">View</string>
-  <string name="text_collections">Collections</string>
-  <string name="user_image_description">User image</string>
+    <!-- Main Activity -->
+    <string name="text_view">View</string>
+    <string name="text_collections">Collections</string>
+    <string name="user_image_description">User image</string>
 </resources>
