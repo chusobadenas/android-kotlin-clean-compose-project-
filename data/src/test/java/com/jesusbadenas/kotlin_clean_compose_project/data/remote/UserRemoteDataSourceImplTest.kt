@@ -16,7 +16,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.core.component.inject
+import org.koin.test.inject
 import org.robolectric.annotation.Config
 
 @ExperimentalCoroutinesApi
@@ -29,6 +29,7 @@ class UserRemoteDataSourceImplTest : CustomKoinTest(dataTestModule) {
 
     private val usersApi: UsersAPI by inject()
 
+    private val exception = Exception()
     private val userResponse = UserResponse(userId = USER_ID)
 
     private lateinit var dataSource: UserRemoteDataSource
@@ -36,6 +37,19 @@ class UserRemoteDataSourceImplTest : CustomKoinTest(dataTestModule) {
     @Before
     fun setUp() {
         dataSource = UserRemoteDataSourceImpl(usersApi)
+    }
+
+    @Test
+    fun `test get users error`() {
+        coEvery { usersApi.users() } throws exception
+
+        val result = runBlocking {
+            dataSource.users()
+        }
+
+        coVerify { usersApi.users() }
+
+        Assert.assertTrue(result.isEmpty())
     }
 
     @Test
@@ -50,6 +64,19 @@ class UserRemoteDataSourceImplTest : CustomKoinTest(dataTestModule) {
 
         Assert.assertEquals(1, result.size)
         Assert.assertEquals(USER_ID, result[0].userId)
+    }
+
+    @Test
+    fun `test get user by id error`() {
+        coEvery { usersApi.user(USER_ID) } throws exception
+
+        val result = runBlocking {
+            dataSource.user(USER_ID)
+        }
+
+        coVerify { usersApi.user(USER_ID) }
+
+        Assert.assertNull(result)
     }
 
     @Test
