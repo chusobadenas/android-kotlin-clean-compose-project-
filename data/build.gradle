@@ -3,14 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    namespace "com.jesusbadenas.kotlin_clean_compose_project.data"
-    compileSdk rootProject.ext.compileSdkVersion
+    namespace = "com.jesusbadenas.kotlin_clean_compose_project.data"
+    compileSdk = rootProject.ext.compileSdkVersion
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode rootProject.ext.versionCode
-        versionName rootProject.ext.versionName
         testInstrumentationRunner rootProject.ext.testInstrumentationRunner
     }
 

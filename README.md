@@ -4,6 +4,7 @@ An Android boilerplate project using Clean Architecture with Kotlin and Jetpack 
 ### Architecture components ###
 
 - [Kotlin](https://developer.android.com/kotlin?hl=en)
+- [Compose](https://developer.android.com/compose)
 - [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)
 - [Data Binding](https://developer.android.com/topic/libraries/data-binding)
 - [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)
@@ -12,7 +13,7 @@ An Android boilerplate project using Clean Architecture with Kotlin and Jetpack 
 
 ### 3rd-party libraries ###
 
-- [Glide](https://github.com/bumptech/glide)
+- [Coil](https://coil-kt.github.io/coil/)
 - [Koin](https://insert-koin.io)
 - [Moshi](https://github.com/square/moshi)
 - [OkHttp](https://square.github.io/okhttp)

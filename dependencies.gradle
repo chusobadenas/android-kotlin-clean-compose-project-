@@ -12,12 +12,12 @@ ext {
     activityVersion = '1.9.2'
     appCompatVersion = '1.7.0'
     archCoreVersion = '2.2.0'
+    coilVersion = '2.7.0'
     constraintLayoutVersion = '2.2.0'
     coreKtx = '1.15.0'
     coroutinesVersion = '1.10.1'
     desugarVersion = '2.1.4'
     fragmentVersion = '1.8.5'
-    glideVersion = '4.16.0'
     koinAndroidVersion = '4.0.1'
     koinCoreVersion = '4.0.1'
     lifecycleVersion = '2.8.7'
@@ -31,22 +31,22 @@ ext {
     swipeRefreshLayoutVersion = '1.1.0'
     timberVersion = '5.0.1'
 
-    fragment = "androidx.activity:activity-ktx:$fragmentVersion"
+    activity = "androidx.activity:activity-ktx:$fragmentVersion"
     androidAppCompat = "androidx.appcompat:appcompat:$appCompatVersion"
     androidConstraintLayout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
     androidCoreKtx = "androidx.core:core-ktx:$coreKtx"
     androidMaterial = "com.google.android.material:material:$materialVersion"
     archCoreCommon = "androidx.arch.core:core-common:$archCoreVersion"
+    coil = "io.coil-kt:coil:$coilVersion"
     coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
     desugar = "com.android.tools:desugar_jdk_libs:$desugarVersion"
     fragment = "androidx.fragment:fragment-ktx:$fragmentVersion"
-    glide = "com.github.bumptech.glide:glide:$glideVersion"
-    glideCompiler = "com.github.bumptech.glide:compiler:$glideVersion"
     koinAndroid = "io.insert-koin:koin-android:$koinAndroidVersion"
     koinAndroidCompat = "io.insert-koin:koin-android-compat:$koinAndroidVersion"
     koinCore = "io.insert-koin:koin-core:$koinCoreVersion"
     kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$KOTLIN_VERSION"
+    ksp = "com.google.devtools.ksp:symbol-processing-api:$KSP_VERSION"
     lifeCycleCompiler = "androidx.lifecycle:lifecycle-compiler:$lifecycleVersion"
     lifeCycleLiveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:$livedataKtxVersion"
     lifeCycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$livedataKtxVersion"
@@ -68,6 +68,7 @@ ext {
     // Testing
     androidXJUnitVersion = '1.2.1'
     androidXTestVersion = '1.6.1'
+    androidXTestRunnerVersion = '1.6.2'
     espressoVersion = '3.6.1'
     junitVersion = '4.13.2'
     junitJupiterVersion = '5.11.4'
@@ -78,7 +79,7 @@ ext {
     androidXJUnitKtx = "androidx.test.ext:junit-ktx:$androidXJUnitVersion"
     androidXTestCoreKtx = "androidx.test:core-ktx:$androidXTestVersion"
     androidXTestRules = "androidx.test:rules:$androidXTestVersion"
-    androidXTestRunner = "androidx.test:runner:$androidXTestVersion"
+    androidXTestRunner = "androidx.test:runner:$androidXTestRunnerVersion"
     archCoreTesting = "androidx.arch.core:core-testing:$archCoreVersion"
     coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
     espresso = "androidx.test.espresso:espresso-core:$espressoVersion"
