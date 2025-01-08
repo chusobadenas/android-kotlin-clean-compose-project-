@@ -10,6 +10,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.inject
@@ -17,11 +18,16 @@ import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
 @Config(application = KoinTestApp::class)
-class GetUsersUseCaseTest: CustomKoinTest(domainTestModule) {
+class GetUsersUseCaseTest : CustomKoinTest(domainTestModule) {
 
     private val userRepository: UserRepository by inject()
 
-    private val getUsersUseCase = GetUsersUseCase(userRepository)
+    private lateinit var getUsersUseCase: GetUsersUseCase
+
+    @Before
+    fun setUp() {
+        getUsersUseCase = GetUsersUseCase(userRepository)
+    }
 
     @Test
     fun `test get users success`() {

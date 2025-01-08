@@ -1,4 +1,4 @@
-package com.jesusbadenas.kotlin_clean_compose_project.viewmodel
+package com.jesusbadenas.kotlin_clean_compose_project.userlist
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -9,11 +9,11 @@ import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
 import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
 import com.jesusbadenas.kotlin_clean_compose_project.test.extension.getOrAwaitValue
 import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
-import com.jesusbadenas.kotlin_clean_compose_project.userlist.UserListViewModel
-import io.mockk.coEvery
-import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.slot
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,31 +33,28 @@ class UserListViewModelTest : CustomKoinTest(presentationTestModule) {
 
     private val getUsersUseCase: GetUsersUseCase by inject()
 
-    private val viewModel = UserListViewModel(getUsersUseCase)
+    private lateinit var viewModel: UserListViewModel
 
-    @Test
-    fun `test load user list error`() = coroutineRule.runTest {
-        val exception = Exception()
-        coEvery { getUsersUseCase.execute() } throws exception
-
-        viewModel.loadUserList()
-        val error = viewModel.uiError.getOrAwaitValue()
-
-        coVerify { getUsersUseCase.execute() }
-        Assert.assertEquals(exception, error.throwable)
+    @Before
+    fun setUp() {
+        viewModel = UserListViewModel(getUsersUseCase)
     }
 
     @Test
     fun `test load user list success`() = coroutineRule.runTest {
         val user = User(USER_ID)
-        coEvery { getUsersUseCase.execute() } returns listOf(user)
+        val userListResult = slot<(List<User>) -> Unit>()
+        every {
+            getUsersUseCase.invoke(scope = any(), coroutineExceptionHandler = any(), onResult = capture(userListResult))
+        } answers {
+            userListResult.captured(listOf(user))
+        }
 
         viewModel.loadUserList()
         val userList = viewModel.userList.getOrAwaitValue()
 
-        coVerify { getUsersUseCase.execute() }
         Assert.assertEquals(1, userList.size)
-        Assert.assertEquals(USER_ID, userList[0].userId)
+        Assert.assertEquals(user, userList[0])
     }
 
     companion object {

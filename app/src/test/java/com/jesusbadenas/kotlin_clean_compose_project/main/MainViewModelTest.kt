@@ -1,7 +1,6 @@
-package com.jesusbadenas.kotlin_clean_compose_project.viewmodel
+package com.jesusbadenas.kotlin_clean_compose_project.main
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.jesusbadenas.kotlin_clean_compose_project.main.MainViewModel
 import com.jesusbadenas.kotlin_clean_compose_project.test.extension.getOrAwaitValue
 import io.mockk.MockKAnnotations
 import org.junit.Assert
@@ -23,7 +22,7 @@ class MainViewModelTest {
     }
 
     @Test
-    fun testOnLoadButtonClick() {
+    fun `test on load button click success`() {
         viewModel.onLoadButtonClick()
 
         val result = viewModel.loadAction.getOrAwaitValue()

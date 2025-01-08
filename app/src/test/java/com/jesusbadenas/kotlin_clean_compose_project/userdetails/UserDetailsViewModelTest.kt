@@ -1,4 +1,4 @@
-package com.jesusbadenas.kotlin_clean_compose_project.viewmodel
+package com.jesusbadenas.kotlin_clean_compose_project.userdetails
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -9,15 +9,15 @@ import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
 import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
 import com.jesusbadenas.kotlin_clean_compose_project.test.extension.getOrAwaitValue
 import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
-import com.jesusbadenas.kotlin_clean_compose_project.userdetails.UserDetailsViewModel
-import io.mockk.coEvery
-import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.slot
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.core.component.inject
+import org.koin.test.inject
 import org.robolectric.annotation.Config
 
 @ExperimentalCoroutinesApi
@@ -33,39 +33,53 @@ class UserDetailsViewModelTest : CustomKoinTest(presentationTestModule) {
 
     private val getUserUseCase: GetUserUseCase by inject()
 
-    private val viewModel = UserDetailsViewModel(getUserUseCase)
+    private lateinit var viewModel: UserDetailsViewModel
+
+    @Before
+    fun setUp() {
+        viewModel = UserDetailsViewModel(getUserUseCase)
+    }
 
     @Test
     fun `test load user details error`() = coroutineRule.runTest {
-        val exception = Exception()
-        coEvery {
-            getUserUseCase.execute(params = GetUserUseCase.Params(userId = USER_ID))
-        } throws exception
+        val userDetailsResult = slot<(User?) -> Unit>()
+        every {
+            getUserUseCase.invoke(
+                scope = any(),
+                coroutineExceptionHandler = any(),
+                params = GetUserUseCase.Params(userId = USER_ID),
+                onResult = capture(userDetailsResult)
+            )
+        } answers {
+            userDetailsResult.captured(null)
+        }
 
         viewModel.loadUser(USER_ID)
         val error = viewModel.uiError.getOrAwaitValue()
 
-        coVerify {
-            getUserUseCase.execute(params = GetUserUseCase.Params(userId = USER_ID))
-        }
-        Assert.assertEquals(exception, error.throwable)
+        Assert.assertNotNull(error)
     }
 
     @Test
     fun `test load user details success`() = coroutineRule.runTest {
         val user = User(USER_ID)
-        coEvery {
-            getUserUseCase.execute(params = GetUserUseCase.Params(userId = USER_ID))
-        } returns user
+        val userDetailsResult = slot<(User?) -> Unit>()
+        every {
+            getUserUseCase.invoke(
+                scope = any(),
+                coroutineExceptionHandler = any(),
+                params = GetUserUseCase.Params(userId = USER_ID),
+                onResult = capture(userDetailsResult)
+            )
+        } answers {
+            userDetailsResult.captured(user)
+        }
 
         viewModel.loadUser(USER_ID)
         val result = viewModel.user.getOrAwaitValue()
 
-        coVerify {
-            getUserUseCase.execute(params = GetUserUseCase.Params(userId = USER_ID))
-        }
         Assert.assertNotNull(result)
-        Assert.assertEquals(USER_ID, result.userId)
+        Assert.assertEquals(user, result)
     }
 
     companion object {

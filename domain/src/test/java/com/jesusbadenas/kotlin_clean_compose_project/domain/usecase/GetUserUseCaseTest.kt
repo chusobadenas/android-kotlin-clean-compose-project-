@@ -10,6 +10,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.inject
@@ -21,7 +22,12 @@ class GetUserUseCaseTest : CustomKoinTest(domainTestModule) {
 
     private val userRepository: UserRepository by inject()
 
-    private val getUserUseCase = GetUserUseCase(userRepository)
+    private lateinit var getUserUseCase: GetUserUseCase
+
+    @Before
+    fun setUp() {
+        getUserUseCase = GetUserUseCase(userRepository)
+    }
 
     @Test
     fun `test get user success`() {
