@@ -152,6 +152,9 @@ dependencies {
     androidTestImplementation rootProject.ext.espresso
     androidTestImplementation rootProject.ext.espressoContrib
     androidTestImplementation rootProject.ext.fragmentTest
+    androidTestImplementation rootProject.ext.koinTest
+    androidTestImplementation rootProject.ext.koinJunit4Test
+    androidTestImplementation rootProject.ext.koinJunit5Test
     androidTestImplementation rootProject.ext.mockkAndroid
     androidTestImplementation rootProject.ext.navigationTest
 }

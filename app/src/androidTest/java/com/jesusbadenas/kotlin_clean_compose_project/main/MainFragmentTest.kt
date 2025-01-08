@@ -9,11 +9,15 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.jesusbadenas.kotlin_clean_compose_project.R
+import com.jesusbadenas.kotlin_clean_compose_project.data.di.dataModule
+import com.jesusbadenas.kotlin_clean_compose_project.di.appModule
+import com.jesusbadenas.kotlin_clean_compose_project.domain.di.domainModule
+import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class MainFragmentTest {
+class MainFragmentTest: CustomKoinTest(dataModule, domainModule, appModule) {
 
     @Test
     fun testNavigateToListFragmentSuccess() {
