@@ -1,56 +1,43 @@
 package com.jesusbadenas.kotlin_clean_compose_project.common
 
-import android.content.DialogInterface
-import android.view.View
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 
 abstract class BaseViewModel : ViewModel() {
 
-    val containerVisibility = MutableLiveData<Int>()
-    val loadingVisibility = MutableLiveData<Int>()
-    val retryVisibility = MutableLiveData<Int>()
-    val uiError = MutableLiveData<UIError>()
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean>
+        get() = _loading
 
     private val _retryAction = MutableLiveEvent<Boolean>()
     val retryAction: LiveDataEvent<Boolean>
         get() = _retryAction
+
+    private val _uiError = MutableLiveData<UIError>()
+    val uiError: LiveData<UIError>
+        get() = _uiError
 
     protected val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         showError(throwable)
     }
 
     init {
-        showLoading(View.VISIBLE)
-        showRetry(View.GONE)
+        showLoading(true)
     }
 
-    fun showLoading(loadingVisibility: Int) {
-        this.loadingVisibility.value = loadingVisibility
-        this.containerVisibility.value =
-            if (loadingVisibility == View.VISIBLE) View.GONE else View.VISIBLE
-    }
-
-    fun showRetry(retryVisibility: Int) {
-        this.retryVisibility.value = retryVisibility
-        this.containerVisibility.value =
-            if (retryVisibility == View.VISIBLE) View.GONE else View.VISIBLE
+    fun showLoading(visible: Boolean) {
+        _loading.value = visible
     }
 
     fun onRetryButtonClick() {
-        showRetry(View.GONE)
-        showLoading(View.VISIBLE)
+        showLoading(true)
         _retryAction.value = LiveEvent(true)
     }
 
-    private fun showError(
-        throwable: Throwable,
-        errorMsgId: Int? = null,
-        action: DialogInterface.OnClickListener? = null
-    ) {
-        showLoading(View.GONE)
-        showRetry(View.VISIBLE)
-        uiError.value = UIError(throwable, errorMsgId, action)
+    protected fun showError(throwable: Throwable? = null) {
+        showLoading(false)
+        _uiError.value = UIError(throwable)
     }
 }

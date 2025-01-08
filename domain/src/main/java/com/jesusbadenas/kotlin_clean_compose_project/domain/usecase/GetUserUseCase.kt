@@ -5,9 +5,9 @@ import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepos
 
 class GetUserUseCase(
     private val userRepository: UserRepository
-) : UseCase<GetUserUseCase.Params, User>() {
+) : UseCase<GetUserUseCase.Params, User?>() {
 
-    override suspend fun execute(params: Params): User = userRepository.user(userId = params.userId)
+    override suspend fun execute(params: Params): User? = userRepository.user(userId = params.userId)
 
     data class Params(
         val userId: Int

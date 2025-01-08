@@ -21,7 +21,11 @@ class UserDetailsViewModel(
             coroutineExceptionHandler = coroutineExceptionHandler,
             params = GetUserUseCase.Params(userId)
         ) { usr ->
-            _user.value = usr
+            usr?.let {
+                _user.value = it
+            } ?: run {
+                showError()
+            }
         }
     }
 }

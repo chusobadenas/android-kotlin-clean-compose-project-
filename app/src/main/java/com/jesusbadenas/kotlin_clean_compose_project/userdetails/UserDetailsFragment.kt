@@ -64,8 +64,7 @@ class UserDetailsFragment : Fragment() {
     }
 
     private fun loadUserDetails(user: User?) {
-        viewModel.showLoading(View.GONE)
-        viewModel.showRetry(viewModel.retryVisibility.value!!)
+        viewModel.showLoading(false)
         binding.user = user
     }
 }

@@ -85,8 +85,7 @@ class UserListFragment : Fragment(), UserAdapter.OnItemClickListener {
     }
 
     private fun loadUserList(users: List<User>?) {
-        viewModel.showLoading(View.GONE)
-        viewModel.showRetry(viewModel.retryVisibility.value!!)
+        viewModel.showLoading(false)
         if (binding.swipeContainer.isRefreshing) {
             binding.swipeContainer.isRefreshing = false
         }

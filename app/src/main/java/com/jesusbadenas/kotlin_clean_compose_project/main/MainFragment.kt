@@ -45,6 +45,11 @@ class MainFragment : Fragment() {
         })
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.showLoading(false)
+    }
+
     private fun navigateToUserList() {
         navigator.navigateToUserList(this)
     }
