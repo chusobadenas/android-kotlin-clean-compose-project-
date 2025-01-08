@@ -1,6 +1,5 @@
 package com.jesusbadenas.kotlin_clean_compose_project.viewmodel
 
-import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.jesusbadenas.kotlin_clean_compose_project.di.presentationTestModule
@@ -10,6 +9,7 @@ import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
 import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
 import com.jesusbadenas.kotlin_clean_compose_project.test.extension.getOrAwaitValue
 import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
+import com.jesusbadenas.kotlin_clean_compose_project.userlist.UserListViewModel
 import io.mockk.coEvery
 import io.mockk.coVerify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,7 +22,7 @@ import org.robolectric.annotation.Config
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-@Config(application = KoinTestApp::class, sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE])
+@Config(application = KoinTestApp::class)
 class UserListViewModelTest : CustomKoinTest(presentationTestModule) {
 
     @get:Rule

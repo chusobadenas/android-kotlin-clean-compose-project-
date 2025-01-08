@@ -1,4 +1,4 @@
-package com.jesusbadenas.kotlin_clean_compose_project.viewmodel
+package com.jesusbadenas.kotlin_clean_compose_project.userdetails
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

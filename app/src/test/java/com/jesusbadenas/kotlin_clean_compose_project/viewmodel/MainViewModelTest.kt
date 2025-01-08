@@ -1,6 +1,7 @@
 package com.jesusbadenas.kotlin_clean_compose_project.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.jesusbadenas.kotlin_clean_compose_project.main.MainViewModel
 import com.jesusbadenas.kotlin_clean_compose_project.test.extension.getOrAwaitValue
 import io.mockk.MockKAnnotations
 import org.junit.Assert

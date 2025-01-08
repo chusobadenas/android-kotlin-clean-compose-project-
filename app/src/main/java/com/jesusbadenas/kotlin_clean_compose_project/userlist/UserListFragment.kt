@@ -13,7 +13,6 @@ import com.jesusbadenas.kotlin_clean_compose_project.common.showError
 import com.jesusbadenas.kotlin_clean_compose_project.databinding.FragmentUserListBinding
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.navigation.Navigator
-import com.jesusbadenas.kotlin_clean_compose_project.viewmodel.UserListViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -49,6 +48,7 @@ class UserListFragment : Fragment(), UserAdapter.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
+        viewModel.showLoading(true)
         viewModel.loadUserList()
     }
 
@@ -93,6 +93,6 @@ class UserListFragment : Fragment(), UserAdapter.OnItemClickListener {
     }
 
     override fun onUserItemClicked(user: User) {
-        navigator.navigateToUserDetails(this, user.userId)
+        navigator.navigateToUserDetails(fragment = this, userId = user.userId)
     }
 }

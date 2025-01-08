@@ -10,7 +10,6 @@ import com.jesusbadenas.kotlin_clean_compose_project.R
 import com.jesusbadenas.kotlin_clean_compose_project.common.LiveEventObserver
 import com.jesusbadenas.kotlin_clean_compose_project.databinding.FragmentMainBinding
 import com.jesusbadenas.kotlin_clean_compose_project.navigation.Navigator
-import com.jesusbadenas.kotlin_clean_compose_project.viewmodel.MainViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

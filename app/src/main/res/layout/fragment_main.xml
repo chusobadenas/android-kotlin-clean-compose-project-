@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.jesusbadenas.kotlin_clean_compose_project.viewmodel.MainViewModel" />
+            type="com.jesusbadenas.kotlin_clean_compose_project.main.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

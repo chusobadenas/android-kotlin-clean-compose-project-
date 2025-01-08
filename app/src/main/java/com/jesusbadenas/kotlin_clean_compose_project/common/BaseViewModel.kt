@@ -7,9 +7,13 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 
 abstract class BaseViewModel : ViewModel() {
 
-    private val _loading = MutableLiveData<Boolean>()
+    private val _loading = MutableLiveData(false)
     val loading: LiveData<Boolean>
         get() = _loading
+
+    private val _retry = MutableLiveData(false)
+    val retry: LiveData<Boolean>
+        get() = _retry
 
     private val _retryAction = MutableLiveEvent<Boolean>()
     val retryAction: LiveDataEvent<Boolean>
@@ -23,21 +27,23 @@ abstract class BaseViewModel : ViewModel() {
         showError(throwable)
     }
 
-    init {
-        showLoading(true)
-    }
-
     fun showLoading(visible: Boolean) {
         _loading.value = visible
     }
 
+    private fun showRetry(visible: Boolean) {
+        _retry.value = visible
+    }
+
     fun onRetryButtonClick() {
         showLoading(true)
+        showRetry(false)
         _retryAction.value = LiveEvent(true)
     }
 
     protected fun showError(throwable: Throwable? = null) {
         showLoading(false)
+        showRetry(true)
         _uiError.value = UIError(throwable)
     }
 }

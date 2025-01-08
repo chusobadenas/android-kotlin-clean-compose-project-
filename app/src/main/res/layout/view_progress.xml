@@ -13,7 +13,7 @@
         android:id="@+id/rl_progress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="@{viewModel.loadingVisibility}">
+        app:isVisible="@{viewModel.loading}">
 
         <ProgressBar
             style="@style/AppTheme.ProgressBar"

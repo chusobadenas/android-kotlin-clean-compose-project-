@@ -12,7 +12,6 @@ import com.jesusbadenas.kotlin_clean_compose_project.common.LiveEventObserver
 import com.jesusbadenas.kotlin_clean_compose_project.common.showError
 import com.jesusbadenas.kotlin_clean_compose_project.databinding.FragmentUserDetailsBinding
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
-import com.jesusbadenas.kotlin_clean_compose_project.viewmodel.UserDetailsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -46,6 +45,7 @@ class UserDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.showLoading(true)
         viewModel.loadUser(userId = navArgs.userId)
     }
 

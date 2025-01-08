@@ -10,19 +10,15 @@ fun Context.showError(uiError: UIError) {
     Timber.e(uiError.throwable)
 
     // Show dialog
-    val message = uiError.errorMsgId?.let {
-        getString(it)
-    } ?: getString(R.string.error_message_generic)
-
+    val message = getString(R.string.error_message_generic)
     val title = getString(R.string.error_title_generic)
 
     DialogFactory.showDialog(
-        this,
-        DialogFactory.DialogType.SIMPLE,
-        title,
-        message,
-        android.R.string.ok,
-        uiError.action
+        context = this,
+        type = DialogFactory.DialogType.SIMPLE,
+        title = title,
+        message = message,
+        buttonTextId = android.R.string.ok
     )
 }
 

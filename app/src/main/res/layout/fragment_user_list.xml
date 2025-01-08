@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.jesusbadenas.kotlin_clean_compose_project.viewmodel.UserListViewModel" />
+            type="com.jesusbadenas.kotlin_clean_compose_project.userlist.UserListViewModel" />
     </data>
 
     <RelativeLayout
@@ -15,8 +16,7 @@
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="@{viewModel.containerVisibility}">
+            android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_users"
@@ -32,10 +32,12 @@
 
         <include
             android:id="@+id/view_progress"
-            layout="@layout/view_progress" />
+            layout="@layout/view_progress"
+            app:viewModel="@{viewModel}" />
 
         <include
             android:id="@+id/view_retry"
-            layout="@layout/view_retry" />
+            layout="@layout/view_retry"
+            app:viewModel="@{viewModel}" />
     </RelativeLayout>
 </layout>

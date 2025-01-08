@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.jesusbadenas.kotlin_clean_compose_project.common.BaseViewModel" />
+            type="com.jesusbadenas.kotlin_clean_compose_project.userdetails.UserDetailsViewModel" />
 
         <variable
             name="user"
@@ -21,8 +21,7 @@
             android:id="@+id/user_detail_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="@{viewModel.containerVisibility}">
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/iv_cover"
@@ -81,10 +80,12 @@
 
         <include
             android:id="@+id/view_progress"
-            layout="@layout/view_progress" />
+            layout="@layout/view_progress"
+            app:viewModel="@{viewModel}" />
 
         <include
             android:id="@+id/view_retry"
-            layout="@layout/view_retry" />
+            layout="@layout/view_retry"
+            app:viewModel="@{viewModel}" />
     </RelativeLayout>
 </layout>

@@ -81,9 +81,13 @@ object DialogFactory {
     }
 
     fun showDialog(
-        context: Context, type: DialogType, title: String?,
-        message: String?, buttonTextId: Int, action: DialogInterface.OnClickListener?
-    ): AlertDialog? {
+        context: Context,
+        type: DialogType,
+        title: String?,
+        message: String?,
+        buttonTextId: Int,
+        action: DialogInterface.OnClickListener? = null
+    ): AlertDialog {
         // Create dialog
         val dialog = when (type) {
             DialogType.CONFIRM -> createConfirmDialog(context, title, message, buttonTextId, action)
