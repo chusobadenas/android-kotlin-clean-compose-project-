@@ -3,8 +3,8 @@ apply from: 'dependencies.gradle'
 
 buildscript {
     ext.ANDROID_GRADLE_VERSION = '8.7.3'
-    ext.KOTLIN_VERSION = '2.0.21'
-    ext.KSP_VERSION = '2.0.21-1.0.28'
+    ext.KOTLIN_VERSION = '1.9.25'
+    ext.KSP_VERSION = '1.9.25-1.0.20'
     ext.NAV_VERSION = '2.8.5'
 
     repositories {

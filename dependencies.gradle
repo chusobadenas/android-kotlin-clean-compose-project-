@@ -9,7 +9,7 @@ ext {
     testInstrumentationRunner = "com.jesusbadenas.kotlin_clean_compose_project.test.runner.KoinTestRunner"
 
     // Implementation
-    activityVersion = '1.9.2'
+    activityVersion = '1.9.3'
     appCompatVersion = '1.7.0'
     archCoreVersion = '2.2.0'
     coilVersion = '2.7.0'
@@ -31,7 +31,7 @@ ext {
     swipeRefreshLayoutVersion = '1.1.0'
     timberVersion = '5.0.1'
 
-    activity = "androidx.activity:activity-ktx:$fragmentVersion"
+    activity = "androidx.activity:activity-ktx:$activityVersion"
     androidAppCompat = "androidx.appcompat:appcompat:$appCompatVersion"
     androidConstraintLayout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
     androidCoreKtx = "androidx.core:core-ktx:$coreKtx"
