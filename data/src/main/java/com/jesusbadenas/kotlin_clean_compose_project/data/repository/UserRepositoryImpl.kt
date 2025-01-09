@@ -20,10 +20,12 @@ class UserRepositoryImpl(
             val dbUsers = uerLocalDataSource.getUsers()
             if (dbUsers.isNullOrEmpty()) {
                 // If not found, get from server
-                userRemoteDataSource.users().also { userList ->
-                    val entities = userList?.map {
+                userRemoteDataSource.users()?.map {
+                    it.toUser()
+                }?.also { userList ->
+                    val entities = userList.map {
                         it.toUserEntity()
-                    }.orEmpty()
+                    }
                     uerLocalDataSource.insertUsers(entities)
                 }
             } else {
@@ -36,7 +38,7 @@ class UserRepositoryImpl(
             // Get from database first
             uerLocalDataSource.getUser(userId)?.toUser()
             // If not found, get from server
-                ?: userRemoteDataSource.user(userId)?.also { user ->
+                ?: userRemoteDataSource.user(userId)?.toUser()?.also { user ->
                     uerLocalDataSource.insertUsers(listOf(user.toUserEntity()))
                 }
         }

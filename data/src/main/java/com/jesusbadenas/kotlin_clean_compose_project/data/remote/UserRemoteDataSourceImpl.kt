@@ -1,33 +1,28 @@
 package com.jesusbadenas.kotlin_clean_compose_project.data.remote
 
 import com.jesusbadenas.kotlin_clean_compose_project.data.api.UsersAPI
-import com.jesusbadenas.kotlin_clean_compose_project.data.util.toUser
-import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
+import com.jesusbadenas.kotlin_clean_compose_project.data.api.model.UserDTO
 import timber.log.Timber
 
 class UserRemoteDataSourceImpl(
     private val usersApi: UsersAPI
-): UserRemoteDataSource {
+) : UserRemoteDataSource {
 
-    override suspend fun users(): List<User>? {
-        val response = runCatching {
+    override suspend fun users(): List<UserDTO>? {
+        return runCatching {
             usersApi.users()
         }.getOrElse { exception ->
             Timber.e(exception)
             null
         }
-        return response?.map {
-            it.toUser()
-        }
     }
 
-    override suspend fun user(userId: Int): User? {
-        val response = runCatching {
+    override suspend fun user(userId: Int): UserDTO? {
+        return runCatching {
             usersApi.user(userId)
         }.getOrElse { exception ->
             Timber.e(exception)
             null
         }
-        return response?.toUser()
     }
 }

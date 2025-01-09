@@ -1,11 +1,12 @@
 package com.jesusbadenas.kotlin_clean_compose_project.data.repository
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.jesusbadenas.kotlin_clean_compose_project.data.api.model.UserDTO
 import com.jesusbadenas.kotlin_clean_compose_project.data.di.dataTestModule
 import com.jesusbadenas.kotlin_clean_compose_project.data.local.UserLocalDataSource
 import com.jesusbadenas.kotlin_clean_compose_project.data.remote.UserRemoteDataSource
+import com.jesusbadenas.kotlin_clean_compose_project.data.util.toUser
 import com.jesusbadenas.kotlin_clean_compose_project.data.util.toUserEntity
-import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepository
 import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
 import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
@@ -35,7 +36,8 @@ class UserRepositoryImplTest : CustomKoinTest(dataTestModule) {
     private val userLocalDataSource: UserLocalDataSource by inject()
     private val usersRemoteDataSource: UserRemoteDataSource by inject()
 
-    private val userResult = User(id = USER_ID)
+    private val userDTO = UserDTO(id = USER_ID)
+    private val userResult = userDTO.toUser()
     private val userEntity = userResult.toUserEntity()
 
     private lateinit var userDataRepository: UserRepository
@@ -48,7 +50,7 @@ class UserRepositoryImplTest : CustomKoinTest(dataTestModule) {
     @Test
     fun `test get users from network success`() {
         coEvery { userLocalDataSource.getUsers() } returns emptyList()
-        coEvery { usersRemoteDataSource.users() } returns listOf(userResult)
+        coEvery { usersRemoteDataSource.users() } returns listOf(userDTO)
         coEvery { userLocalDataSource.insertUsers(listOf(userEntity)) } just Runs
 
         val result = runBlocking {
@@ -66,7 +68,7 @@ class UserRepositoryImplTest : CustomKoinTest(dataTestModule) {
     @Test
     fun `test get user from network success`() {
         coEvery { userLocalDataSource.getUser(USER_ID) } returns null
-        coEvery { usersRemoteDataSource.user(USER_ID) } returns userResult
+        coEvery { usersRemoteDataSource.user(USER_ID) } returns userDTO
         coEvery { userLocalDataSource.insertUsers(listOf(userEntity)) } just Runs
 
         val result = runBlocking {

@@ -32,7 +32,7 @@ private const val NETWORK_CHECKER_INTERCEPTOR = "network_checker_interceptor"
 val dataModule = module {
     factory<HttpLoggingInterceptor> {
         HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BASIC
+            level = HttpLoggingInterceptor.Level.BODY
         }
     }
     factory(named(NETWORK_CHECKER_INTERCEPTOR)) { provideNetworkCheckerInterceptor(get()) }
