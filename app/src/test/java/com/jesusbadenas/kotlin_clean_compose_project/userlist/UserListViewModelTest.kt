@@ -2,6 +2,7 @@ package com.jesusbadenas.kotlin_clean_compose_project.userlist
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.jesusbadenas.kotlin_clean_compose_project.R
 import com.jesusbadenas.kotlin_clean_compose_project.di.presentationTestModule
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.domain.usecase.GetUsersUseCase
@@ -41,11 +42,36 @@ class UserListViewModelTest : CustomKoinTest(presentationTestModule) {
     }
 
     @Test
+    fun `test load user list empty`() = coroutineRule.runTest {
+        val userListResult = slot<(List<User>) -> Unit>()
+        every {
+            getUsersUseCase.invoke(
+                scope = any(),
+                coroutineExceptionHandler = any(),
+                onResult = capture(userListResult)
+            )
+        } answers {
+            userListResult.captured(emptyList())
+        }
+
+        viewModel.loadUserList()
+        val uiError = viewModel.uiError.getOrAwaitValue()
+
+        Assert.assertNotNull(uiError)
+        Assert.assertEquals(R.string.error_message_empty_list, uiError.messageTextId)
+        Assert.assertEquals(R.string.btn_text_retry, uiError.buttonTextId)
+    }
+
+    @Test
     fun `test load user list success`() = coroutineRule.runTest {
         val user = User(USER_ID)
         val userListResult = slot<(List<User>) -> Unit>()
         every {
-            getUsersUseCase.invoke(scope = any(), coroutineExceptionHandler = any(), onResult = capture(userListResult))
+            getUsersUseCase.invoke(
+                scope = any(),
+                coroutineExceptionHandler = any(),
+                onResult = capture(userListResult)
+            )
         } answers {
             userListResult.captured(listOf(user))
         }

@@ -18,6 +18,7 @@
     <string name="string_content_description">Non accessible view</string>
 
     <!-- Exception messages -->
+    <string name="error_message_empty_list">No users found</string>
     <string name="error_message_generic">An error has occurred</string>
     <string name="error_title_generic">Oops!</string>
 

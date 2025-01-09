@@ -10,14 +10,17 @@
             type="com.jesusbadenas.kotlin_clean_compose_project.userlist.UserListViewModel" />
     </data>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_users"
@@ -36,10 +39,5 @@
             android:id="@+id/view_progress"
             layout="@layout/view_progress"
             app:viewModel="@{viewModel}" />
-
-        <include
-            android:id="@+id/view_retry"
-            layout="@layout/view_retry"
-            app:viewModel="@{viewModel}" />
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

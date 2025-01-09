@@ -12,10 +12,6 @@ abstract class BaseViewModel : ViewModel(), DefaultLifecycleObserver {
     val loading: LiveData<Boolean>
         get() = _loading
 
-    private val _retry = MutableLiveData(false)
-    val retry: LiveData<Boolean>
-        get() = _retry
-
     private val _retryAction = MutableLiveEvent<Boolean>()
     val retryAction: LiveDataEvent<Boolean>
         get() = _retryAction
@@ -32,19 +28,18 @@ abstract class BaseViewModel : ViewModel(), DefaultLifecycleObserver {
         _loading.value = visible
     }
 
-    private fun showRetry(visible: Boolean) {
-        _retry.value = visible
-    }
-
-    fun onRetryButtonClick() {
+    protected fun onRetryAction() {
         showLoading(true)
-        showRetry(false)
         _retryAction.value = LiveEvent(true)
     }
 
-    protected fun showError(throwable: Throwable? = null) {
+    protected fun showError(
+        throwable: Throwable? = null,
+        messageTextId: Int? = null,
+        buttonTextId: Int? = null,
+        action: (() -> Unit)? = null
+    ) {
         showLoading(false)
-        showRetry(true)
-        _uiError.value = UIError(throwable)
+        _uiError.value = UIError(throwable, messageTextId, buttonTextId, action)
     }
 }

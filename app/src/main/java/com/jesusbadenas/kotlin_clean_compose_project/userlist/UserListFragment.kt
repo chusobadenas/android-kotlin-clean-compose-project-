@@ -72,7 +72,6 @@ class UserListFragment : BaseFragment<FragmentUserListBinding, UserListViewModel
     }
 
     private fun loadUserList(users: List<User>?) {
-        viewModel.showLoading(false)
         if (binding.swipeContainer.isRefreshing) {
             binding.swipeContainer.isRefreshing = false
         }

@@ -2,6 +2,7 @@ package com.jesusbadenas.kotlin_clean_compose_project.userdetails
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.jesusbadenas.kotlin_clean_compose_project.R
 import com.jesusbadenas.kotlin_clean_compose_project.di.presentationTestModule
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.domain.usecase.GetUserUseCase
@@ -55,9 +56,10 @@ class UserDetailsViewModelTest : CustomKoinTest(presentationTestModule) {
         }
 
         viewModel.loadUser(USER_ID)
-        val error = viewModel.uiError.getOrAwaitValue()
+        val uiError = viewModel.uiError.getOrAwaitValue()
 
-        Assert.assertNotNull(error)
+        Assert.assertNotNull(uiError)
+        Assert.assertEquals(R.string.btn_text_retry, uiError.buttonTextId)
     }
 
     @Test

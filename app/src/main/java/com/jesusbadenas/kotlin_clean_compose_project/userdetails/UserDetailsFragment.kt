@@ -8,7 +8,6 @@ import com.jesusbadenas.kotlin_clean_compose_project.common.BaseFragment
 import com.jesusbadenas.kotlin_clean_compose_project.common.LiveEventObserver
 import com.jesusbadenas.kotlin_clean_compose_project.common.showError
 import com.jesusbadenas.kotlin_clean_compose_project.databinding.FragmentUserDetailsBinding
-import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 
 /**
  * Fragment that shows details of a certain User.
