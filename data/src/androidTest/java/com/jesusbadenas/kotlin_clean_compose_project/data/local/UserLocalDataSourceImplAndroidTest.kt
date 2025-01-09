@@ -1,4 +1,4 @@
-package com.jesusbadenas.kotlin_clean_compose_project.data.repository
+package com.jesusbadenas.kotlin_clean_compose_project.data.local
 
 import android.content.Context
 import androidx.room.Room
@@ -7,8 +7,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.AppDatabase
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.dao.UserDao
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.model.UserEntity
-import com.jesusbadenas.kotlin_clean_compose_project.data.local.UserLocalDataSource
-import com.jesusbadenas.kotlin_clean_compose_project.data.local.UserLocalDataSourceImpl
 import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
