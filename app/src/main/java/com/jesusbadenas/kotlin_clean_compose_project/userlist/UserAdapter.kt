@@ -47,14 +47,14 @@ class UserAdapter(
     internal class UserDiffCallback : DiffUtil.ItemCallback<User>() {
 
         override fun areItemsTheSame(oldItem: User, newItem: User) =
-            oldItem.userId == newItem.userId
+            oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: User, newItem: User) =
-            oldItem.userId == newItem.userId &&
-                    oldItem.coverUrl == newItem.coverUrl &&
-                    oldItem.fullName == newItem.fullName &&
+            oldItem.id == newItem.id &&
                     oldItem.email == newItem.email &&
-                    oldItem.description == newItem.description &&
-                    oldItem.followers == newItem.followers
+                    oldItem.imageUrl == newItem.imageUrl &&
+                    oldItem.name == newItem.name &&
+                    oldItem.website == newItem.website
+
     }
 }

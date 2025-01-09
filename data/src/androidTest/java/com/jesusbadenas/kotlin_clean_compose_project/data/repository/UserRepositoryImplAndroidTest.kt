@@ -64,7 +64,7 @@ class UserRepositoryImplAndroidTest {
         }
 
         Assert.assertEquals(1, result?.size)
-        Assert.assertEquals(array[0].id, result?.get(0)?.userId)
+        Assert.assertEquals(array[0].id, result?.get(0)?.id)
     }
 
     @Test
@@ -77,7 +77,7 @@ class UserRepositoryImplAndroidTest {
         }
 
         Assert.assertNotNull(result)
-        Assert.assertEquals(userEntity.id, result?.userId)
+        Assert.assertEquals(userEntity.id, result?.id)
     }
 
     companion object {

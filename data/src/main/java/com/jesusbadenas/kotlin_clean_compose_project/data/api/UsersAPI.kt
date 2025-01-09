@@ -9,16 +9,16 @@ import retrofit2.http.Path
  */
 interface UsersAPI {
 
-    @GET("/users.json")
+    @GET("/users")
     suspend fun users(): List<UserResponse>
 
-    @GET("/user_{$USER_ID}.json")
+    @GET("/users/{${USER_ID}}")
     suspend fun user(
         @Path(USER_ID) userId: Int
     ): UserResponse
 
     companion object {
-        const val API_BASE_URL = "https://raw.githubusercontent.com/android10/Sample-Data/master/Android-CleanArchitecture/"
+        const val API_BASE_URL = "https://jsonplaceholder.typicode.com/"
         private const val USER_ID = "userId"
     }
 }

@@ -10,8 +10,8 @@
 
     <string name="view_text_email">Email:</string>
     <string name="view_text_followers">Followers:</string>
-    <string name="view_text_description">Description:</string>
-    <string name="view_cover_description">Cover</string>
+    <string name="view_text_website">Website:</string>
+    <string name="view_image_description">Image</string>
 
     <string name="progress_dialog_message">Loading…</string>
     <string name="string_content_description">Non accessible view</string>
@@ -22,7 +22,6 @@
     <string name="error_title_generic">Oops!</string>
 
     <!-- Main Activity -->
-    <string name="text_view">View</string>
-    <string name="text_collections">Collections</string>
+    <string name="text_view">View detail</string>
     <string name="user_image_description">User image</string>
 </resources>

@@ -31,7 +31,7 @@ class UserRemoteDataSourceImplTest : CustomKoinTest(dataTestModule) {
     private val usersApi: UsersAPI by inject()
 
     private val exception = Exception()
-    private val userResponse = UserResponse(userId = USER_ID)
+    private val userResponse = UserResponse(id = USER_ID)
     private val userResult = userResponse.toUser()
 
     private lateinit var dataSource: UserRemoteDataSource
@@ -92,7 +92,7 @@ class UserRemoteDataSourceImplTest : CustomKoinTest(dataTestModule) {
         coVerify { usersApi.user(USER_ID) }
 
         Assert.assertNotNull(result)
-        Assert.assertEquals(USER_ID, result?.userId)
+        Assert.assertEquals(USER_ID, result?.id)
     }
 
     companion object {

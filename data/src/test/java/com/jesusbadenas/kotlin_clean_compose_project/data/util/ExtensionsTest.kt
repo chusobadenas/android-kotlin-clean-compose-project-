@@ -9,23 +9,20 @@ import org.junit.jupiter.api.Test
 class ExtensionsTest {
 
     private val user = User(
-        userId = 1,
-        coverUrl = "https://localhost/images/1",
-        fullName = "John Doe",
+        id = 1,
         email = "john.doe@example.com",
-        description = "",
-        followers = 10
+        imageUrl = "https://thispersondoesnotexist.com/",
+        name = "John Doe",
+        website = ""
     )
 
     @Test
     fun `test transform UserResponse to User success`() {
         val userResponse = UserResponse(
-            userId = 1,
-            coverUrl = "https://localhost/images/1",
-            fullName = "John Doe",
+            id = 1,
             email = "john.doe@example.com",
-            description = "",
-            followers = 10
+            name = "John Doe",
+            website = ""
         )
 
         val result = userResponse.toUser()
@@ -36,11 +33,10 @@ class ExtensionsTest {
     fun `test transform UserEntity to User success`() {
         val userEntity = UserEntity(
             id = 1,
-            coverUrl = "https://localhost/images/1",
-            fullName = "John Doe",
             email = "john.doe@example.com",
-            description = "",
-            followers = 10
+            imageUrl = "https://thispersondoesnotexist.com/",
+            name = "John Doe",
+            website = ""
         )
 
         val result = userEntity.toUser()
@@ -51,11 +47,10 @@ class ExtensionsTest {
     fun `test transform User to UserEntity success`() {
         val expected = UserEntity(
             id = 1,
-            coverUrl = "https://localhost/images/1",
-            fullName = "John Doe",
             email = "john.doe@example.com",
-            description = "",
-            followers = 10
+            imageUrl = "https://thispersondoesnotexist.com/",
+            name = "John Doe",
+            website = ""
         )
 
         val result = user.toUserEntity()

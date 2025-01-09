@@ -79,6 +79,6 @@ class UserListFragment : BaseFragment<FragmentUserListBinding, UserListViewModel
     }
 
     override fun onUserItemClicked(user: User) {
-        navigator.navigateToUserDetails(fragment = this, userId = user.userId)
+        navigator.navigateToUserDetails(fragment = this, userId = user.id)
     }
 }

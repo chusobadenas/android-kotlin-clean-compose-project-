@@ -5,28 +5,25 @@ import com.jesusbadenas.kotlin_clean_compose_project.data.db.model.UserEntity
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 
 fun UserResponse.toUser() = User(
-    userId = userId,
-    coverUrl = coverUrl,
-    fullName = fullName,
+    id = id,
     email = email,
-    description = description,
-    followers = followers
+    imageUrl = "https://thispersondoesnotexist.com/",
+    name = name,
+    website = website
 )
 
 fun UserEntity.toUser() = User(
-    userId = id,
-    coverUrl = coverUrl,
-    fullName = fullName,
+    id = id,
     email = email,
-    description = description,
-    followers = followers
+    imageUrl = imageUrl,
+    name = name,
+    website = website
 )
 
 fun User.toUserEntity() = UserEntity(
-    id = userId,
-    coverUrl = coverUrl.orEmpty(),
-    fullName = fullName.orEmpty(),
+    id = id,
     email = email.orEmpty(),
-    description = description,
-    followers = followers ?: 0
+    imageUrl = imageUrl.orEmpty(),
+    name = name.orEmpty(),
+    website = website
 )

@@ -4,10 +4,9 @@ import androidx.annotation.Keep
 
 @Keep
 data class User(
-    val userId: Int,
-    val coverUrl: String? = null,
-    val fullName: String? = null,
+    val id: Int,
     val email: String? = null,
-    val description: String? = null,
-    val followers: Int? = 0
+    val imageUrl: String? = null,
+    val name: String? = null,
+    val website: String? = null
 )

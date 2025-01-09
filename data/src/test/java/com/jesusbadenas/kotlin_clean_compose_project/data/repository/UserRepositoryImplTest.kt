@@ -44,7 +44,7 @@ class UserRepositoryImplTest : CustomKoinTest(dataTestModule) {
 
     private val usersRemoteDataSource: UserRemoteDataSource by inject()
 
-    private val userResult = User(userId = USER_ID)
+    private val userResult = User(id = USER_ID)
     private val userEntity = userResult.toUserEntity()
 
     private lateinit var userDataRepository: UserRepository

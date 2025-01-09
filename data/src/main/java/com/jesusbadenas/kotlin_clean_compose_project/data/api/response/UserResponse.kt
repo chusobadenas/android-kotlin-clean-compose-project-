@@ -6,15 +6,11 @@ import com.squareup.moshi.Json
 @Keep
 data class UserResponse(
     @Json(name = "id")
-    val userId: Int,
-    @Json(name = "cover_url")
-    val coverUrl: String? = null,
-    @Json(name = "full_name")
-    val fullName: String? = null,
+    val id: Int,
     @Json(name = "email")
     val email: String? = null,
-    @Json(name = "description")
-    val description: String? = null,
-    @Json(name = "followers")
-    val followers: Int? = 0
+    @Json(name = "name")
+    val name: String? = null,
+    @Json(name = "website")
+    val website: String? = null
 )
