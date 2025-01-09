@@ -14,10 +14,13 @@ private fun Context.showDialog(
 ) {
     // Create dialog
     val builder = AlertDialog.Builder(this)
-        .setCancelable(false)
+        .setCancelable(true)
         .setTitle(title)
         .setMessage(message)
-        .setNeutralButton(buttonTextId) { dialog, _ ->
+        .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+            dialog.dismiss()
+        }
+        .setPositiveButton(buttonTextId) { dialog, _ ->
             action?.invoke()
             dialog.dismiss()
         }
