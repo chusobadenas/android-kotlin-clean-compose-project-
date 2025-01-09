@@ -3,10 +3,12 @@ package com.jesusbadenas.kotlin_clean_compose_project.data.di
 import android.content.Context
 import androidx.room.Room
 import com.jesusbadenas.kotlin_clean_compose_project.data.BuildConfig
-import com.jesusbadenas.kotlin_clean_compose_project.data.api.Network
+import com.jesusbadenas.kotlin_clean_compose_project.data.api.NetworkChecker
 import com.jesusbadenas.kotlin_clean_compose_project.data.api.UsersAPI
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.AppDatabase
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.DBConstants
+import com.jesusbadenas.kotlin_clean_compose_project.data.exception.NetworkException
+import com.jesusbadenas.kotlin_clean_compose_project.data.exception.ServerErrorException
 import com.jesusbadenas.kotlin_clean_compose_project.data.remote.UserRemoteDataSource
 import com.jesusbadenas.kotlin_clean_compose_project.data.remote.UserRemoteDataSourceImpl
 import com.jesusbadenas.kotlin_clean_compose_project.data.repository.UserRepositoryImpl
@@ -14,14 +16,18 @@ import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepos
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.Cache
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 private const val CACHE_SIZE_MB: Long = 5 * 1024 * 1024
+private const val NETWORK_CHECKER_INTERCEPTOR = "network_checker_interceptor"
+private const val SERVER_ERROR_INTERCEPTOR = "server_error_interceptor"
 
 val dataModule = module {
     factory<HttpLoggingInterceptor> {
@@ -29,15 +35,46 @@ val dataModule = module {
             level = HttpLoggingInterceptor.Level.BASIC
         }
     }
+    factory(named(NETWORK_CHECKER_INTERCEPTOR)) { provideNetworkCheckerInterceptor(get()) }
+    factory(named(SERVER_ERROR_INTERCEPTOR)) { provideServerErrorInterceptor() }
     factory<Moshi> { provideMoshi() }
-    factory<OkHttpClient> { provideOkHttpClient(androidContext(), get()) }
+    factory<OkHttpClient> {
+        provideOkHttpClient(
+            context = androidContext(),
+            logInterceptor = get(),
+            networkCheckerInterceptor = get(named(NETWORK_CHECKER_INTERCEPTOR)),
+            serverErrorInterceptor = get(named(SERVER_ERROR_INTERCEPTOR))
+        )
+    }
     factory<UsersAPI> { provideUsersAPIService(get()) }
     factory<UserRemoteDataSource> { UserRemoteDataSourceImpl(get()) }
     factory<UserRepository> { UserRepositoryImpl(get(), get()) }
-    single<Retrofit> { provideRetrofit(get(), get()) }
     single<AppDatabase> { provideDatabase(androidContext()) }
-    single<Network> { Network(androidContext()) }
+    single<NetworkChecker> { NetworkChecker(androidContext()) }
+    single<Retrofit> { provideRetrofit(get(), get()) }
 }
+
+private fun provideServerErrorInterceptor() = Interceptor { chain ->
+    val request = chain.request()
+    val response = chain.proceed(request)
+    if (!response.isSuccessful) {
+        when (response.code) {
+            in 400..599 -> throw ServerErrorException()
+            else -> {}
+        }
+    }
+    response
+}
+
+private fun provideNetworkCheckerInterceptor(networkChecker: NetworkChecker) =
+    Interceptor { chain ->
+        val request = chain.request()
+        val response = chain.proceed(request)
+        if (!networkChecker.isConnected()) {
+            throw NetworkException()
+        }
+        response
+    }
 
 private fun provideMoshi() = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
@@ -45,7 +82,9 @@ private fun provideMoshi() = Moshi.Builder()
 
 private fun provideOkHttpClient(
     context: Context,
-    logInterceptor: HttpLoggingInterceptor
+    logInterceptor: HttpLoggingInterceptor,
+    networkCheckerInterceptor: Interceptor,
+    serverErrorInterceptor: Interceptor
 ): OkHttpClient = OkHttpClient.Builder().apply {
     // Enable cache
     cache(Cache(context.cacheDir, CACHE_SIZE_MB))
@@ -53,6 +92,9 @@ private fun provideOkHttpClient(
     if (BuildConfig.DEBUG) {
         addInterceptor(logInterceptor)
     }
+    // Error interceptors
+    addInterceptor(networkCheckerInterceptor)
+    addInterceptor(serverErrorInterceptor)
 }.build()
 
 private fun provideRetrofit(moshi: Moshi, okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder().apply {
