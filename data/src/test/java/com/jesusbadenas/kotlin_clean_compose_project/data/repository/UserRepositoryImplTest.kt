@@ -1,9 +1,8 @@
 package com.jesusbadenas.kotlin_clean_compose_project.data.repository
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.jesusbadenas.kotlin_clean_compose_project.data.db.AppDatabase
-import com.jesusbadenas.kotlin_clean_compose_project.data.db.dao.UserDao
 import com.jesusbadenas.kotlin_clean_compose_project.data.di.dataTestModule
+import com.jesusbadenas.kotlin_clean_compose_project.data.local.UserLocalDataSource
 import com.jesusbadenas.kotlin_clean_compose_project.data.remote.UserRemoteDataSource
 import com.jesusbadenas.kotlin_clean_compose_project.data.util.toUserEntity
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
@@ -11,12 +10,9 @@ import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepos
 import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
 import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
 import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
-import io.mockk.MockKAnnotations
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
-import io.mockk.impl.annotations.MockK
 import io.mockk.just
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -36,12 +32,7 @@ class UserRepositoryImplTest : CustomKoinTest(dataTestModule) {
     @get:Rule
     val coroutineRule = CoroutinesTestRule()
 
-    @MockK
-    private lateinit var database: AppDatabase
-
-    @MockK
-    private lateinit var userDao: UserDao
-
+    private val userLocalDataSource: UserLocalDataSource by inject()
     private val usersRemoteDataSource: UserRemoteDataSource by inject()
 
     private val userResult = User(id = USER_ID)
@@ -51,25 +42,22 @@ class UserRepositoryImplTest : CustomKoinTest(dataTestModule) {
 
     @Before
     fun setUp() {
-        MockKAnnotations.init(this)
-        every { database.userDao() } returns userDao
-
-        userDataRepository = UserRepositoryImpl(database, usersRemoteDataSource)
+        userDataRepository = UserRepositoryImpl(userLocalDataSource, usersRemoteDataSource)
     }
 
     @Test
     fun `test get users from network success`() {
-        coEvery { userDao.getAll() } returns emptyList()
+        coEvery { userLocalDataSource.getUsers() } returns emptyList()
         coEvery { usersRemoteDataSource.users() } returns listOf(userResult)
-        coEvery { userDao.insert(userEntity) } just Runs
+        coEvery { userLocalDataSource.insertUsers(listOf(userEntity)) } just Runs
 
         val result = runBlocking {
             userDataRepository.users()
         }
 
-        coVerify { userDao.getAll() }
+        coVerify { userLocalDataSource.getUsers() }
         coVerify { usersRemoteDataSource.users() }
-        coVerify { userDao.insert(userEntity) }
+        coVerify { userLocalDataSource.insertUsers(listOf(userEntity)) }
 
         Assert.assertEquals(1, result?.size)
         Assert.assertEquals(userResult, result?.get(0))
@@ -77,17 +65,17 @@ class UserRepositoryImplTest : CustomKoinTest(dataTestModule) {
 
     @Test
     fun `test get user from network success`() {
-        coEvery { userDao.findById(USER_ID) } returns null
+        coEvery { userLocalDataSource.getUser(USER_ID) } returns null
         coEvery { usersRemoteDataSource.user(USER_ID) } returns userResult
-        coEvery { userDao.insert(userEntity) } just Runs
+        coEvery { userLocalDataSource.insertUsers(listOf(userEntity)) } just Runs
 
         val result = runBlocking {
             userDataRepository.user(USER_ID)
         }
 
-        coVerify { userDao.findById(USER_ID) }
+        coVerify { userLocalDataSource.getUser(USER_ID) }
         coVerify { usersRemoteDataSource.user(USER_ID) }
-        coVerify { userDao.insert(userEntity) }
+        coVerify { userLocalDataSource.insertUsers(listOf(userEntity)) }
 
         Assert.assertNotNull(result)
         Assert.assertEquals(userResult, result)

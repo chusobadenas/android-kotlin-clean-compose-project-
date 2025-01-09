@@ -1,4 +1,4 @@
-package com.jesusbadenas.kotlin_clean_compose_project.data.api
+package com.jesusbadenas.kotlin_clean_compose_project.data.util
 
 import android.content.Context
 import android.net.ConnectivityManager

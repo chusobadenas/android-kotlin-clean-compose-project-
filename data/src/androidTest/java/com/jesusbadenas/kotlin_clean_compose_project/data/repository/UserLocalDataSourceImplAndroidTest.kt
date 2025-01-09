@@ -4,16 +4,12 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.jesusbadenas.kotlin_clean_compose_project.data.api.response.UserResponse
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.AppDatabase
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.dao.UserDao
-import com.jesusbadenas.kotlin_clean_compose_project.data.remote.UserRemoteDataSource
-import com.jesusbadenas.kotlin_clean_compose_project.data.util.toUser
-import com.jesusbadenas.kotlin_clean_compose_project.data.util.toUserEntity
-import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepository
+import com.jesusbadenas.kotlin_clean_compose_project.data.db.model.UserEntity
+import com.jesusbadenas.kotlin_clean_compose_project.data.local.UserLocalDataSource
+import com.jesusbadenas.kotlin_clean_compose_project.data.local.UserLocalDataSourceImpl
 import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
-import io.mockk.MockKAnnotations
-import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -25,28 +21,23 @@ import org.junit.runner.RunWith
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class UserRepositoryImplAndroidTest {
+class UserLocalDataSourceImplAndroidTest {
 
     @get:Rule
     val coroutineRule = CoroutinesTestRule()
 
-    @MockK
-    private lateinit var usersRemoteDataSource: UserRemoteDataSource
-
-    private val userResponse = UserResponse(USER_ID)
+    private val userEntity = UserEntity(USER_ID)
 
     private lateinit var database: AppDatabase
     private lateinit var userDao: UserDao
-    private lateinit var userDataRepository: UserRepository
+    private lateinit var userLocalDataSource: UserLocalDataSource
 
     @Before
     fun setUp() {
-        MockKAnnotations.init(this)
-
         val context = ApplicationProvider.getApplicationContext<Context>()
         database = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
         userDao = database.userDao()
-        userDataRepository = UserRepositoryImpl(database, usersRemoteDataSource)
+        userLocalDataSource = UserLocalDataSourceImpl(userDao)
     }
 
     @After
@@ -56,24 +47,20 @@ class UserRepositoryImplAndroidTest {
 
     @Test
     fun testGetUsersFromDatabaseSuccess() {
-        val array = listOf(userResponse).map { it.toUser().toUserEntity() }.toTypedArray()
-        runBlocking { userDao.insert(*array) }
-
         val result = runBlocking {
-            userDataRepository.users()
+            userLocalDataSource.insertUsers(listOf(userEntity))
+            userLocalDataSource.getUsers()
         }
 
         Assert.assertEquals(1, result?.size)
-        Assert.assertEquals(array[0].id, result?.get(0)?.id)
+        Assert.assertEquals(userEntity.id, result?.get(0)?.id)
     }
 
     @Test
     fun testGetUserFromDatabaseSuccess() {
-        val userEntity = userResponse.toUser().toUserEntity()
-        runBlocking { userDao.insert(userEntity) }
-
         val result = runBlocking {
-            userDataRepository.user(USER_ID)
+            userLocalDataSource.insertUsers(listOf(userEntity))
+            userLocalDataSource.getUser(USER_ID)
         }
 
         Assert.assertNotNull(result)

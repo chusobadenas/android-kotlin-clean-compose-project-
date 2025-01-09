@@ -1,6 +1,6 @@
 package com.jesusbadenas.kotlin_clean_compose_project.data.util
 
-import com.jesusbadenas.kotlin_clean_compose_project.data.api.response.UserResponse
+import com.jesusbadenas.kotlin_clean_compose_project.data.api.model.UserDTO
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.model.UserEntity
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import org.junit.jupiter.api.Assertions
@@ -18,14 +18,14 @@ class ExtensionsTest {
 
     @Test
     fun `test transform UserResponse to User success`() {
-        val userResponse = UserResponse(
+        val userDTO = UserDTO(
             id = 1,
             email = "john.doe@example.com",
             name = "John Doe",
             website = ""
         )
 
-        val result = userResponse.toUser()
+        val result = userDTO.toUser()
         Assertions.assertEquals(user, result)
     }
 

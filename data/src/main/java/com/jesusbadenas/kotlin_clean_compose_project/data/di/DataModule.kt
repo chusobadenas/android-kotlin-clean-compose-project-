@@ -3,14 +3,16 @@ package com.jesusbadenas.kotlin_clean_compose_project.data.di
 import android.content.Context
 import androidx.room.Room
 import com.jesusbadenas.kotlin_clean_compose_project.data.BuildConfig
-import com.jesusbadenas.kotlin_clean_compose_project.data.api.NetworkChecker
 import com.jesusbadenas.kotlin_clean_compose_project.data.api.UsersAPI
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.AppDatabase
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.DBConstants
 import com.jesusbadenas.kotlin_clean_compose_project.data.exception.NetworkException
+import com.jesusbadenas.kotlin_clean_compose_project.data.local.UserLocalDataSource
+import com.jesusbadenas.kotlin_clean_compose_project.data.local.UserLocalDataSourceImpl
 import com.jesusbadenas.kotlin_clean_compose_project.data.remote.UserRemoteDataSource
 import com.jesusbadenas.kotlin_clean_compose_project.data.remote.UserRemoteDataSourceImpl
 import com.jesusbadenas.kotlin_clean_compose_project.data.repository.UserRepositoryImpl
+import com.jesusbadenas.kotlin_clean_compose_project.data.util.NetworkChecker
 import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -43,6 +45,7 @@ val dataModule = module {
         )
     }
     factory<UsersAPI> { provideUsersAPIService(get()) }
+    factory<UserLocalDataSource> { UserLocalDataSourceImpl(usersDao = get<AppDatabase>().userDao()) }
     factory<UserRemoteDataSource> { UserRemoteDataSourceImpl(get()) }
     factory<UserRepository> { UserRepositoryImpl(get(), get()) }
     single<AppDatabase> { provideDatabase(androidContext()) }

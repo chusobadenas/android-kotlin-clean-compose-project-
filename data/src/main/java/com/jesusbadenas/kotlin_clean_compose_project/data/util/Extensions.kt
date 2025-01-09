@@ -1,10 +1,10 @@
 package com.jesusbadenas.kotlin_clean_compose_project.data.util
 
-import com.jesusbadenas.kotlin_clean_compose_project.data.api.response.UserResponse
+import com.jesusbadenas.kotlin_clean_compose_project.data.api.model.UserDTO
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.model.UserEntity
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 
-fun UserResponse.toUser() = User(
+fun UserDTO.toUser() = User(
     id = id,
     email = email,
     imageUrl = "https://thispersondoesnotexist.com/",
