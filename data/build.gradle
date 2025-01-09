@@ -60,6 +60,7 @@ dependencies {
     implementation rootProject.ext.koinAndroid
     implementation rootProject.ext.kotlin
     implementation rootProject.ext.loggingInterceptor
+    implementation rootProject.ext.moshi
     implementation rootProject.ext.okHttp
     implementation rootProject.ext.retrofit
     implementation rootProject.ext.retrofitConverterMoshi

@@ -11,6 +11,8 @@ import com.jesusbadenas.kotlin_clean_compose_project.data.remote.UserRemoteDataS
 import com.jesusbadenas.kotlin_clean_compose_project.data.remote.UserRemoteDataSourceImpl
 import com.jesusbadenas.kotlin_clean_compose_project.data.repository.UserRepositoryImpl
 import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepository
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -27,14 +29,19 @@ val dataModule = module {
             level = HttpLoggingInterceptor.Level.BASIC
         }
     }
+    factory<Moshi> { provideMoshi() }
     factory<OkHttpClient> { provideOkHttpClient(androidContext(), get()) }
     factory<UsersAPI> { provideUsersAPIService(get()) }
     factory<UserRemoteDataSource> { UserRemoteDataSourceImpl(get()) }
     factory<UserRepository> { UserRepositoryImpl(get(), get()) }
-    single<Retrofit> { provideRetrofit(get()) }
+    single<Retrofit> { provideRetrofit(get(), get()) }
     single<AppDatabase> { provideDatabase(androidContext()) }
     single<Network> { Network(androidContext()) }
 }
+
+private fun provideMoshi() = Moshi.Builder()
+    .add(KotlinJsonAdapterFactory())
+    .build()
 
 private fun provideOkHttpClient(
     context: Context,
@@ -48,10 +55,10 @@ private fun provideOkHttpClient(
     }
 }.build()
 
-private fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder().apply {
+private fun provideRetrofit(moshi: Moshi, okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder().apply {
     baseUrl(UsersAPI.API_BASE_URL)
     client(okHttpClient)
-    addConverterFactory(MoshiConverterFactory.create())
+    addConverterFactory(MoshiConverterFactory.create(moshi))
 }.build()
 
 private fun provideUsersAPIService(retrofit: Retrofit): UsersAPI = retrofit
