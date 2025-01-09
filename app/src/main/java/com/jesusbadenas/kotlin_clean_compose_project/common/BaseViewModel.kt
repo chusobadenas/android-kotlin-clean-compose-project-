@@ -4,7 +4,6 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
 
 abstract class BaseViewModel : ViewModel(), DefaultLifecycleObserver {
 
@@ -19,10 +18,6 @@ abstract class BaseViewModel : ViewModel(), DefaultLifecycleObserver {
     private val _uiError = MutableLiveData<UIError>()
     val uiError: LiveData<UIError>
         get() = _uiError
-
-    protected val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        showError(throwable)
-    }
 
     fun showLoading(visible: Boolean) {
         _loading.value = visible

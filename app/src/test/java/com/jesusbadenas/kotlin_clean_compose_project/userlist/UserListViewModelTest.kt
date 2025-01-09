@@ -43,11 +43,10 @@ class UserListViewModelTest : CustomKoinTest(presentationTestModule) {
 
     @Test
     fun `test load user list empty`() = coroutineRule.runTest {
-        val userListResult = slot<(List<User>) -> Unit>()
+        val userListResult = slot<(List<User>?) -> Unit>()
         every {
             getUsersUseCase.invoke(
                 scope = any(),
-                coroutineExceptionHandler = any(),
                 onResult = capture(userListResult)
             )
         } answers {
@@ -65,11 +64,10 @@ class UserListViewModelTest : CustomKoinTest(presentationTestModule) {
     @Test
     fun `test load user list success`() = coroutineRule.runTest {
         val user = User(USER_ID)
-        val userListResult = slot<(List<User>) -> Unit>()
+        val userListResult = slot<(List<User>?) -> Unit>()
         every {
             getUsersUseCase.invoke(
                 scope = any(),
-                coroutineExceptionHandler = any(),
                 onResult = capture(userListResult)
             )
         } answers {

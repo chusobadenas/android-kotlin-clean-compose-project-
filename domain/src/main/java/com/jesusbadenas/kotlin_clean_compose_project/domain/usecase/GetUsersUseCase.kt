@@ -5,7 +5,7 @@ import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepos
 
 class GetUsersUseCase(
     private val userRepository: UserRepository
-) : UseCaseNoParams<List<User>>() {
+) : UseCaseNoParams<List<User>?>() {
 
-    override suspend fun execute(): List<User> = userRepository.users()
+    override suspend fun execute(): List<User>? = userRepository.users()
 }

@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.jesusbadenas.kotlin_clean_compose_project.R
 import com.jesusbadenas.kotlin_clean_compose_project.common.BaseViewModel
-import com.jesusbadenas.kotlin_clean_compose_project.common.UIError
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.domain.usecase.GetUserUseCase
 
@@ -20,7 +19,6 @@ class UserDetailsViewModel(
     fun loadUser(userId: Int) {
         getUserUseCase.invoke(
             scope = viewModelScope,
-            coroutineExceptionHandler = coroutineExceptionHandler,
             params = GetUserUseCase.Params(userId)
         ) { usr ->
             usr?.let {

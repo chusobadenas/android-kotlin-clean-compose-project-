@@ -8,7 +8,6 @@ import com.jesusbadenas.kotlin_clean_compose_project.data.api.UsersAPI
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.AppDatabase
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.DBConstants
 import com.jesusbadenas.kotlin_clean_compose_project.data.exception.NetworkException
-import com.jesusbadenas.kotlin_clean_compose_project.data.exception.ServerErrorException
 import com.jesusbadenas.kotlin_clean_compose_project.data.remote.UserRemoteDataSource
 import com.jesusbadenas.kotlin_clean_compose_project.data.remote.UserRemoteDataSourceImpl
 import com.jesusbadenas.kotlin_clean_compose_project.data.repository.UserRepositoryImpl
@@ -27,7 +26,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 private const val CACHE_SIZE_MB: Long = 5 * 1024 * 1024
 private const val NETWORK_CHECKER_INTERCEPTOR = "network_checker_interceptor"
-private const val SERVER_ERROR_INTERCEPTOR = "server_error_interceptor"
 
 val dataModule = module {
     factory<HttpLoggingInterceptor> {
@@ -36,14 +34,12 @@ val dataModule = module {
         }
     }
     factory(named(NETWORK_CHECKER_INTERCEPTOR)) { provideNetworkCheckerInterceptor(get()) }
-    factory(named(SERVER_ERROR_INTERCEPTOR)) { provideServerErrorInterceptor() }
     factory<Moshi> { provideMoshi() }
     factory<OkHttpClient> {
         provideOkHttpClient(
             context = androidContext(),
             logInterceptor = get(),
-            networkCheckerInterceptor = get(named(NETWORK_CHECKER_INTERCEPTOR)),
-            serverErrorInterceptor = get(named(SERVER_ERROR_INTERCEPTOR))
+            networkCheckerInterceptor = get(named(NETWORK_CHECKER_INTERCEPTOR))
         )
     }
     factory<UsersAPI> { provideUsersAPIService(get()) }
@@ -54,24 +50,12 @@ val dataModule = module {
     single<Retrofit> { provideRetrofit(get(), get()) }
 }
 
-private fun provideServerErrorInterceptor() = Interceptor { chain ->
-    val request = chain.request()
-    val response = chain.proceed(request)
-    if (!response.isSuccessful) {
-        when (response.code) {
-            in 400..599 -> throw ServerErrorException()
-            else -> {}
-        }
-    }
-    response
-}
-
 private fun provideNetworkCheckerInterceptor(networkChecker: NetworkChecker) =
     Interceptor { chain ->
         val request = chain.request()
         val response = chain.proceed(request)
         if (!networkChecker.isConnected()) {
-            throw NetworkException()
+            throw NetworkException(response.message)
         }
         response
     }
@@ -83,8 +67,7 @@ private fun provideMoshi() = Moshi.Builder()
 private fun provideOkHttpClient(
     context: Context,
     logInterceptor: HttpLoggingInterceptor,
-    networkCheckerInterceptor: Interceptor,
-    serverErrorInterceptor: Interceptor
+    networkCheckerInterceptor: Interceptor
 ): OkHttpClient = OkHttpClient.Builder().apply {
     // Enable cache
     cache(Cache(context.cacheDir, CACHE_SIZE_MB))
@@ -94,7 +77,6 @@ private fun provideOkHttpClient(
     }
     // Error interceptors
     addInterceptor(networkCheckerInterceptor)
-    addInterceptor(serverErrorInterceptor)
 }.build()
 
 private fun provideRetrofit(moshi: Moshi, okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder().apply {

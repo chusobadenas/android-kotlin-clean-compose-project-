@@ -16,14 +16,16 @@ class UserRepositoryImpl(
 
     private val userDao = appDatabase.userDao()
 
-    override suspend fun users(): List<User> =
+    override suspend fun users(): List<User>? =
         withContext(Dispatchers.IO) {
             // Get from database first
             val dbUsers = userDao.getAll()
             if (dbUsers.isEmpty()) {
                 // If not found, get from server
                 userRemoteDataSource.users().also { userList ->
-                    val entities = userList.map { it.toUserEntity() }.toTypedArray()
+                    val entities = userList?.map {
+                        it.toUserEntity()
+                    }.orEmpty().toTypedArray()
                     userDao.insert(*entities)
                 }
             } else {

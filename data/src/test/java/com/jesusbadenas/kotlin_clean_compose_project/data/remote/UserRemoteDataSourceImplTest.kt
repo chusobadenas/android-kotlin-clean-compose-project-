@@ -4,6 +4,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.jesusbadenas.kotlin_clean_compose_project.data.api.UsersAPI
 import com.jesusbadenas.kotlin_clean_compose_project.data.api.response.UserResponse
 import com.jesusbadenas.kotlin_clean_compose_project.data.di.dataTestModule
+import com.jesusbadenas.kotlin_clean_compose_project.data.util.toUser
 import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
 import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
 import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
@@ -31,6 +32,7 @@ class UserRemoteDataSourceImplTest : CustomKoinTest(dataTestModule) {
 
     private val exception = Exception()
     private val userResponse = UserResponse(userId = USER_ID)
+    private val userResult = userResponse.toUser()
 
     private lateinit var dataSource: UserRemoteDataSource
 
@@ -49,7 +51,7 @@ class UserRemoteDataSourceImplTest : CustomKoinTest(dataTestModule) {
 
         coVerify { usersApi.users() }
 
-        Assert.assertTrue(result.isEmpty())
+        Assert.assertNull(result)
     }
 
     @Test
@@ -62,8 +64,8 @@ class UserRemoteDataSourceImplTest : CustomKoinTest(dataTestModule) {
 
         coVerify { usersApi.users() }
 
-        Assert.assertEquals(1, result.size)
-        Assert.assertEquals(USER_ID, result[0].userId)
+        Assert.assertEquals(1, result?.size)
+        Assert.assertEquals(userResult, result?.get(0))
     }
 
     @Test

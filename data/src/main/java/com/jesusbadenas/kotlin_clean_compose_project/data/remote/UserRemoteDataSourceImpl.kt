@@ -9,14 +9,14 @@ class UserRemoteDataSourceImpl(
     private val usersApi: UsersAPI
 ): UserRemoteDataSource {
 
-    override suspend fun users(): List<User> {
+    override suspend fun users(): List<User>? {
         val response = runCatching {
             usersApi.users()
         }.getOrElse { exception ->
             Timber.e(exception)
-            emptyList()
+            null
         }
-        return response.map {
+        return response?.map {
             it.toUser()
         }
     }

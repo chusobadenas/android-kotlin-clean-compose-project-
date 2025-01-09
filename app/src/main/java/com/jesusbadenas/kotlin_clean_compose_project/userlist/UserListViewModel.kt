@@ -17,13 +17,14 @@ class UserListViewModel(
         get() = _userList
 
     fun loadUserList() {
-        getUsersUseCase.invoke(
-            scope = viewModelScope,
-            coroutineExceptionHandler = coroutineExceptionHandler
-        ) { list ->
-            if (list.isEmpty()) {
+        getUsersUseCase.invoke(scope = viewModelScope) { list ->
+            if (list.isNullOrEmpty()) {
                 showError(
-                    messageTextId = R.string.error_message_empty_list,
+                    messageTextId = if (list == null) {
+                        R.string.error_message_generic
+                    } else {
+                        R.string.error_message_empty_list
+                    },
                     buttonTextId = R.string.btn_text_retry
                 ) {
                     onRetryAction()

@@ -39,8 +39,8 @@ class GetUsersUseCaseTest : CustomKoinTest(domainTestModule) {
         }
 
         coVerify { userRepository.users() }
-        Assert.assertEquals(1, result.size)
-        Assert.assertEquals(user, result[0])
+        Assert.assertEquals(1, result?.size)
+        Assert.assertEquals(user, result?.get(0))
     }
 
     companion object {

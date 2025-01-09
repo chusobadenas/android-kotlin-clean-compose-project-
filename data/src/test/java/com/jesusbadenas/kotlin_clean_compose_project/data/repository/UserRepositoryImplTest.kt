@@ -71,8 +71,8 @@ class UserRepositoryImplTest : CustomKoinTest(dataTestModule) {
         coVerify { usersRemoteDataSource.users() }
         coVerify { userDao.insert(userEntity) }
 
-        Assert.assertEquals(1, result.size)
-        Assert.assertEquals(USER_ID, result[0].userId)
+        Assert.assertEquals(1, result?.size)
+        Assert.assertEquals(userResult, result?.get(0))
     }
 
     @Test
@@ -90,7 +90,7 @@ class UserRepositoryImplTest : CustomKoinTest(dataTestModule) {
         coVerify { userDao.insert(userEntity) }
 
         Assert.assertNotNull(result)
-        Assert.assertEquals(USER_ID, result?.userId)
+        Assert.assertEquals(userResult, result)
     }
 
     companion object {

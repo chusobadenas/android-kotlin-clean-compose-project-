@@ -47,7 +47,6 @@ class UserDetailsViewModelTest : CustomKoinTest(presentationTestModule) {
         every {
             getUserUseCase.invoke(
                 scope = any(),
-                coroutineExceptionHandler = any(),
                 params = GetUserUseCase.Params(userId = USER_ID),
                 onResult = capture(userDetailsResult)
             )
@@ -69,7 +68,6 @@ class UserDetailsViewModelTest : CustomKoinTest(presentationTestModule) {
         every {
             getUserUseCase.invoke(
                 scope = any(),
-                coroutineExceptionHandler = any(),
                 params = GetUserUseCase.Params(userId = USER_ID),
                 onResult = capture(userDetailsResult)
             )
