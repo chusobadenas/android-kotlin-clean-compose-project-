@@ -1,8 +1,8 @@
 package com.jesusbadenas.kotlin_clean_compose_project.common
 
 import android.content.Context
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jesusbadenas.kotlin_clean_compose_project.R
 import timber.log.Timber
 
@@ -13,7 +13,7 @@ private fun Context.showDialog(
     action: (() -> Unit)? = null
 ) {
     // Create dialog
-    val builder = AlertDialog.Builder(this)
+    val builder = MaterialAlertDialogBuilder(this)
         .setCancelable(true)
         .setTitle(title)
         .setMessage(message)

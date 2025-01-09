@@ -27,7 +27,7 @@ class MainFragmentTest: CustomKoinTest(dataModule, domainModule, appModule) {
         }
 
         // Verify fragment is opened
-        onView(withId(R.id.btn_LoadData)).perform(click())
+        onView(withId(R.id.button_load_data)).perform(click())
         onView(withId(R.id.rv_users)).check(matches((isDisplayed())))
     }
 }

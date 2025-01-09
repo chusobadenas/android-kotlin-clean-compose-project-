@@ -1,39 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="alertDialogTheme">@style/AlertDialogStyle</item>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="android:navigationBarColor">@color/primary</item>
+        <item name="android:statusBarColor">@color/primary</item>
+        <item name="android:textColorPrimary">@color/black_87pc</item>
+        <item name="android:textColor">@color/black_87pc</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowLightStatusBar">true</item>
         <item name="colorAccent">@color/accent</item>
         <item name="colorControlNormal">@color/white</item>
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="android:itemTextAppearance">@style/OptionsMenuTextColor</item>
-        <item name="android:statusBarColor">@color/primary</item>
-        <item name="android:textColorPrimary">@color/black_87pc</item>
-        <item name="android:textColor">@color/black_87pc</item>
-        <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="materialAlertDialogTheme">@style/AlertDialogStyle</item>
+        <item name="materialButtonStyle">@style/ButtonStyle</item>
+        <item name="progressBarStyle">@style/ProgressBarStyle</item>
+        <item name="toolbarStyle">@style/ToolbarStyle</item>
     </style>
 
-    <style name="AppTheme.Toolbar" parent="ThemeOverlay.AppCompat.ActionBar">
+    <style name="AlertDialogStyle" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="buttonBarNegativeButtonStyle">@style/AlertDialogButtonStyle</item>
+        <item name="buttonBarNeutralButtonStyle">@style/AlertDialogButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/AlertDialogButtonStyle</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/AlertDialogTitleTextStyle</item>
+    </style>
+
+    <style name="AlertDialogButtonStyle" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/accent</item>
+    </style>
+
+    <style name="AlertDialogTitleTextStyle" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/black_87pc</item>
+    </style>
+
+    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">@color/white</item>
+        <item name="backgroundTint">@color/primary</item>
+    </style>
+
+    <style name="ProgressBarStyle" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:indeterminate">true</item>
+        <item name="android:indeterminateOnly">true</item>
+    </style>
+
+    <style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:background">@color/primary</item>
-        <item name="android:textColorPrimary">@color/white</item>
+        <item name="titleTextColor">@color/white</item>
     </style>
 
-    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorAccent">@color/primary</item>
-        <item name="android:windowTitleStyle">@style/DialogTitleText</item>
-    </style>
-
-    <style name="DialogTitleText">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
-        <item name="android:textColor">@color/black_87pc</item>
-    </style>
-
-    <style name="OptionsMenuTextColor" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
-        <item name="android:textColor">@android:color/black</item>
-    </style>
-
-    <style name="CardButtonTextStyle">
+    <style name="TabStyle">
         <item name="android:background">@drawable/touchable_background_white</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
@@ -42,33 +58,7 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="AppTheme.ProgressBar">
-        <item name="android:layout_centerInParent">true</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:visibility">visible</item>
-    </style>
-
-    <style name="AppTheme.Button">
-        <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-    </style>
-
-    <style name="AppTheme.TextViewHeader">
-        <item name="android:background">@android:color/background_light</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginBottom">@dimen/header_margin</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:textSize">@dimen/header_text_size</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="AppTheme.TextViewTitle">
+    <style name="TextViewField">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/header_margin</item>
         <item name="android:layout_width">match_parent</item>

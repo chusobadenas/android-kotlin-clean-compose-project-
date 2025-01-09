@@ -30,7 +30,7 @@ class UserListFragmentTest: CustomKoinTest(dataModule, domainModule, appModule) 
         }
 
         // Verify fragment is opened
-        onView(withId(R.id.btn_LoadData)).perform(click())
+        onView(withId(R.id.button_load_data)).perform(click())
         onView(withId(R.id.rv_users))
             .perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
         onView(withId(R.id.user_detail_view)).check(matches((isDisplayed())))

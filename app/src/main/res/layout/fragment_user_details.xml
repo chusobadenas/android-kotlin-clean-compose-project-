@@ -31,9 +31,14 @@
 
             <TextView
                 android:id="@+id/tv_fullname"
-                style="@style/AppTheme.TextViewHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/header_margin"
                 android:freezesText="true"
-                android:text="@{viewModel.user.fullName}" />
+                android:gravity="center"
+                android:text="@{viewModel.user.fullName}"
+                android:textSize="@dimen/header_text_size"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,7 +48,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    style="@style/AppTheme.TextViewTitle"
+                    style="@style/TextViewField"
                     android:text="@string/view_text_email" />
 
                 <TextView
@@ -54,7 +59,7 @@
                     android:text="@{viewModel.user.email}" />
 
                 <TextView
-                    style="@style/AppTheme.TextViewTitle"
+                    style="@style/TextViewField"
                     android:text="@string/view_text_followers" />
 
                 <TextView
@@ -65,7 +70,7 @@
                     android:text="@{viewModel.user.followers.toString()}" />
 
                 <TextView
-                    style="@style/AppTheme.TextViewTitle"
+                    style="@style/TextViewField"
                     android:text="@string/view_text_description" />
 
                 <TextView
