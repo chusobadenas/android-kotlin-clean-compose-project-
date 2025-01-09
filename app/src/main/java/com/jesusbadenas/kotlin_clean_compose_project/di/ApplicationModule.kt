@@ -7,13 +7,14 @@ import com.jesusbadenas.kotlin_clean_compose_project.userdetails.UserDetailsView
 import com.jesusbadenas.kotlin_clean_compose_project.userlist.UserAdapter
 import com.jesusbadenas.kotlin_clean_compose_project.userlist.UserListFragment
 import com.jesusbadenas.kotlin_clean_compose_project.userlist.UserListViewModel
+import com.jesusbadenas.kotlin_clean_compose_project.userlist.UserListener
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
     single { Navigator() }
-    factory { UserAdapter() }
+    factory { (listener: UserListener) -> UserAdapter(listener) }
     fragment { UserListFragment() }
     fragment { UserDetailsFragment() }
     viewModel { MainViewModel() }

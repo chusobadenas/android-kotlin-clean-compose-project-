@@ -7,10 +7,6 @@
         <variable
             name="viewModel"
             type="com.jesusbadenas.kotlin_clean_compose_project.userdetails.UserDetailsViewModel" />
-
-        <variable
-            name="user"
-            type="com.jesusbadenas.kotlin_clean_compose_project.domain.model.User" />
     </data>
 
     <RelativeLayout
@@ -28,13 +24,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/iv_cover_height"
                 android:contentDescription="@string/view_cover_description"
-                app:imageUrl="@{user.coverUrl}" />
+                app:imageUrl="@{viewModel.user.coverUrl}" />
 
             <TextView
                 android:id="@+id/tv_fullname"
                 style="@style/AppTheme.TextViewHeader"
                 android:freezesText="true"
-                android:text="@{user.fullName}" />
+                android:text="@{viewModel.user.fullName}" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -52,7 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:freezesText="true"
-                    android:text="@{user.email}" />
+                    android:text="@{viewModel.user.email}" />
 
                 <TextView
                     style="@style/AppTheme.TextViewTitle"
@@ -63,7 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:freezesText="true"
-                    android:text="@{user.followers.toString()}" />
+                    android:text="@{viewModel.user.followers.toString()}" />
 
                 <TextView
                     style="@style/AppTheme.TextViewTitle"
@@ -74,7 +70,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:freezesText="true"
-                    android:text="@{user.description}" />
+                    android:text="@{viewModel.user.description}" />
             </LinearLayout>
         </LinearLayout>
 

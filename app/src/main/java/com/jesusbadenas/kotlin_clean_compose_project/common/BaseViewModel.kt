@@ -1,11 +1,12 @@
 package com.jesusbadenas.kotlin_clean_compose_project.common
 
+import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 
-abstract class BaseViewModel : ViewModel() {
+abstract class BaseViewModel : ViewModel(), DefaultLifecycleObserver {
 
     private val _loading = MutableLiveData(false)
     val loading: LiveData<Boolean>

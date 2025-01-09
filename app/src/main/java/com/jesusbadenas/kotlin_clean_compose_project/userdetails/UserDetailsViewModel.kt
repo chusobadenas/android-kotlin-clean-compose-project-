@@ -22,6 +22,7 @@ class UserDetailsViewModel(
             params = GetUserUseCase.Params(userId)
         ) { usr ->
             usr?.let {
+                showLoading(false)
                 _user.value = it
             } ?: run {
                 showError()

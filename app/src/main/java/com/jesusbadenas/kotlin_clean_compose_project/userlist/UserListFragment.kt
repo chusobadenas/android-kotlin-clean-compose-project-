@@ -1,87 +1,74 @@
 package com.jesusbadenas.kotlin_clean_compose_project.userlist
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jesusbadenas.kotlin_clean_compose_project.R
+import com.jesusbadenas.kotlin_clean_compose_project.common.BaseFragment
 import com.jesusbadenas.kotlin_clean_compose_project.common.LiveEventObserver
 import com.jesusbadenas.kotlin_clean_compose_project.common.showError
 import com.jesusbadenas.kotlin_clean_compose_project.databinding.FragmentUserListBinding
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
-import com.jesusbadenas.kotlin_clean_compose_project.navigation.Navigator
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 /**
  * Fragment that shows a list of Users.
  */
-class UserListFragment : Fragment(), UserAdapter.OnItemClickListener {
+class UserListFragment : BaseFragment<FragmentUserListBinding, UserListViewModel>(
+    layoutId = R.layout.fragment_user_list,
+    viewModelClass = UserListViewModel::class
+), UserListener {
 
-    private val navigator: Navigator by inject()
-    private val usersAdapter: UserAdapter by inject()
-    private val viewModel: UserListViewModel by viewModel()
+    private val usersAdapter: UserAdapter by inject {
+        parametersOf(this@UserListFragment)
+    }
 
-    private lateinit var binding: FragmentUserListBinding
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Data binding
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_list, container, false)
-        binding.lifecycleOwner = this
-
-        // View model
+    override fun setUpDataBinding(binding: FragmentUserListBinding) {
         binding.viewModel = viewModel
-        binding.viewProgress.viewModel = viewModel
-        binding.viewRetry.viewModel = viewModel
-        subscribe()
-
-        return binding.root
+        setupRecyclerView(binding)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
-        viewModel.showLoading(true)
-        viewModel.loadUserList()
+    override fun observeViewModel(viewModel: UserListViewModel) {
+        with(viewModel) {
+            retryAction.observe(viewLifecycleOwner, LiveEventObserver { load ->
+                if (load) {
+                    loadUserList()
+                }
+            })
+            userList.observe(viewLifecycleOwner) { users ->
+                loadUserList(users)
+            }
+            uiError.observe(viewLifecycleOwner) { uiError ->
+                showError(uiError)
+            }
+        }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding.rvUsers.adapter = null
-    }
-
-    private fun setupRecyclerView() {
-        usersAdapter.onItemClickListener = this
+    private fun setupRecyclerView(binding: FragmentUserListBinding) {
         binding.rvUsers.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = usersAdapter
         }
-
-        binding.swipeContainer.setColorSchemeResources(R.color.primary)
-        binding.swipeContainer.setOnRefreshListener {
-            viewModel.loadUserList()
+        binding.swipeContainer.apply {
+            setColorSchemeResources(R.color.primary)
+            setOnRefreshListener {
+                viewModel.loadUserList()
+            }
         }
     }
 
-    private fun subscribe() {
-        viewModel.retryAction.observe(viewLifecycleOwner, LiveEventObserver { load ->
-            if (load) {
-                viewModel.loadUserList()
-            }
-        })
-        viewModel.userList.observe(viewLifecycleOwner) { users ->
-            loadUserList(users)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        with(viewModel) {
+            showLoading(true)
+            loadUserList()
         }
-        viewModel.uiError.observe(viewLifecycleOwner) { uiError ->
-            showError(uiError)
-        }
+    }
+
+    override fun onDestroyView() {
+        binding.rvUsers.adapter = null
+        super.onDestroyView()
     }
 
     private fun loadUserList(users: List<User>?) {
