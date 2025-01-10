@@ -61,6 +61,7 @@ dependencies {
     implementation rootProject.ext.kotlin
     implementation rootProject.ext.loggingInterceptor
     implementation rootProject.ext.moshi
+    implementation rootProject.ext.moshiAdapters
     implementation rootProject.ext.okHttp
     implementation rootProject.ext.retrofit
     implementation rootProject.ext.retrofitConverterMoshi

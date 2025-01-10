@@ -19,16 +19,22 @@ class UserDetailsViewModel(
     fun loadUser(userId: Int) {
         getUserUseCase.invoke(
             scope = viewModelScope,
-            params = GetUserUseCase.Params(userId)
-        ) { usr ->
-            usr?.let {
-                showLoading(false)
-                _user.value = it
-            } ?: run {
-                showError(buttonTextId = R.string.btn_text_retry) {
+            params = GetUserUseCase.Params(userId),
+            onError = { throwable ->
+                showError(throwable = throwable, buttonTextId = R.string.btn_text_retry) {
                     onRetryAction()
                 }
+            },
+            onResult = { usr ->
+                if (usr == null) {
+                    showError(buttonTextId = R.string.btn_text_retry) {
+                        onRetryAction()
+                    }
+                } else {
+                    showLoading(false)
+                    _user.value = usr
+                }
             }
-        }
+        )
     }
 }

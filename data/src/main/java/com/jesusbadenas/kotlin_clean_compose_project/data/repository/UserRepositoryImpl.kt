@@ -28,6 +28,7 @@ class UserRepositoryImpl(
             userLocalDataSource.insertUsers(entities)
             emit(remoteUsers)
         } else {
+            // Emit database users
             emit(localUsers.map { it.toUser() })
         }
     }

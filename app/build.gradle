@@ -96,6 +96,7 @@ dependencies {
     implementation project(':presentation')
 
     implementation rootProject.ext.androidAppCompat
+    implementation rootProject.ext.androidCoreKtx
     implementation rootProject.ext.koinAndroid
     implementation rootProject.ext.kotlin
     implementation rootProject.ext.timber

@@ -1,6 +1,7 @@
 package com.jesusbadenas.kotlin_clean_compose_project.domain.usecase
 
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
@@ -16,9 +17,13 @@ abstract class UseCase<Params, Result> {
         scope: CoroutineScope,
         dispatcher: CoroutineDispatcher = Dispatchers.IO,
         params: Params,
+        onError: (Throwable) -> Unit = {},
         onResult: (Result) -> Unit = {}
     ) {
-        scope.launch {
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            onError.invoke(throwable)
+        }
+        scope.launch(exceptionHandler) {
             val result: Result = withContext(dispatcher) {
                 execute(params)
             }
@@ -42,9 +47,13 @@ abstract class UseCaseNoParams<Result> {
     fun invoke(
         scope: CoroutineScope,
         dispatcher: CoroutineDispatcher = Dispatchers.IO,
+        onError: (Throwable) -> Unit = {},
         onResult: (Result) -> Unit = {}
     ) {
-        scope.launch {
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            onError.invoke(throwable)
+        }
+        scope.launch(exceptionHandler) {
             val result: Result = withContext(dispatcher) {
                 execute()
             }

@@ -52,6 +52,7 @@ ext {
     lifeCycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$livedataKtxVersion"
     loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
     moshi = "com.squareup.moshi:moshi-kotlin:$moshiVersion"
+    moshiAdapters = "com.squareup.moshi:moshi-adapters:$moshiVersion"
     navigationFeature = "androidx.navigation:navigation-dynamic-features-fragment:$NAV_VERSION"
     navigationFragment = "androidx.navigation:navigation-fragment-ktx:$NAV_VERSION"
     navigationUi = "androidx.navigation:navigation-ui-ktx:$NAV_VERSION"
