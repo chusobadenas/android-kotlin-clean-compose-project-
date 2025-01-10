@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.domain.usecase.GetUserUseCase
-import com.jesusbadenas.kotlin_clean_compose_project.presentation.R
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.common.BaseViewModel
 
 class UserDetailsViewModel(
@@ -21,18 +20,18 @@ class UserDetailsViewModel(
             scope = viewModelScope,
             params = GetUserUseCase.Params(userId),
             onError = { throwable ->
-                showError(throwable = throwable, buttonTextId = R.string.btn_text_retry) {
+                showError(throwable = throwable) {
                     onRetryAction()
                 }
             },
             onResult = { usr ->
-                if (usr == null) {
-                    showError(buttonTextId = R.string.btn_text_retry) {
+                usr?.let {
+                    showLoading(false)
+                    _user.value = it
+                } ?: run {
+                    showError {
                         onRetryAction()
                     }
-                } else {
-                    showLoading(false)
-                    _user.value = usr
                 }
             }
         )

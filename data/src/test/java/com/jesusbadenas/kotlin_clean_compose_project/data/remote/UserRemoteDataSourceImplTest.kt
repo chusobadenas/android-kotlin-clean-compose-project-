@@ -4,6 +4,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.jesusbadenas.kotlin_clean_compose_project.data.api.UsersAPI
 import com.jesusbadenas.kotlin_clean_compose_project.data.api.model.UserDTO
 import com.jesusbadenas.kotlin_clean_compose_project.data.di.dataTestModule
+import com.jesusbadenas.kotlin_clean_compose_project.domain.util.toList
 import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
 import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
 import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
@@ -11,8 +12,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
@@ -47,7 +46,7 @@ class UserRemoteDataSourceImplTest : CustomKoinTest(dataTestModule) {
         coEvery { usersApi.users() } throws exception
 
         val result = runBlocking {
-            dataSource.users()
+            dataSource.getUsers().firstOrNull()
         }
 
         coVerify { usersApi.users() }
@@ -57,10 +56,11 @@ class UserRemoteDataSourceImplTest : CustomKoinTest(dataTestModule) {
 
     @Test
     fun `test get users success`() {
-        coEvery { usersApi.users() } returns flowOf(listOf(userDTO))
+        val users = userDTO.toList()
+        coEvery { usersApi.users() } returns users
 
         val result = runBlocking {
-            dataSource.users().toList().firstOrNull()
+            dataSource.getUsers().firstOrNull()
         }
 
         coVerify { usersApi.users() }
@@ -75,7 +75,7 @@ class UserRemoteDataSourceImplTest : CustomKoinTest(dataTestModule) {
         coEvery { usersApi.user(USER_ID) } throws exception
 
         val result = runBlocking {
-            dataSource.user(USER_ID)
+            dataSource.getUser(USER_ID)
         }
 
         coVerify { usersApi.user(USER_ID) }
@@ -85,10 +85,10 @@ class UserRemoteDataSourceImplTest : CustomKoinTest(dataTestModule) {
 
     @Test
     fun `test get user by id success`() {
-        coEvery { usersApi.user(USER_ID) } returns flowOf(userDTO)
+        coEvery { usersApi.user(USER_ID) } returns userDTO
 
         val result = runBlocking {
-            dataSource.user(USER_ID).firstOrNull()
+            dataSource.getUser(USER_ID)
         }
 
         coVerify { usersApi.user(USER_ID) }

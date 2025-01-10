@@ -44,7 +44,6 @@ dependencies {
     implementation rootProject.ext.koinAndroid
     implementation rootProject.ext.koinTest
     implementation rootProject.ext.koinJunit4Test
-    implementation rootProject.ext.koinJunit5Test
     implementation rootProject.ext.kotlin
     implementation rootProject.ext.lifeCycleLiveDataKtx
     implementation rootProject.ext.timber

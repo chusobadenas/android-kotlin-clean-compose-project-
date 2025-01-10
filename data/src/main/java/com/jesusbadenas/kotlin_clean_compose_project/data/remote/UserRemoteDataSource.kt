@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserRemoteDataSource {
 
-    suspend fun getUsers(): Flow<List<UserDTO>>
+    fun getUsers(): Flow<List<UserDTO>>
 
     suspend fun getUser(userId: Int): UserDTO?
 }

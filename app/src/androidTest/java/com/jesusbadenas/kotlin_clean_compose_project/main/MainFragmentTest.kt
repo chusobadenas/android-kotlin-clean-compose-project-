@@ -1,4 +1,4 @@
-package com.jesusbadenas.kotlin_clean_compose_project.presentation.main
+package com.jesusbadenas.kotlin_clean_compose_project.main
 
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
@@ -11,13 +11,14 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.jesusbadenas.kotlin_clean_compose_project.data.di.dataModule
 import com.jesusbadenas.kotlin_clean_compose_project.domain.di.domainModule
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.R
-import com.jesusbadenas.kotlin_clean_compose_project.presentation.di.appModule
+import com.jesusbadenas.kotlin_clean_compose_project.presentation.di.presentationModule
+import com.jesusbadenas.kotlin_clean_compose_project.presentation.main.MainActivity
 import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class MainFragmentTest: CustomKoinTest(dataModule, domainModule, appModule) {
+class MainFragmentTest: CustomKoinTest(dataModule, domainModule, presentationModule) {
 
     @Test
     fun testNavigateToListFragmentSuccess() {

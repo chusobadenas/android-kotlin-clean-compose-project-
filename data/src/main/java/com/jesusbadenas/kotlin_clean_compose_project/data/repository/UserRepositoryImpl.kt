@@ -2,11 +2,11 @@ package com.jesusbadenas.kotlin_clean_compose_project.data.repository
 
 import com.jesusbadenas.kotlin_clean_compose_project.data.local.UserLocalDataSource
 import com.jesusbadenas.kotlin_clean_compose_project.data.remote.UserRemoteDataSource
-import com.jesusbadenas.kotlin_clean_compose_project.data.util.toList
 import com.jesusbadenas.kotlin_clean_compose_project.data.util.toUser
 import com.jesusbadenas.kotlin_clean_compose_project.data.util.toUserEntity
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepository
+import com.jesusbadenas.kotlin_clean_compose_project.domain.util.toList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
@@ -18,7 +18,7 @@ class UserRepositoryImpl(
     private val userRemoteDataSource: UserRemoteDataSource
 ) : UserRepository {
 
-    override suspend fun getUsers(): Flow<List<User>> = flow {
+    override fun getUsers(): Flow<List<User>> = flow {
         // Get from database first
         val localUsers = userLocalDataSource.getUsers().firstOrNull()
         if (localUsers.isNullOrEmpty()) {

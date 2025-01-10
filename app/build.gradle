@@ -102,4 +102,22 @@ dependencies {
     implementation rootProject.ext.timber
 
     coreLibraryDesugaring rootProject.ext.desugar
+
+    testImplementation project(':test')
+    testImplementation rootProject.ext.androidXJUnitKtx
+    testImplementation rootProject.ext.archCoreTesting
+    testImplementation rootProject.ext.jUnit
+    testImplementation rootProject.ext.koinTest
+    testImplementation rootProject.ext.koinJunit4Test
+
+    androidTestImplementation project(':test')
+    androidTestImplementation rootProject.ext.androidXJUnitKtx
+    androidTestImplementation rootProject.ext.androidXTestCoreKtx
+    androidTestImplementation rootProject.ext.androidXTestRules
+    androidTestImplementation rootProject.ext.androidXTestRunner
+    androidTestImplementation rootProject.ext.espresso
+    androidTestImplementation rootProject.ext.espressoContrib
+    androidTestImplementation rootProject.ext.fragmentTest
+    androidTestImplementation rootProject.ext.koinTest
+    androidTestImplementation rootProject.ext.koinJunit4Test
 }

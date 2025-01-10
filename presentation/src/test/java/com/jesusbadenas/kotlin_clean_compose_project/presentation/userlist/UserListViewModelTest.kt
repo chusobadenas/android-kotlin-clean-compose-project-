@@ -4,14 +4,15 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.domain.usecase.GetUsersUseCase
+import com.jesusbadenas.kotlin_clean_compose_project.domain.util.toFlow
+import com.jesusbadenas.kotlin_clean_compose_project.domain.util.toList
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.R
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.di.presentationTestModule
 import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
 import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
 import com.jesusbadenas.kotlin_clean_compose_project.test.extension.getOrAwaitValue
 import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
-import io.mockk.every
-import io.mockk.slot
+import io.mockk.coEvery
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert
 import org.junit.Before
@@ -42,36 +43,45 @@ class UserListViewModelTest : CustomKoinTest(presentationTestModule) {
     }
 
     @Test
+    fun `test load user list error`() = coroutineRule.runTest {
+        val exception = Exception()
+        coEvery {
+            getUsersUseCase.invoke(dispatcher = any())
+        } throws exception
+
+        viewModel.loadUserList()
+        val uiError = viewModel.uiError.getOrAwaitValue()
+
+        Assert.assertNotNull(uiError)
+        Assert.assertEquals(R.string.btn_text_retry, uiError.buttonTextId)
+        Assert.assertEquals(R.string.error_message_generic, uiError.messageTextId)
+        Assert.assertEquals(exception, uiError.throwable)
+    }
+
+    @Test
     fun `test load user list empty`() = coroutineRule.runTest {
-        val userListResult = slot<(List<User>?) -> Unit>()
-        every {
-            getUsersUseCase.invoke(
-                scope = any(),
-                onResult = capture(userListResult)
-            )
+        coEvery {
+            getUsersUseCase.invoke(dispatcher = any())
         } answers {
-            userListResult.captured(emptyList())
+            emptyList<User>().toFlow()
         }
 
         viewModel.loadUserList()
         val uiError = viewModel.uiError.getOrAwaitValue()
 
         Assert.assertNotNull(uiError)
-        Assert.assertEquals(R.string.error_message_empty_list, uiError.messageTextId)
         Assert.assertEquals(R.string.btn_text_retry, uiError.buttonTextId)
+        Assert.assertEquals(R.string.error_message_empty_list, uiError.messageTextId)
+        Assert.assertNull(uiError.throwable)
     }
 
     @Test
     fun `test load user list success`() = coroutineRule.runTest {
         val user = User(USER_ID)
-        val userListResult = slot<(List<User>?) -> Unit>()
-        every {
-            getUsersUseCase.invoke(
-                scope = any(),
-                onResult = capture(userListResult)
-            )
+        coEvery {
+            getUsersUseCase.invoke(dispatcher = any())
         } answers {
-            userListResult.captured(listOf(user))
+            user.toList().toFlow()
         }
 
         viewModel.loadUserList()

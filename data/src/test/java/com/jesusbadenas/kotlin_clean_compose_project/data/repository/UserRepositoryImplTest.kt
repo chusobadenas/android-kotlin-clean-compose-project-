@@ -2,12 +2,15 @@ package com.jesusbadenas.kotlin_clean_compose_project.data.repository
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.jesusbadenas.kotlin_clean_compose_project.data.api.model.UserDTO
+import com.jesusbadenas.kotlin_clean_compose_project.data.db.model.UserEntity
 import com.jesusbadenas.kotlin_clean_compose_project.data.di.dataTestModule
 import com.jesusbadenas.kotlin_clean_compose_project.data.local.UserLocalDataSource
 import com.jesusbadenas.kotlin_clean_compose_project.data.remote.UserRemoteDataSource
 import com.jesusbadenas.kotlin_clean_compose_project.data.util.toUser
 import com.jesusbadenas.kotlin_clean_compose_project.data.util.toUserEntity
 import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepository
+import com.jesusbadenas.kotlin_clean_compose_project.domain.util.toFlow
+import com.jesusbadenas.kotlin_clean_compose_project.domain.util.toList
 import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
 import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
 import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
@@ -16,6 +19,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.just
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
@@ -49,17 +53,20 @@ class UserRepositoryImplTest : CustomKoinTest(dataTestModule) {
 
     @Test
     fun `test get users from network success`() {
-        coEvery { userLocalDataSource.getUsers() } returns emptyList()
-        coEvery { usersRemoteDataSource.users() } returns listOf(userDTO)
-        coEvery { userLocalDataSource.insertUsers(listOf(userEntity)) } just Runs
+        val emptyLocalUsers = emptyList<UserEntity>().toFlow()
+        val localUsers = userEntity.toList()
+        val remoteUsers = userDTO.toList().toFlow()
+        coEvery { userLocalDataSource.getUsers() } returns emptyLocalUsers
+        coEvery { usersRemoteDataSource.getUsers() } returns remoteUsers
+        coEvery { userLocalDataSource.insertUsers(localUsers) } just Runs
 
         val result = runBlocking {
-            userDataRepository.users()
+            userDataRepository.getUsers().firstOrNull()
         }
 
         coVerify { userLocalDataSource.getUsers() }
-        coVerify { usersRemoteDataSource.users() }
-        coVerify { userLocalDataSource.insertUsers(listOf(userEntity)) }
+        coVerify { usersRemoteDataSource.getUsers() }
+        coVerify { userLocalDataSource.insertUsers(localUsers) }
 
         Assert.assertEquals(1, result?.size)
         Assert.assertEquals(userResult, result?.get(0))
@@ -68,15 +75,15 @@ class UserRepositoryImplTest : CustomKoinTest(dataTestModule) {
     @Test
     fun `test get user from network success`() {
         coEvery { userLocalDataSource.getUser(USER_ID) } returns null
-        coEvery { usersRemoteDataSource.user(USER_ID) } returns userDTO
+        coEvery { usersRemoteDataSource.getUser(USER_ID) } returns userDTO
         coEvery { userLocalDataSource.insertUsers(listOf(userEntity)) } just Runs
 
         val result = runBlocking {
-            userDataRepository.user(USER_ID)
+            userDataRepository.getUser(USER_ID)
         }
 
         coVerify { userLocalDataSource.getUser(USER_ID) }
-        coVerify { usersRemoteDataSource.user(USER_ID) }
+        coVerify { usersRemoteDataSource.getUser(USER_ID) }
         coVerify { userLocalDataSource.insertUsers(listOf(userEntity)) }
 
         Assert.assertNotNull(result)

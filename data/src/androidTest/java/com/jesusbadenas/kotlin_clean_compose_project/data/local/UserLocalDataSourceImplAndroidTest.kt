@@ -7,8 +7,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.AppDatabase
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.dao.UserDao
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.model.UserEntity
+import com.jesusbadenas.kotlin_clean_compose_project.domain.util.toList
 import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert
@@ -45,9 +47,10 @@ class UserLocalDataSourceImplAndroidTest {
 
     @Test
     fun testGetUsersFromDatabaseSuccess() {
+        val users = userEntity.toList()
         val result = runBlocking {
-            userLocalDataSource.insertUsers(listOf(userEntity))
-            userLocalDataSource.getUsers()
+            userLocalDataSource.insertUsers(users)
+            userLocalDataSource.getUsers().firstOrNull()
         }
 
         Assert.assertEquals(1, result?.size)
@@ -56,8 +59,9 @@ class UserLocalDataSourceImplAndroidTest {
 
     @Test
     fun testGetUserFromDatabaseSuccess() {
+        val users = userEntity.toList()
         val result = runBlocking {
-            userLocalDataSource.insertUsers(listOf(userEntity))
+            userLocalDataSource.insertUsers(users)
             userLocalDataSource.getUser(USER_ID)
         }
 

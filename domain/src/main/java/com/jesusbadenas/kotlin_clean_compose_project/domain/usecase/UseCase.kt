@@ -4,7 +4,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,14 +30,16 @@ abstract class UseCase<Params, Result> {
             onResult(result)
         }
     }
+}
 
-    fun invokeWithFlow(
+abstract class UseCaseFlow<Params, Result> {
+
+    abstract fun execute(params: Params): Flow<Result>
+
+    fun invoke(
         dispatcher: CoroutineDispatcher = Dispatchers.IO,
         params: Params
-    ) = flow {
-        val result = execute(params)
-        emit(result)
-    }.flowOn(dispatcher)
+    ): Flow<Result> = execute(params).flowOn(dispatcher)
 }
 
 abstract class UseCaseNoParams<Result> {
@@ -60,11 +62,13 @@ abstract class UseCaseNoParams<Result> {
             onResult(result)
         }
     }
+}
 
-    fun invokeWithFlow(
+abstract class UseCaseFlowNoParams<Result> {
+
+    abstract fun execute(): Flow<Result>
+
+    fun invoke(
         dispatcher: CoroutineDispatcher = Dispatchers.IO
-    ) = flow {
-        val result = execute()
-        emit(result)
-    }.flowOn(dispatcher)
+    ): Flow<Result> = execute().flowOn(dispatcher)
 }

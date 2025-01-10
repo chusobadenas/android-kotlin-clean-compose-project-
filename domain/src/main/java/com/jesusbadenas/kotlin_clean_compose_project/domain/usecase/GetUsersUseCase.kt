@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 class GetUsersUseCase(
     private val userRepository: UserRepository
-) : UseCaseNoParams<Flow<List<User>>>() {
+) : UseCaseFlowNoParams<List<User>>() {
 
-    override suspend fun execute(): Flow<List<User>> = userRepository.getUsers()
+    override fun execute(): Flow<List<User>> = userRepository.getUsers()
 }

@@ -4,6 +4,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.dao.UserDao
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.model.UserEntity
 import com.jesusbadenas.kotlin_clean_compose_project.data.di.dataTestModule
+import com.jesusbadenas.kotlin_clean_compose_project.domain.util.toFlow
+import com.jesusbadenas.kotlin_clean_compose_project.domain.util.toList
 import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
 import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
 import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
@@ -12,6 +14,8 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.just
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
@@ -46,7 +50,7 @@ class UserLocalDataSourceImplTest : CustomKoinTest(dataTestModule) {
         coEvery { usersDao.getAll() } throws exception
 
         val result = runBlocking {
-            dataSource.getUsers()
+            dataSource.getUsers().firstOrNull()
         }
 
         coVerify { usersDao.getAll() }
@@ -56,10 +60,11 @@ class UserLocalDataSourceImplTest : CustomKoinTest(dataTestModule) {
 
     @Test
     fun `test get users success`() {
-        coEvery { usersDao.getAll() } returns listOf(userEntity)
+        val users: Flow<List<UserEntity>> = userEntity.toList().toFlow()
+        coEvery { usersDao.getAll() } returns users
 
         val result = runBlocking {
-            dataSource.getUsers()
+            dataSource.getUsers().firstOrNull()
         }
 
         coVerify { usersDao.getAll() }
@@ -70,26 +75,26 @@ class UserLocalDataSourceImplTest : CustomKoinTest(dataTestModule) {
 
     @Test
     fun `test get user by id error`() {
-        coEvery { usersDao.findById(USER_ID) } throws exception
+        coEvery { usersDao.getById(USER_ID) } throws exception
 
         val result = runBlocking {
             dataSource.getUser(USER_ID)
         }
 
-        coVerify { usersDao.findById(USER_ID) }
+        coVerify { usersDao.getById(USER_ID) }
 
         Assert.assertNull(result)
     }
 
     @Test
     fun `test get user by id success`() {
-        coEvery { usersDao.findById(USER_ID) } returns userEntity
+        coEvery { usersDao.getById(USER_ID) } returns userEntity
 
         val result = runBlocking {
             dataSource.getUser(USER_ID)
         }
 
-        coVerify { usersDao.findById(USER_ID) }
+        coVerify { usersDao.getById(USER_ID) }
 
         Assert.assertNotNull(result)
         Assert.assertEquals(USER_ID, result?.id)
@@ -97,13 +102,14 @@ class UserLocalDataSourceImplTest : CustomKoinTest(dataTestModule) {
 
     @Test
     fun `test insert users success`() {
-        coEvery { usersDao.insert(userEntity) } just Runs
+        val users = userEntity.toList()
+        coEvery { usersDao.insert(users) } just Runs
 
         runBlocking {
             dataSource.insertUsers(listOf(userEntity))
         }
 
-        coVerify { usersDao.insert(userEntity) }
+        coVerify { usersDao.insert(users) }
     }
 
     companion object {

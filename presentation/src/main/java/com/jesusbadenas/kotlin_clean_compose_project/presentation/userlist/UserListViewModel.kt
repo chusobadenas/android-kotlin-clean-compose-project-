@@ -8,7 +8,6 @@ import com.jesusbadenas.kotlin_clean_compose_project.domain.usecase.GetUsersUseC
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.R
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.common.BaseViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -21,22 +20,19 @@ class UserListViewModel(
         get() = _userList
 
     fun loadUserList() {
-        getUsersUseCase.invokeWithFlow()
-            .onEach { flowList ->
+        getUsersUseCase.invoke()
+            .onEach { list ->
                 showLoading(false)
-                _userList.value = flowList.firstOrNull()?.also { list ->
-                    if (list.isEmpty()) {
-                        showError(
-                            messageTextId = R.string.error_message_empty_list,
-                            buttonTextId = R.string.btn_text_retry
-                        ) {
-                            onRetryAction()
-                        }
+                if (list.isEmpty()) {
+                    showError(messageTextId = R.string.error_message_empty_list) {
+                        onRetryAction()
                     }
+                } else {
+                    _userList.value = list
                 }
             }
             .catch { throwable ->
-                showError(throwable = throwable, buttonTextId = R.string.btn_text_retry) {
+                showError(throwable = throwable) {
                     onRetryAction()
                 }
             }

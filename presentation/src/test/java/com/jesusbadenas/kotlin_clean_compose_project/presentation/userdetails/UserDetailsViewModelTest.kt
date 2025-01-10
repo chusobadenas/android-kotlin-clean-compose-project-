@@ -43,11 +43,34 @@ class UserDetailsViewModelTest : CustomKoinTest(presentationTestModule) {
 
     @Test
     fun `test load user details error`() = coroutineRule.runTest {
+        val exception = Exception()
+        every {
+            getUserUseCase.invoke(
+                scope = any(),
+                params = GetUserUseCase.Params(userId = USER_ID),
+                onError = any(),
+                onResult = any()
+            )
+        } throws exception
+
+        viewModel.loadUser(USER_ID)
+        val uiError = viewModel.uiError.getOrAwaitValue()
+
+        Assert.assertNotNull(uiError)
+        Assert.assertEquals(R.string.btn_text_retry, uiError.buttonTextId)
+        Assert.assertEquals(R.string.error_message_generic, uiError.messageTextId)
+        Assert.assertEquals(exception, uiError.throwable)
+    }
+
+    @Test
+    fun `test load user details null`() = coroutineRule.runTest {
+        val userDetailsError = slot<(Throwable) -> Unit>()
         val userDetailsResult = slot<(User?) -> Unit>()
         every {
             getUserUseCase.invoke(
                 scope = any(),
                 params = GetUserUseCase.Params(userId = USER_ID),
+                onError = capture(userDetailsError),
                 onResult = capture(userDetailsResult)
             )
         } answers {
@@ -59,16 +82,20 @@ class UserDetailsViewModelTest : CustomKoinTest(presentationTestModule) {
 
         Assert.assertNotNull(uiError)
         Assert.assertEquals(R.string.btn_text_retry, uiError.buttonTextId)
+        Assert.assertEquals(R.string.error_message_generic, uiError.messageTextId)
+        Assert.assertNull(uiError.throwable)
     }
 
     @Test
     fun `test load user details success`() = coroutineRule.runTest {
         val user = User(USER_ID)
+        val userDetailsError = slot<(Throwable) -> Unit>()
         val userDetailsResult = slot<(User?) -> Unit>()
         every {
             getUserUseCase.invoke(
                 scope = any(),
                 params = GetUserUseCase.Params(userId = USER_ID),
+                onError = capture(userDetailsError),
                 onResult = capture(userDetailsResult)
             )
         } answers {

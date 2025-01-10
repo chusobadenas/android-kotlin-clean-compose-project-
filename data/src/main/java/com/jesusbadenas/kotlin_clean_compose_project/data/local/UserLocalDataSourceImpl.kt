@@ -8,7 +8,7 @@ class UserLocalDataSourceImpl(
     private val usersDao: UserDao
 ) : UserLocalDataSource {
 
-    override suspend fun getUsers(): Flow<List<UserEntity>> = usersDao.getAll()
+    override fun getUsers(): Flow<List<UserEntity>> = usersDao.getAll()
 
     override suspend fun getUser(userId: Int): UserEntity? = usersDao.getById(userId)
 

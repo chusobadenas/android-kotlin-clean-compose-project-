@@ -32,13 +32,13 @@ class GetUserUseCaseTest : CustomKoinTest(domainTestModule) {
     @Test
     fun `test get user success`() {
         val user = User(USER_ID)
-        coEvery { userRepository.user(USER_ID) } returns user
+        coEvery { userRepository.getUser(USER_ID) } returns user
 
         val result = runBlocking {
             getUserUseCase.execute(params = GetUserUseCase.Params(userId = USER_ID))
         }
 
-        coVerify { userRepository.user(USER_ID) }
+        coVerify { userRepository.getUser(USER_ID) }
         Assert.assertEquals(user, result)
     }
 

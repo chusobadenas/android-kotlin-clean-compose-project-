@@ -89,30 +89,9 @@ dependencies {
     testImplementation rootProject.ext.archCoreTesting
     testImplementation rootProject.ext.coroutinesTest
     testImplementation rootProject.ext.jUnit
-    testImplementation rootProject.ext.jUnitJupiter
     testImplementation rootProject.ext.koinTest
     testImplementation rootProject.ext.koinJunit4Test
-    testImplementation rootProject.ext.koinJunit5Test
     testImplementation rootProject.ext.mockk
     testImplementation rootProject.ext.mockkAndroid
     testImplementation rootProject.ext.robolectric
-
-    testRuntimeOnly rootProject.ext.jUnitJupiterEngine
-    testRuntimeOnly rootProject.ext.jUnitPlatformLauncher
-    testRuntimeOnly rootProject.ext.jUnitVintageEngine
-
-    androidTestImplementation project(':test')
-    androidTestImplementation rootProject.ext.androidXJUnitKtx
-    androidTestImplementation rootProject.ext.androidXTestCoreKtx
-    androidTestImplementation rootProject.ext.androidXTestRules
-    androidTestImplementation rootProject.ext.androidXTestRunner
-    androidTestImplementation rootProject.ext.coroutinesTest
-    androidTestImplementation rootProject.ext.espresso
-    androidTestImplementation rootProject.ext.espressoContrib
-    androidTestImplementation rootProject.ext.fragmentTest
-    androidTestImplementation rootProject.ext.koinTest
-    androidTestImplementation rootProject.ext.koinJunit4Test
-    androidTestImplementation rootProject.ext.koinJunit5Test
-    androidTestImplementation rootProject.ext.mockkAndroid
-    androidTestImplementation rootProject.ext.navigationTest
 }
