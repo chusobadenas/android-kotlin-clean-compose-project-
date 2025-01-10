@@ -10,10 +10,12 @@ import com.jesusbadenas.kotlin_clean_compose_project.presentation.R
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.di.presentationTestModule
 import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinJUnit4Test
 import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
+import com.jesusbadenas.kotlin_clean_compose_project.test.exception.TestException
 import com.jesusbadenas.kotlin_clean_compose_project.test.extension.getOrAwaitValue
 import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
 import io.mockk.coEvery
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -45,10 +47,14 @@ class UserListViewModelTest : CustomKoinJUnit4Test(presentationTestModule) {
 
     @Test
     fun `test load user list error`() = coroutineRule.runTest {
-        val exception = Exception()
+        val exception = TestException()
         coEvery {
             getUsersUseCase.invoke(dispatcher = any())
-        } throws exception
+        } answers {
+            flow {
+                throw exception
+            }
+        }
 
         viewModel.loadUserList()
         val uiError = viewModel.uiError.getOrAwaitValue()

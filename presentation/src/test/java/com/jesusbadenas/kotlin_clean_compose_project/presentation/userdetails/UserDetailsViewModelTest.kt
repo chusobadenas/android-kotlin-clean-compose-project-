@@ -8,6 +8,7 @@ import com.jesusbadenas.kotlin_clean_compose_project.presentation.R
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.di.presentationTestModule
 import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinJUnit4Test
 import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
+import com.jesusbadenas.kotlin_clean_compose_project.test.exception.TestException
 import com.jesusbadenas.kotlin_clean_compose_project.test.extension.getOrAwaitValue
 import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
 import io.mockk.every
@@ -44,15 +45,18 @@ class UserDetailsViewModelTest : CustomKoinJUnit4Test(presentationTestModule) {
 
     @Test
     fun `test load user details error`() = coroutineRule.runTest {
-        val exception = Exception()
+        val exception = TestException()
+        val userDetailsError = slot<(Throwable) -> Unit>()
         every {
             getUserUseCase.invoke(
                 scope = any(),
                 params = GetUserUseCase.Params(userId = USER_ID),
-                onError = any(),
+                onError = capture(userDetailsError),
                 onResult = any()
             )
-        } throws exception
+        } answers {
+            userDetailsError.captured(exception)
+        }
 
         viewModel.loadUser(USER_ID)
         val uiError = viewModel.uiError.getOrAwaitValue()
@@ -65,13 +69,12 @@ class UserDetailsViewModelTest : CustomKoinJUnit4Test(presentationTestModule) {
 
     @Test
     fun `test load user details null`() = coroutineRule.runTest {
-        val userDetailsError = slot<(Throwable) -> Unit>()
         val userDetailsResult = slot<(User?) -> Unit>()
         every {
             getUserUseCase.invoke(
                 scope = any(),
                 params = GetUserUseCase.Params(userId = USER_ID),
-                onError = capture(userDetailsError),
+                onError = any(),
                 onResult = capture(userDetailsResult)
             )
         } answers {

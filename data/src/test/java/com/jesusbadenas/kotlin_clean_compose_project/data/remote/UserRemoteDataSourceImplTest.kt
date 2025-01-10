@@ -7,6 +7,7 @@ import com.jesusbadenas.kotlin_clean_compose_project.data.di.dataTestModule
 import com.jesusbadenas.kotlin_clean_compose_project.domain.util.toList
 import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinJUnit4Test
 import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
+import com.jesusbadenas.kotlin_clean_compose_project.test.exception.TestException
 import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -31,7 +32,7 @@ class UserRemoteDataSourceImplTest : CustomKoinJUnit4Test(dataTestModule) {
 
     private val usersApi: UsersAPI by inject()
 
-    private val exception = Exception()
+    private val exception = TestException()
     private val userDTO = UserDTO(id = USER_ID)
 
     private lateinit var dataSource: UserRemoteDataSource
@@ -42,17 +43,15 @@ class UserRemoteDataSourceImplTest : CustomKoinJUnit4Test(dataTestModule) {
         dataSource = UserRemoteDataSourceImpl(usersApi)
     }
 
-    @Test
+    @Test(expected = TestException::class)
     fun `test get users error`() {
         coEvery { usersApi.users() } throws exception
 
-        val result = runBlocking {
+        runBlocking {
             dataSource.getUsers().firstOrNull()
         }
 
         coVerify { usersApi.users() }
-
-        Assert.assertNull(result)
     }
 
     @Test
@@ -71,17 +70,15 @@ class UserRemoteDataSourceImplTest : CustomKoinJUnit4Test(dataTestModule) {
         Assert.assertEquals(userDTO, result?.get(0))
     }
 
-    @Test
+    @Test(expected = TestException::class)
     fun `test get user by id error`() {
         coEvery { usersApi.user(USER_ID) } throws exception
 
-        val result = runBlocking {
+        runBlocking {
             dataSource.getUser(USER_ID)
         }
 
         coVerify { usersApi.user(USER_ID) }
-
-        Assert.assertNull(result)
     }
 
     @Test
