@@ -6,7 +6,7 @@ import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepository
 import com.jesusbadenas.kotlin_clean_compose_project.domain.util.toFlow
 import com.jesusbadenas.kotlin_clean_compose_project.domain.util.toList
-import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
+import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinJUnit4Test
 import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -21,14 +21,15 @@ import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
 @Config(application = KoinTestApp::class)
-class GetUsersUseCaseTest : CustomKoinTest(domainTestModule) {
+class GetUsersUseCaseTest : CustomKoinJUnit4Test(domainTestModule) {
 
     private val userRepository: UserRepository by inject()
 
     private lateinit var getUsersUseCase: GetUsersUseCase
 
     @Before
-    fun setUp() {
+    override fun setUp() {
+        super.setUp()
         getUsersUseCase = GetUsersUseCase(userRepository)
     }
 

@@ -4,6 +4,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.jesusbadenas.kotlin_clean_compose_project.presentation.R
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.model.UIError
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.util.LiveDataEvent
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.util.LiveEvent
@@ -34,8 +35,8 @@ abstract class BaseViewModel : ViewModel(), DefaultLifecycleObserver {
 
     protected fun showError(
         throwable: Throwable? = null,
-        messageTextId: Int? = null,
-        buttonTextId: Int? = null,
+        messageTextId: Int? = R.string.error_message_generic,
+        buttonTextId: Int? = R.string.btn_text_retry,
         action: (() -> Unit)? = null
     ) {
         showLoading(false)

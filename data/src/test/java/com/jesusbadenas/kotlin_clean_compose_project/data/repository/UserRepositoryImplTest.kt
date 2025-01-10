@@ -11,7 +11,7 @@ import com.jesusbadenas.kotlin_clean_compose_project.data.util.toUserEntity
 import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepository
 import com.jesusbadenas.kotlin_clean_compose_project.domain.util.toFlow
 import com.jesusbadenas.kotlin_clean_compose_project.domain.util.toList
-import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
+import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinJUnit4Test
 import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
 import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
 import io.mockk.Runs
@@ -32,7 +32,7 @@ import org.robolectric.annotation.Config
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 @Config(application = KoinTestApp::class)
-class UserRepositoryImplTest : CustomKoinTest(dataTestModule) {
+class UserRepositoryImplTest : CustomKoinJUnit4Test(dataTestModule) {
 
     @get:Rule
     val coroutineRule = CoroutinesTestRule()
@@ -47,7 +47,8 @@ class UserRepositoryImplTest : CustomKoinTest(dataTestModule) {
     private lateinit var userDataRepository: UserRepository
 
     @Before
-    fun setUp() {
+    override fun setUp() {
+        super.setUp()
         userDataRepository = UserRepositoryImpl(userLocalDataSource, usersRemoteDataSource)
     }
 

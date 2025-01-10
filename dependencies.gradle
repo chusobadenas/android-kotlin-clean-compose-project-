@@ -72,6 +72,8 @@ ext {
     androidXTestRunnerVersion = '1.6.2'
     espressoVersion = '3.6.1'
     junitVersion = '4.13.2'
+    junitJupiterVersion = '5.11.4'
+    junitPlatformLauncherVersion = '1.11.4'
     mockkVersion = '1.13.14'
     robolectricVersion = '4.14.1'
 
@@ -85,8 +87,13 @@ ext {
     espressoContrib = "androidx.test.espresso:espresso-contrib:$espressoVersion"
     fragmentTest = "androidx.fragment:fragment-testing:$fragmentVersion"
     jUnit = "junit:junit:$junitVersion"
+    jUnitJupiter = "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
+    jUnitJupiterEngine = "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
+    jUnitPlatformLauncher = "org.junit.platform:junit-platform-launcher:$junitPlatformLauncherVersion"
+    jUnitVintageEngine = "org.junit.vintage:junit-vintage-engine:$junitJupiterVersion"
     koinTest = "io.insert-koin:koin-test:$koinCoreVersion"
     koinJunit4Test = "io.insert-koin:koin-test-junit4:$koinCoreVersion"
+    koinJunit5Test = "io.insert-koin:koin-test-junit5:$koinCoreVersion"
     mockk = "io.mockk:mockk:$mockkVersion"
     mockkAndroid = "io.mockk:mockk-android:$mockkVersion"
     navigationTest = "androidx.navigation:navigation-testing:$NAV_VERSION"

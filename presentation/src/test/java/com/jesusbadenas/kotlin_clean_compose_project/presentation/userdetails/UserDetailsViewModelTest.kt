@@ -6,7 +6,7 @@ import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.domain.usecase.GetUserUseCase
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.R
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.di.presentationTestModule
-import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
+import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinJUnit4Test
 import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
 import com.jesusbadenas.kotlin_clean_compose_project.test.extension.getOrAwaitValue
 import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
@@ -24,7 +24,7 @@ import org.robolectric.annotation.Config
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 @Config(application = KoinTestApp::class)
-class UserDetailsViewModelTest : CustomKoinTest(presentationTestModule) {
+class UserDetailsViewModelTest : CustomKoinJUnit4Test(presentationTestModule) {
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
@@ -37,7 +37,8 @@ class UserDetailsViewModelTest : CustomKoinTest(presentationTestModule) {
     private lateinit var viewModel: UserDetailsViewModel
 
     @Before
-    fun setUp() {
+    override fun setUp() {
+        super.setUp()
         viewModel = UserDetailsViewModel(getUserUseCase)
     }
 

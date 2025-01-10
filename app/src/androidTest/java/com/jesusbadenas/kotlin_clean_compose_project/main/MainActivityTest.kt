@@ -12,12 +12,12 @@ import com.jesusbadenas.kotlin_clean_compose_project.domain.di.domainModule
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.R
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.di.presentationModule
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.main.MainActivity
-import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinTest
+import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinJUnit4Test
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class MainActivityTest: CustomKoinTest(dataModule, domainModule, presentationModule) {
+class MainActivityTest : CustomKoinJUnit4Test(dataModule, domainModule, presentationModule) {
 
     @Test
     fun testMainFragmentIsOpenSuccess() {

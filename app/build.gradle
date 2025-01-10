@@ -103,13 +103,6 @@ dependencies {
 
     coreLibraryDesugaring rootProject.ext.desugar
 
-    testImplementation project(':test')
-    testImplementation rootProject.ext.androidXJUnitKtx
-    testImplementation rootProject.ext.archCoreTesting
-    testImplementation rootProject.ext.jUnit
-    testImplementation rootProject.ext.koinTest
-    testImplementation rootProject.ext.koinJunit4Test
-
     androidTestImplementation project(':test')
     androidTestImplementation rootProject.ext.androidXJUnitKtx
     androidTestImplementation rootProject.ext.androidXTestCoreKtx
