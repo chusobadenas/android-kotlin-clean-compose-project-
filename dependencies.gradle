@@ -24,7 +24,6 @@ ext {
     livedataKtxVersion = '2.8.7'
     materialVersion = '1.12.0'
     moshiVersion = '1.15.2'
-    multidexVersion = '2.0.1'
     okHttpVersion = '4.12.0'
     recyclerviewVersion = '1.3.2'
     retrofitVersion = '2.11.0'
@@ -53,7 +52,6 @@ ext {
     lifeCycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$livedataKtxVersion"
     loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
     moshi = "com.squareup.moshi:moshi-kotlin:$moshiVersion"
-    multidex = "androidx.multidex:multidex:$multidexVersion"
     navigationFeature = "androidx.navigation:navigation-dynamic-features-fragment:$NAV_VERSION"
     navigationFragment = "androidx.navigation:navigation-fragment-ktx:$NAV_VERSION"
     navigationUi = "androidx.navigation:navigation-ui-ktx:$NAV_VERSION"

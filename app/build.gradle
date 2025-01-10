@@ -1,9 +1,7 @@
 plugins {
     id 'com.android.application'
-    id 'com.google.devtools.ksp'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'androidx.navigation.safeargs.kotlin'
 }
 
 // Create a variable called keystorePropertiesFile, and initialize it to your
@@ -27,7 +25,6 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
         testInstrumentationRunner rootProject.ext.testInstrumentationRunner
-        multiDexEnabled = true
     }
 
     signingConfigs {
@@ -96,65 +93,12 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':data')
     implementation project(':domain')
+    implementation project(':presentation')
 
-    implementation rootProject.ext.activity
     implementation rootProject.ext.androidAppCompat
-    implementation rootProject.ext.androidConstraintLayout
-    implementation rootProject.ext.androidCoreKtx
-    implementation rootProject.ext.androidMaterial
-    implementation rootProject.ext.archCoreCommon
-    implementation rootProject.ext.coroutinesAndroid
-    implementation rootProject.ext.coroutinesCore
-    implementation rootProject.ext.fragment
     implementation rootProject.ext.koinAndroid
-    implementation rootProject.ext.koinAndroidCompat
     implementation rootProject.ext.kotlin
-    implementation rootProject.ext.ksp
-    implementation rootProject.ext.lifeCycleLiveDataKtx
-    implementation rootProject.ext.lifeCycleViewModelKtx
-    implementation rootProject.ext.loggingInterceptor
-    implementation rootProject.ext.multidex
-    implementation rootProject.ext.navigationFeature
-    implementation rootProject.ext.navigationFragment
-    implementation rootProject.ext.navigationUi
-    implementation rootProject.ext.recyclerView
-    implementation rootProject.ext.retrofit
-    implementation rootProject.ext.swipeRefreshLayout
     implementation rootProject.ext.timber
 
-    api rootProject.ext.coil
     coreLibraryDesugaring rootProject.ext.desugar
-    kapt rootProject.ext.lifeCycleCompiler
-
-    testImplementation project(':test')
-    testImplementation rootProject.ext.androidXJUnitKtx
-    testImplementation rootProject.ext.archCoreTesting
-    testImplementation rootProject.ext.coroutinesTest
-    testImplementation rootProject.ext.jUnit
-    testImplementation rootProject.ext.jUnitJupiter
-    testImplementation rootProject.ext.koinTest
-    testImplementation rootProject.ext.koinJunit4Test
-    testImplementation rootProject.ext.koinJunit5Test
-    testImplementation rootProject.ext.mockk
-    testImplementation rootProject.ext.mockkAndroid
-    testImplementation rootProject.ext.robolectric
-
-    testRuntimeOnly rootProject.ext.jUnitJupiterEngine
-    testRuntimeOnly rootProject.ext.jUnitPlatformLauncher
-    testRuntimeOnly rootProject.ext.jUnitVintageEngine
-
-    androidTestImplementation project(':test')
-    androidTestImplementation rootProject.ext.androidXJUnitKtx
-    androidTestImplementation rootProject.ext.androidXTestCoreKtx
-    androidTestImplementation rootProject.ext.androidXTestRules
-    androidTestImplementation rootProject.ext.androidXTestRunner
-    androidTestImplementation rootProject.ext.coroutinesTest
-    androidTestImplementation rootProject.ext.espresso
-    androidTestImplementation rootProject.ext.espressoContrib
-    androidTestImplementation rootProject.ext.fragmentTest
-    androidTestImplementation rootProject.ext.koinTest
-    androidTestImplementation rootProject.ext.koinJunit4Test
-    androidTestImplementation rootProject.ext.koinJunit5Test
-    androidTestImplementation rootProject.ext.mockkAndroid
-    androidTestImplementation rootProject.ext.navigationTest
 }

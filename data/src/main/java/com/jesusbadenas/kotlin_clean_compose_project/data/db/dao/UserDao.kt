@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface UserDao {
 
     @Query("SELECT * FROM users")
-    suspend fun getAll(): Flow<List<UserEntity>>
+    fun getAll(): Flow<List<UserEntity>>
 
     @Query("SELECT * FROM users WHERE id = :id")
     suspend fun getById(id: Int): UserEntity?

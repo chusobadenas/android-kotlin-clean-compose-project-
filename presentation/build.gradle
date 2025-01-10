@@ -1,0 +1,118 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.google.devtools.ksp'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+
+android {
+    namespace = "com.jesusbadenas.kotlin_clean_compose_project.presentation"
+    compileSdk = rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        testInstrumentationRunner rootProject.ext.testInstrumentationRunner
+    }
+
+    buildFeatures {
+        buildConfig = true
+        dataBinding = true
+        viewBinding = true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+
+    packagingOptions {
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/LICENSE.md'
+        exclude 'META-INF/LICENSE-notice.md'
+    }
+
+    testOptions {
+        unitTests {
+            all {
+                useJUnitPlatform()
+            }
+            includeAndroidResources = true
+            returnDefaultValues = true
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':domain')
+
+    implementation rootProject.ext.activity
+    implementation rootProject.ext.androidAppCompat
+    implementation rootProject.ext.androidConstraintLayout
+    implementation rootProject.ext.androidCoreKtx
+    implementation rootProject.ext.androidMaterial
+    implementation rootProject.ext.archCoreCommon
+    implementation rootProject.ext.coroutinesAndroid
+    implementation rootProject.ext.coroutinesCore
+    implementation rootProject.ext.fragment
+    implementation rootProject.ext.koinAndroid
+    implementation rootProject.ext.koinAndroidCompat
+    implementation rootProject.ext.kotlin
+    implementation rootProject.ext.ksp
+    implementation rootProject.ext.lifeCycleLiveDataKtx
+    implementation rootProject.ext.lifeCycleViewModelKtx
+    implementation rootProject.ext.navigationFeature
+    implementation rootProject.ext.navigationFragment
+    implementation rootProject.ext.navigationUi
+    implementation rootProject.ext.recyclerView
+    implementation rootProject.ext.swipeRefreshLayout
+    implementation rootProject.ext.timber
+
+    api rootProject.ext.coil
+    kapt rootProject.ext.lifeCycleCompiler
+
+    testImplementation project(':test')
+    testImplementation rootProject.ext.androidXJUnitKtx
+    testImplementation rootProject.ext.archCoreTesting
+    testImplementation rootProject.ext.coroutinesTest
+    testImplementation rootProject.ext.jUnit
+    testImplementation rootProject.ext.jUnitJupiter
+    testImplementation rootProject.ext.koinTest
+    testImplementation rootProject.ext.koinJunit4Test
+    testImplementation rootProject.ext.koinJunit5Test
+    testImplementation rootProject.ext.mockk
+    testImplementation rootProject.ext.mockkAndroid
+    testImplementation rootProject.ext.robolectric
+
+    testRuntimeOnly rootProject.ext.jUnitJupiterEngine
+    testRuntimeOnly rootProject.ext.jUnitPlatformLauncher
+    testRuntimeOnly rootProject.ext.jUnitVintageEngine
+
+    androidTestImplementation project(':test')
+    androidTestImplementation rootProject.ext.androidXJUnitKtx
+    androidTestImplementation rootProject.ext.androidXTestCoreKtx
+    androidTestImplementation rootProject.ext.androidXTestRules
+    androidTestImplementation rootProject.ext.androidXTestRunner
+    androidTestImplementation rootProject.ext.coroutinesTest
+    androidTestImplementation rootProject.ext.espresso
+    androidTestImplementation rootProject.ext.espressoContrib
+    androidTestImplementation rootProject.ext.fragmentTest
+    androidTestImplementation rootProject.ext.koinTest
+    androidTestImplementation rootProject.ext.koinJunit4Test
+    androidTestImplementation rootProject.ext.koinJunit5Test
+    androidTestImplementation rootProject.ext.mockkAndroid
+    androidTestImplementation rootProject.ext.navigationTest
+}
