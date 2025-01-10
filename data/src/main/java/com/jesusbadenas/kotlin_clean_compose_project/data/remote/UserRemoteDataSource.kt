@@ -1,10 +1,11 @@
 package com.jesusbadenas.kotlin_clean_compose_project.data.remote
 
 import com.jesusbadenas.kotlin_clean_compose_project.data.api.model.UserDTO
+import kotlinx.coroutines.flow.Flow
 
 interface UserRemoteDataSource {
 
-    suspend fun users(): List<UserDTO>?
+    suspend fun getUsers(): Flow<List<UserDTO>>
 
-    suspend fun user(userId: Int): UserDTO?
+    suspend fun getUser(userId: Int): UserDTO?
 }

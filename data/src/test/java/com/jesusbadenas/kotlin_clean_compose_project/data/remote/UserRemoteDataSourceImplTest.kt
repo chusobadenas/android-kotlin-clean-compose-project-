@@ -10,6 +10,9 @@ import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRul
 import io.mockk.coEvery
 import io.mockk.coVerify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
@@ -54,14 +57,15 @@ class UserRemoteDataSourceImplTest : CustomKoinTest(dataTestModule) {
 
     @Test
     fun `test get users success`() {
-        coEvery { usersApi.users() } returns listOf(userDTO)
+        coEvery { usersApi.users() } returns flowOf(listOf(userDTO))
 
         val result = runBlocking {
-            dataSource.users()
+            dataSource.users().toList().firstOrNull()
         }
 
         coVerify { usersApi.users() }
 
+        Assert.assertNotNull(result)
         Assert.assertEquals(1, result?.size)
         Assert.assertEquals(userDTO, result?.get(0))
     }
@@ -81,14 +85,15 @@ class UserRemoteDataSourceImplTest : CustomKoinTest(dataTestModule) {
 
     @Test
     fun `test get user by id success`() {
-        coEvery { usersApi.user(USER_ID) } returns userDTO
+        coEvery { usersApi.user(USER_ID) } returns flowOf(userDTO)
 
         val result = runBlocking {
-            dataSource.user(USER_ID)
+            dataSource.user(USER_ID).firstOrNull()
         }
 
         coVerify { usersApi.user(USER_ID) }
 
+        Assert.assertNotNull(result)
         Assert.assertEquals(userDTO, result)
     }
 

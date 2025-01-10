@@ -1,6 +1,7 @@
 package com.jesusbadenas.kotlin_clean_compose_project.data.api
 
 import com.jesusbadenas.kotlin_clean_compose_project.data.api.model.UserDTO
+import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -10,12 +11,12 @@ import retrofit2.http.Path
 interface UsersAPI {
 
     @GET("/users")
-    suspend fun users(): List<UserDTO>
+    suspend fun users(): Flow<List<UserDTO>>
 
     @GET("/users/{${USER_ID}}")
     suspend fun user(
         @Path(USER_ID) userId: Int
-    ): UserDTO
+    ): UserDTO?
 
     companion object {
         const val API_BASE_URL = "https://jsonplaceholder.typicode.com/"

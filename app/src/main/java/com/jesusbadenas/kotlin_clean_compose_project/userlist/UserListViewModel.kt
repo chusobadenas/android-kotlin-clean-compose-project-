@@ -7,6 +7,10 @@ import com.jesusbadenas.kotlin_clean_compose_project.R
 import com.jesusbadenas.kotlin_clean_compose_project.common.BaseViewModel
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.domain.usecase.GetUsersUseCase
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class UserListViewModel(
     private val getUsersUseCase: GetUsersUseCase
@@ -17,22 +21,25 @@ class UserListViewModel(
         get() = _userList
 
     fun loadUserList() {
-        getUsersUseCase.invoke(scope = viewModelScope) { list ->
-            if (list.isNullOrEmpty()) {
-                showError(
-                    messageTextId = if (list == null) {
-                        R.string.error_message_generic
-                    } else {
-                        R.string.error_message_empty_list
-                    },
-                    buttonTextId = R.string.btn_text_retry
-                ) {
+        getUsersUseCase.invokeWithFlow()
+            .onEach { flowList ->
+                showLoading(false)
+                _userList.value = flowList.firstOrNull()?.also { list ->
+                    if (list.isEmpty()) {
+                        showError(
+                            messageTextId = R.string.error_message_empty_list,
+                            buttonTextId = R.string.btn_text_retry
+                        ) {
+                            onRetryAction()
+                        }
+                    }
+                }
+            }
+            .catch { throwable ->
+                showError(throwable = throwable, buttonTextId = R.string.btn_text_retry) {
                     onRetryAction()
                 }
-            } else {
-                showLoading(false)
-                _userList.value = list
             }
-        }
+            .launchIn(viewModelScope)
     }
 }

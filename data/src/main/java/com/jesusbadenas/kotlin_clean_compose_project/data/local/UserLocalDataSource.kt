@@ -1,10 +1,11 @@
 package com.jesusbadenas.kotlin_clean_compose_project.data.local
 
 import com.jesusbadenas.kotlin_clean_compose_project.data.db.model.UserEntity
+import kotlinx.coroutines.flow.Flow
 
 interface UserLocalDataSource {
 
-    suspend fun getUsers(): List<UserEntity>?
+    suspend fun getUsers(): Flow<List<UserEntity>>
 
     suspend fun getUser(userId: Int): UserEntity?
 

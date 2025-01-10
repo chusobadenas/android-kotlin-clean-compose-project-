@@ -3,6 +3,8 @@ package com.jesusbadenas.kotlin_clean_compose_project.domain.usecase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -23,6 +25,14 @@ abstract class UseCase<Params, Result> {
             onResult(result)
         }
     }
+
+    fun invokeWithFlow(
+        dispatcher: CoroutineDispatcher = Dispatchers.IO,
+        params: Params
+    ) = flow {
+        val result = execute(params)
+        emit(result)
+    }.flowOn(dispatcher)
 }
 
 abstract class UseCaseNoParams<Result> {
@@ -41,4 +51,11 @@ abstract class UseCaseNoParams<Result> {
             onResult(result)
         }
     }
+
+    fun invokeWithFlow(
+        dispatcher: CoroutineDispatcher = Dispatchers.IO
+    ) = flow {
+        val result = execute()
+        emit(result)
+    }.flowOn(dispatcher)
 }

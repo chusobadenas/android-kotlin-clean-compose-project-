@@ -27,3 +27,5 @@ fun User.toUserEntity() = UserEntity(
     name = name.orEmpty(),
     website = website
 )
+
+fun <T> T.toList(): List<T> = listOf(this)
