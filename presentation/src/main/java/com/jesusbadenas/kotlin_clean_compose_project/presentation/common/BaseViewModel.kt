@@ -4,11 +4,6 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.jesusbadenas.kotlin_clean_compose_project.presentation.R
-import com.jesusbadenas.kotlin_clean_compose_project.presentation.model.UIError
-import com.jesusbadenas.kotlin_clean_compose_project.presentation.util.LiveDataEvent
-import com.jesusbadenas.kotlin_clean_compose_project.presentation.util.LiveEvent
-import com.jesusbadenas.kotlin_clean_compose_project.presentation.util.MutableLiveEvent
 
 abstract class BaseViewModel : ViewModel(), DefaultLifecycleObserver {
 
@@ -16,30 +11,7 @@ abstract class BaseViewModel : ViewModel(), DefaultLifecycleObserver {
     val loading: LiveData<Boolean>
         get() = _loading
 
-    private val _retryAction = MutableLiveEvent<Boolean>()
-    val retryAction: LiveDataEvent<Boolean>
-        get() = _retryAction
-
-    private val _uiError = MutableLiveData<UIError>()
-    val uiError: LiveData<UIError>
-        get() = _uiError
-
     fun showLoading(visible: Boolean) {
         _loading.value = visible
-    }
-
-    protected fun onRetryAction() {
-        showLoading(true)
-        _retryAction.value = LiveEvent(true)
-    }
-
-    protected fun showError(
-        throwable: Throwable? = null,
-        messageTextId: Int? = R.string.error_message_generic,
-        buttonTextId: Int? = R.string.btn_text_retry,
-        action: (() -> Unit)? = null
-    ) {
-        showLoading(false)
-        _uiError.value = UIError(throwable, messageTextId, buttonTextId, action)
     }
 }

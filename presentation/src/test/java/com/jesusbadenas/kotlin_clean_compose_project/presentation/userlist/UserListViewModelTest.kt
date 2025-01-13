@@ -1,21 +1,20 @@
 package com.jesusbadenas.kotlin_clean_compose_project.presentation.userlist
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.domain.usecase.GetUsersUseCase
 import com.jesusbadenas.kotlin_clean_compose_project.domain.util.toFlow
 import com.jesusbadenas.kotlin_clean_compose_project.domain.util.toList
-import com.jesusbadenas.kotlin_clean_compose_project.presentation.R
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.di.presentationTestModule
+import com.jesusbadenas.kotlin_clean_compose_project.presentation.model.UIState
 import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinJUnit4Test
 import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
 import com.jesusbadenas.kotlin_clean_compose_project.test.exception.TestException
-import com.jesusbadenas.kotlin_clean_compose_project.test.extension.getOrAwaitValue
 import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
 import io.mockk.coEvery
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.last
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -28,9 +27,6 @@ import org.robolectric.annotation.Config
 @RunWith(AndroidJUnit4::class)
 @Config(application = KoinTestApp::class)
 class UserListViewModelTest : CustomKoinJUnit4Test(presentationTestModule) {
-
-    @get:Rule
-    val rule = InstantTaskExecutorRule()
 
     @get:Rule
     val coroutineRule = CoroutinesTestRule()
@@ -57,12 +53,10 @@ class UserListViewModelTest : CustomKoinJUnit4Test(presentationTestModule) {
         }
 
         viewModel.loadUserList()
-        val uiError = viewModel.uiError.getOrAwaitValue()
+        val uiState = viewModel.uiState.last()
 
-        Assert.assertNotNull(uiError)
-        Assert.assertEquals(R.string.btn_text_retry, uiError.buttonTextId)
-        Assert.assertEquals(R.string.error_message_generic, uiError.messageTextId)
-        Assert.assertEquals(exception, uiError.throwable)
+        Assert.assertTrue(uiState is UIState.Error)
+        Assert.assertEquals(exception, (uiState as? UIState.Error)?.exception)
     }
 
     @Test
@@ -74,28 +68,25 @@ class UserListViewModelTest : CustomKoinJUnit4Test(presentationTestModule) {
         }
 
         viewModel.loadUserList()
-        val uiError = viewModel.uiError.getOrAwaitValue()
+        val uiState = viewModel.uiState.last()
 
-        Assert.assertNotNull(uiError)
-        Assert.assertEquals(R.string.btn_text_retry, uiError.buttonTextId)
-        Assert.assertEquals(R.string.error_message_empty_list, uiError.messageTextId)
-        Assert.assertNull(uiError.throwable)
+        Assert.assertTrue(uiState is UIState.Empty)
     }
 
     @Test
     fun `test load user list success`() = coroutineRule.runTest {
-        val user = User(USER_ID)
+        val users = User(USER_ID).toList()
         coEvery {
             getUsersUseCase.invoke(dispatcher = any())
         } answers {
-            user.toList().toFlow()
+            users.toFlow()
         }
 
         viewModel.loadUserList()
-        val userList = viewModel.userList.getOrAwaitValue()
+        val uiState = viewModel.uiState.last()
 
-        Assert.assertEquals(1, userList.size)
-        Assert.assertEquals(user, userList[0])
+        Assert.assertTrue(uiState is UIState.Success)
+        Assert.assertEquals(users, (uiState as? UIState.Success)?.data)
     }
 
     companion object {
