@@ -13,10 +13,9 @@ ext {
     appCompatVersion = '1.7.0'
     archCoreVersion = '2.2.0'
     coilVersion = '2.7.0'
-    composeVersion = '2024.12.01'
+    composeBomVersion = '2024.12.01'
     composeMaterialVersion = '1.3.1'
-    composeLivedataVersion = '1.7.6'
-    composePreviewVersion = '1.7.6'
+    composeRuntimeVersion = '1.5.0'
     constraintLayoutVersion = '2.2.0'
     coreKtx = '1.15.0'
     coroutinesVersion = '1.8.1'
@@ -24,6 +23,7 @@ ext {
     fragmentVersion = '1.8.5'
     koinAndroidVersion = '4.0.1'
     koinCoreVersion = '4.0.1'
+    kotlinCompilerExtensionVersion = '1.5.15'
     lifecycleVersion = '2.8.7'
     livedataKtxVersion = '2.8.7'
     materialVersion = '1.12.0'
@@ -42,12 +42,13 @@ ext {
     androidMaterial = "com.google.android.material:material:$materialVersion"
     archCoreCommon = "androidx.arch.core:core-common:$archCoreVersion"
     coil = "io.coil-kt:coil:$coilVersion"
-    compose = "androidx.compose:compose-bom:$composeVersion"
+    compose = "androidx.compose:compose-bom:$composeBomVersion"
     composeActivity = "androidx.activity:activity-compose:$activityVersion"
     composeLifecycle = "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion"
-    composeLivedata = "androidx.compose.runtime:runtime-livedata:$composeLivedataVersion"
     composeMaterial = "androidx.compose.material3:material3:$composeMaterialVersion"
-    composePreview = "androidx.compose.ui:ui-tooling-preview:$composePreviewVersion"
+    composePreview = "androidx.compose.ui:ui-tooling-preview:$composeRuntimeVersion"
+    composeRuntime = "androidx.compose.runtime:runtime:$composeRuntimeVersion"
+    composeRuntimeLivedata = "androidx.compose.runtime:runtime-livedata:$composeRuntimeVersion"
     coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
     desugar = "com.android.tools:desugar_jdk_libs:$desugarVersion"
@@ -80,7 +81,6 @@ ext {
     androidXJUnitVersion = '1.2.1'
     androidXTestVersion = '1.6.1'
     androidXTestRunnerVersion = '1.6.2'
-    composeUiTestVersion = '1.7.6'
     espressoVersion = '3.6.1'
     junitVersion = '4.13.2'
     junitJupiterVersion = '5.11.4'
@@ -93,7 +93,7 @@ ext {
     androidXTestRules = "androidx.test:rules:$androidXTestVersion"
     androidXTestRunner = "androidx.test:runner:$androidXTestRunnerVersion"
     archCoreTesting = "androidx.arch.core:core-testing:$archCoreVersion"
-    composeUiTest = "androidx.compose.ui:ui-test-junit4:$composeUiTestVersion"
+    composeUiTest = "androidx.compose.ui:ui-test-junit4:$composeRuntimeVersion"
     coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
     espresso = "androidx.test.espresso:espresso-core:$espressoVersion"
     espressoContrib = "androidx.test.espresso:espresso-contrib:$espressoVersion"

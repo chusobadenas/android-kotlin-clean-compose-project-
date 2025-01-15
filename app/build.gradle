@@ -63,6 +63,10 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 
+    composeOptions {
+        kotlinCompilerExtensionVersion = rootProject.ext.kotlinCompilerExtensionVersion
+    }
+
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
@@ -98,6 +102,8 @@ dependencies {
 
     implementation rootProject.ext.androidAppCompat
     implementation rootProject.ext.androidCoreKtx
+    implementation rootProject.ext.compose
+    implementation rootProject.ext.composeRuntime
     implementation rootProject.ext.koinAndroid
     implementation rootProject.ext.kotlin
     implementation rootProject.ext.timber
