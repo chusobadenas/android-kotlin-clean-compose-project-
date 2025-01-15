@@ -7,6 +7,7 @@ import com.jesusbadenas.kotlin_clean_compose_project.presentation.common.BaseVie
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.model.UIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
@@ -16,7 +17,7 @@ class UserListViewModel(
 
     private val _uiState = MutableStateFlow<UIState<List<User>>>(UIState.Loading)
     val uiState: StateFlow<UIState<List<User>>>
-        get() = _uiState
+        get() = _uiState.asStateFlow()
 
     fun loadUserList() {
         viewModelScope.launch {

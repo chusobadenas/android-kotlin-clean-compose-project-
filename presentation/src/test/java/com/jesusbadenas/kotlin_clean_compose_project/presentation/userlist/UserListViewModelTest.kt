@@ -14,7 +14,9 @@ import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRul
 import io.mockk.coEvery
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.advanceUntilIdle
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -52,11 +54,20 @@ class UserListViewModelTest : CustomKoinJUnit4Test(presentationTestModule) {
             }
         }
 
-        viewModel.loadUserList()
-        val uiState = viewModel.uiState.last()
+        val emittedStates = mutableListOf<UIState<List<User>>>()
+        val job = launch {
+            viewModel.uiState.toList(emittedStates)
+        }
 
-        Assert.assertTrue(uiState is UIState.Error)
-        Assert.assertEquals(exception, (uiState as? UIState.Error)?.exception)
+        viewModel.loadUserList()
+
+        advanceUntilIdle()
+        job.cancel()
+
+        Assert.assertEquals(2, emittedStates.size)
+        Assert.assertTrue(emittedStates[0] is UIState.Loading)
+        Assert.assertTrue(emittedStates[1] is UIState.Error)
+        Assert.assertEquals(exception, (emittedStates[1] as? UIState.Error)?.exception)
     }
 
     @Test
@@ -66,11 +77,19 @@ class UserListViewModelTest : CustomKoinJUnit4Test(presentationTestModule) {
         } answers {
             emptyList<User>().toFlow()
         }
+        val emittedStates = mutableListOf<UIState<List<User>>>()
+        val job = launch {
+            viewModel.uiState.toList(emittedStates)
+        }
 
         viewModel.loadUserList()
-        val uiState = viewModel.uiState.last()
 
-        Assert.assertTrue(uiState is UIState.Empty)
+        advanceUntilIdle()
+        job.cancel()
+
+        Assert.assertEquals(2, emittedStates.size)
+        Assert.assertTrue(emittedStates[0] is UIState.Loading)
+        Assert.assertTrue(emittedStates[1] is UIState.Empty)
     }
 
     @Test
@@ -81,12 +100,20 @@ class UserListViewModelTest : CustomKoinJUnit4Test(presentationTestModule) {
         } answers {
             users.toFlow()
         }
+        val emittedStates = mutableListOf<UIState<List<User>>>()
+        val job = launch {
+            viewModel.uiState.toList(emittedStates)
+        }
 
         viewModel.loadUserList()
-        val uiState = viewModel.uiState.last()
 
-        Assert.assertTrue(uiState is UIState.Success)
-        Assert.assertEquals(users, (uiState as? UIState.Success)?.data)
+        advanceUntilIdle()
+        job.cancel()
+
+        Assert.assertEquals(2, emittedStates.size)
+        Assert.assertTrue(emittedStates[0] is UIState.Loading)
+        Assert.assertTrue(emittedStates[1] is UIState.Success)
+        Assert.assertEquals(users, (emittedStates[1] as? UIState.Success)?.data)
     }
 
     companion object {
