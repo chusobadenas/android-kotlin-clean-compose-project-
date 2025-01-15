@@ -16,6 +16,7 @@ android {
 
     buildFeatures {
         buildConfig = true
+        compose = true
         dataBinding = true
         viewBinding = true
     }
@@ -65,6 +66,12 @@ dependencies {
     implementation rootProject.ext.androidCoreKtx
     implementation rootProject.ext.androidMaterial
     implementation rootProject.ext.archCoreCommon
+    implementation rootProject.ext.compose
+    implementation rootProject.ext.composeActivity
+    implementation rootProject.ext.composeLifecycle
+    implementation rootProject.ext.composeLivedata
+    implementation rootProject.ext.composeMaterial
+    implementation rootProject.ext.composePreview
     implementation rootProject.ext.coroutinesAndroid
     implementation rootProject.ext.coroutinesCore
     implementation rootProject.ext.fragment

@@ -38,6 +38,7 @@ android {
 
     buildFeatures {
         buildConfig = true
+        compose = true
         dataBinding = true
         viewBinding = true
     }
@@ -108,6 +109,8 @@ dependencies {
     androidTestImplementation rootProject.ext.androidXTestCoreKtx
     androidTestImplementation rootProject.ext.androidXTestRules
     androidTestImplementation rootProject.ext.androidXTestRunner
+    androidTestImplementation rootProject.ext.compose
+    androidTestImplementation rootProject.ext.composeUiTest
     androidTestImplementation rootProject.ext.espresso
     androidTestImplementation rootProject.ext.espressoContrib
     androidTestImplementation rootProject.ext.fragmentTest
