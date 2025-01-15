@@ -102,7 +102,7 @@ dependencies {
 
     implementation rootProject.ext.androidAppCompat
     implementation rootProject.ext.androidCoreKtx
-    implementation rootProject.ext.compose
+    implementation platform(rootProject.ext.composeBom)
     implementation rootProject.ext.composeRuntime
     implementation rootProject.ext.koinAndroid
     implementation rootProject.ext.kotlin
@@ -115,7 +115,7 @@ dependencies {
     androidTestImplementation rootProject.ext.androidXTestCoreKtx
     androidTestImplementation rootProject.ext.androidXTestRules
     androidTestImplementation rootProject.ext.androidXTestRunner
-    androidTestImplementation rootProject.ext.compose
+    androidTestImplementation platform(rootProject.ext.composeBom)
     androidTestImplementation rootProject.ext.composeUiTest
     androidTestImplementation rootProject.ext.espresso
     androidTestImplementation rootProject.ext.espressoContrib

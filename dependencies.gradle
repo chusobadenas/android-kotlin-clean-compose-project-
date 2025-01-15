@@ -14,8 +14,6 @@ ext {
     archCoreVersion = '2.2.0'
     coilVersion = '2.7.0'
     composeBomVersion = '2024.12.01'
-    composeMaterialVersion = '1.3.1'
-    composeRuntimeVersion = '1.5.0'
     constraintLayoutVersion = '2.2.0'
     coreKtx = '1.15.0'
     coroutinesVersion = '1.8.1'
@@ -42,13 +40,13 @@ ext {
     androidMaterial = "com.google.android.material:material:$materialVersion"
     archCoreCommon = "androidx.arch.core:core-common:$archCoreVersion"
     coil = "io.coil-kt:coil:$coilVersion"
-    compose = "androidx.compose:compose-bom:$composeBomVersion"
+    composeBom = "androidx.compose:compose-bom:$composeBomVersion"
     composeActivity = "androidx.activity:activity-compose:$activityVersion"
     composeLifecycle = "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion"
-    composeMaterial = "androidx.compose.material3:material3:$composeMaterialVersion"
-    composePreview = "androidx.compose.ui:ui-tooling-preview:$composeRuntimeVersion"
-    composeRuntime = "androidx.compose.runtime:runtime:$composeRuntimeVersion"
-    composeRuntimeLivedata = "androidx.compose.runtime:runtime-livedata:$composeRuntimeVersion"
+    composeMaterial = "androidx.compose.material3:material3"
+    composePreview = "androidx.compose.ui:ui-tooling-preview"
+    composeRuntime = "androidx.compose.runtime:runtime"
+    composeRuntimeLivedata = "androidx.compose.runtime:runtime-livedata"
     coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
     desugar = "com.android.tools:desugar_jdk_libs:$desugarVersion"
@@ -93,7 +91,7 @@ ext {
     androidXTestRules = "androidx.test:rules:$androidXTestVersion"
     androidXTestRunner = "androidx.test:runner:$androidXTestRunnerVersion"
     archCoreTesting = "androidx.arch.core:core-testing:$archCoreVersion"
-    composeUiTest = "androidx.compose.ui:ui-test-junit4:$composeRuntimeVersion"
+    composeUiTest = "androidx.compose.ui:ui-test-junit4"
     coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
     espresso = "androidx.test.espresso:espresso-core:$espressoVersion"
     espressoContrib = "androidx.test.espresso:espresso-contrib:$espressoVersion"
