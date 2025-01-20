@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
 
 android {
     namespace = "com.jesusbadenas.kotlin_clean_compose_project.domain"
@@ -48,6 +49,7 @@ dependencies {
     implementation rootProject.ext.androidAppCompat
     implementation rootProject.ext.koinAndroid
     implementation rootProject.ext.kotlin
+    implementation rootProject.ext.serialization
     implementation rootProject.ext.timber
 
     testImplementation project(':test')

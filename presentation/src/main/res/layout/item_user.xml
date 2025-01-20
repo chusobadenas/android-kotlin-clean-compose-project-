@@ -54,7 +54,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="4dp"
                     android:text="@{user.name}"
-                    android:textColor="@color/black_87pc"
+                    android:textColor="@color/text_primary"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@id/image_user"
                     app:layout_constraintTop_toTopOf="@id/image_user" />
@@ -68,7 +68,7 @@
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:text="@{user.website}"
-                    android:textColor="@color/black_87pc"
+                    android:textColor="@color/text_primary"
                     app:layout_constraintStart_toStartOf="@id/text_name"
                     app:layout_constraintTop_toBottomOf="@id/text_name" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -85,7 +85,7 @@
                     android:id="@+id/separator_line"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:background="@color/light_grey"
+                    android:background="@color/text_primary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -95,7 +95,7 @@
                     style="@style/TabStyle"
                     android:background="@drawable/touchable_background_white"
                     android:text="@string/text_view"
-                    android:textColor="@color/primary_text"
+                    android:textColor="@color/text_primary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/separator_line" />
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,7 +40,7 @@ class UserListFragment : BaseFragment<FragmentUserListBinding, UserListViewModel
             adapter = usersAdapter
         }
         binding.swipeContainer.apply {
-            setColorSchemeResources(R.color.primary)
+            setColorSchemeResources(R.color.primary_light)
             setOnRefreshListener {
                 viewModel.loadUserList()
             }

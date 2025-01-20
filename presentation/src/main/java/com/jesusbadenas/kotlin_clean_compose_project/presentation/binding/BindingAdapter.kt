@@ -11,8 +11,8 @@ import com.jesusbadenas.kotlin_clean_compose_project.presentation.R
 fun ImageView.setImageUrl(imageUrl: String?) {
         this.load(imageUrl) {
             crossfade(true)
-            error(R.color.bg_light_grey)
-            placeholder(R.color.bg_light_grey)
+            error(R.color.error)
+            placeholder(R.color.error)
         }
 }
 

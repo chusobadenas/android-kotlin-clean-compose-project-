@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
@@ -86,10 +87,12 @@ dependencies {
     implementation rootProject.ext.ksp
     implementation rootProject.ext.lifeCycleLiveDataKtx
     implementation rootProject.ext.lifeCycleViewModelKtx
+    implementation rootProject.ext.navigationCompose
     implementation rootProject.ext.navigationFeature
     implementation rootProject.ext.navigationFragment
     implementation rootProject.ext.navigationUi
     implementation rootProject.ext.recyclerView
+    implementation rootProject.ext.serialization
     implementation rootProject.ext.swipeRefreshLayout
     implementation rootProject.ext.timber
 
