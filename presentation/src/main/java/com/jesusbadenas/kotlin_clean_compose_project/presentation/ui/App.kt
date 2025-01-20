@@ -1,6 +1,7 @@
 package com.jesusbadenas.kotlin_clean_compose_project.presentation.ui
 
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -20,11 +21,15 @@ import androidx.navigation.toRoute
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.R
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.navigation.Route
+import com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.theme.appTypography
 
 @Composable
 fun App() {
     val navController = rememberNavController()
-    Surface {
+    Surface(
+        color = MaterialTheme.colorScheme.background,
+        modifier = Modifier.fillMaxSize()
+    ) {
         AppNavHost(
             navController = navController
         )
@@ -89,11 +94,14 @@ fun Toolbar() {
         topBar = {
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 title = {
-                    Text(text = context.getString(R.string.app_name))
+                    Text(
+                        style = appTypography.titleLarge,
+                        text = context.getString(R.string.app_name)
+                    )
                 }
             )
         }

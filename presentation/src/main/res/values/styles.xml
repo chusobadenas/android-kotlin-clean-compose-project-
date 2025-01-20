@@ -9,10 +9,9 @@
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="colorAccent">@color/accent</item>
-        <item name="colorControlNormal">@color/text_primary</item>
         <item name="colorPrimary">@color/primary_light</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorSecondary">@color/secondary</item>
         <item name="materialAlertDialogTheme">@style/AlertDialogStyle</item>
         <item name="materialButtonStyle">@style/ButtonStyle</item>
         <item name="progressBarStyle">@style/ProgressBarStyle</item>
@@ -27,7 +26,7 @@
     </style>
 
     <style name="AlertDialogButtonStyle" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="android:textColor">@color/accent</item>
+        <item name="android:textColor">@color/secondary</item>
     </style>
 
     <style name="AlertDialogTitleTextStyle" parent="MaterialAlertDialog.MaterialComponents.Title.Text">

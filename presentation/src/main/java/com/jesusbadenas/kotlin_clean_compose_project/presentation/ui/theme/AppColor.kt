@@ -6,26 +6,44 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
+// Common colors
 val error = Color(0xFFFF5555)
-val onPrimaryDark = Color(0xFF213600)
-val onPrimaryLight = Color(0xFFFFFFFF)
-val primaryLight = Color(0xFF476810)
-val primaryLightContainer = Color(0xFFC7F089)
-val primaryDark = Color(0xFFACD370)
-val primaryDarkContainer = Color(0xFF324F00)
+val secondary = Color(0xFF03DAC5)
+
+// Light scheme
+val backgroundLight = Color(0xFFF5F5F5)
+val primaryLight = Color(0xFF6200EA)
+val surfaceLight = Color(0xFFFAFAFA)
+
+// Dark scheme
+val backgroundDark = Color(0xFF121212)
+val primaryDark = Color(0xFFBB86FC)
+val surfaceDark = Color(0xFF1E1E1E)
 
 private val lightScheme = lightColorScheme(
-    error = error,
-    onPrimary = onPrimaryLight,
+    background = backgroundLight,
+    onBackground = Color.Black,
+    error = Color.Red,
+    onError = Color.White,
     primary = primaryLight,
-    primaryContainer = primaryLightContainer
+    onPrimary = Color.White,
+    secondary = secondary,
+    onSecondary = Color.Black,
+    surface = surfaceLight,
+    onSurface = Color.Black
 )
 
 private val darkScheme = darkColorScheme(
-    error = error,
-    onPrimary = onPrimaryDark,
+    background = backgroundDark,
+    onBackground = Color.White,
+    error = Color.Red,
+    onError = Color.Black,
     primary = primaryDark,
-    primaryContainer = primaryDarkContainer
+    onPrimary = Color.Black,
+    secondary = secondary,
+    onSecondary = Color.Black,
+    surface = surfaceDark,
+    onSurface = Color.White
 )
 
 @Composable
