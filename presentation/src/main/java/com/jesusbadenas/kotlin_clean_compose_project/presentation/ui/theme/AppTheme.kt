@@ -48,6 +48,7 @@ fun StatusBar(
                 }
                 WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
             } else {
+                @Suppress("DEPRECATION")
                 window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
             }
         }
