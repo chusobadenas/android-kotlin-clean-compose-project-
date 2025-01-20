@@ -10,14 +10,13 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.R
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.theme.appTypography
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun Toolbar() {
-    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopAppBar(
@@ -28,7 +27,7 @@ fun Toolbar() {
                 title = {
                     Text(
                         style = appTypography.titleLarge,
-                        text = context.getString(R.string.app_name)
+                        text = stringResource(R.string.app_name)
                     )
                 }
             )

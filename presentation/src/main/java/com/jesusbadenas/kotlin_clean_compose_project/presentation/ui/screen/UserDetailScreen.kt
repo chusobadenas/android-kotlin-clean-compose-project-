@@ -7,5 +7,6 @@ import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 fun UserDetailScreen(
     user: User
 ) {
-    // TODO
+    // TODO: add user detail
+    // TODO: add loading
 }

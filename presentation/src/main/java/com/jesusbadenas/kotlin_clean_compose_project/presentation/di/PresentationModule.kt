@@ -1,6 +1,5 @@
 package com.jesusbadenas.kotlin_clean_compose_project.presentation.di
 
-import com.jesusbadenas.kotlin_clean_compose_project.presentation.main.MainViewModel
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.navigation.Navigator
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.userdetails.UserDetailsFragment
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.userdetails.UserDetailsViewModel
@@ -17,7 +16,6 @@ val presentationModule = module {
     factory { (listener: UserListener) -> UserAdapter(listener) }
     fragment { UserListFragment() }
     fragment { UserDetailsFragment() }
-    viewModel { MainViewModel() }
     viewModel { UserDetailsViewModel(get()) }
     viewModel { UserListViewModel(get()) }
 }

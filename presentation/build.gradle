@@ -75,9 +75,9 @@ dependencies {
     implementation rootProject.ext.composeActivity
     implementation rootProject.ext.composeLifecycle
     implementation rootProject.ext.composeMaterial
-    implementation rootProject.ext.composePreview
     implementation rootProject.ext.composeRuntime
     implementation rootProject.ext.composeRuntimeLivedata
+    implementation rootProject.ext.composeUiTooling
     implementation rootProject.ext.coroutinesAndroid
     implementation rootProject.ext.coroutinesCore
     implementation rootProject.ext.fragment
@@ -97,6 +97,7 @@ dependencies {
     implementation rootProject.ext.timber
 
     api rootProject.ext.coil
+    debugImplementation rootProject.ext.composeUiTooling
     kapt rootProject.ext.lifeCycleCompiler
 
     testImplementation project(':test')
