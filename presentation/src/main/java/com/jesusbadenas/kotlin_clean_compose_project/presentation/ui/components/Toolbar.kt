@@ -11,9 +11,11 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.R
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.theme.appTypography
 
+@Preview
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun Toolbar() {

@@ -70,10 +70,5 @@
                     android:text="@{viewModel.user.website}" />
             </LinearLayout>
         </LinearLayout>
-
-        <include
-            android:id="@+id/view_progress"
-            layout="@layout/view_progress"
-            app:viewModel="@{viewModel}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

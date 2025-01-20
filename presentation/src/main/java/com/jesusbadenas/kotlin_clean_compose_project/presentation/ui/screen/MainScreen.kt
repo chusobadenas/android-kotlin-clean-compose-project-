@@ -28,7 +28,6 @@ fun MainScreen(
 ) {
     Toolbar()
     Row(
-        horizontalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {

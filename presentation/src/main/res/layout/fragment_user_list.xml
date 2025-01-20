@@ -34,10 +34,5 @@
                 android:scrollbars="vertical"
                 tools:listitem="@layout/item_user" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-        <include
-            android:id="@+id/view_progress"
-            layout="@layout/view_progress"
-            app:viewModel="@{viewModel}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
