@@ -8,8 +8,10 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
-fun LoadingView() {
-    CircularProgressIndicator(
-        modifier = Modifier.wrapContentSize()
-    )
+fun LoadingView(visible: Boolean = false) {
+    if (visible) {
+        CircularProgressIndicator(
+            modifier = Modifier.wrapContentSize()
+        )
+    }
 }
