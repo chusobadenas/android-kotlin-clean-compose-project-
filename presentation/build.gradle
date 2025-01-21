@@ -71,6 +71,7 @@ dependencies {
     implementation rootProject.ext.androidCoreKtx
     implementation rootProject.ext.androidMaterial
     implementation rootProject.ext.archCoreCommon
+    implementation rootProject.ext.coilCompose
     implementation platform(rootProject.ext.composeBom)
     implementation rootProject.ext.composeActivity
     implementation rootProject.ext.composeLifecycle

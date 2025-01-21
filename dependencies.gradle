@@ -12,7 +12,7 @@ ext {
     activityVersion = '1.9.3'
     appCompatVersion = '1.7.0'
     archCoreVersion = '2.2.0'
-    coilVersion = '2.7.0'
+    coilVersion = '3.0.4'
     composeBomVersion = '2024.12.01'
     constraintLayoutVersion = '2.2.0'
     coreKtx = '1.15.0'
@@ -40,7 +40,8 @@ ext {
     androidCoreKtx = "androidx.core:core-ktx:$coreKtx"
     androidMaterial = "com.google.android.material:material:$materialVersion"
     archCoreCommon = "androidx.arch.core:core-common:$archCoreVersion"
-    coil = "io.coil-kt:coil:$coilVersion"
+    coil = "io.coil-kt.coil3:coil-android:$coilVersion"
+    coilCompose = "io.coil-kt.coil3:coil-compose:$coilVersion"
     composeBom = "androidx.compose:compose-bom:$composeBomVersion"
     composeActivity = "androidx.activity:activity-compose:$activityVersion"
     composeLifecycle = "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion"
