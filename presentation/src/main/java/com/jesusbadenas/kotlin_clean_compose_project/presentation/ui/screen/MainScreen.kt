@@ -2,8 +2,8 @@ package com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -26,16 +26,15 @@ import com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.components.
 fun MainScreen(
     onNavigateToUsersList: (() -> Unit)? = null
 ) {
-    Toolbar()
-    Row(
-        modifier = Modifier.fillMaxSize(),
-        verticalAlignment = Alignment.CenterVertically
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
+        Toolbar()
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .wrapContentHeight()
+            modifier = Modifier.fillMaxSize()
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.Center
         ) {
             Image(
                 contentDescription = stringResource(R.string.string_content_description),
