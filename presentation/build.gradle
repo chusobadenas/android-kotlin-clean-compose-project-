@@ -84,6 +84,7 @@ dependencies {
     implementation rootProject.ext.fragment
     implementation rootProject.ext.koinAndroid
     implementation rootProject.ext.koinAndroidCompat
+    implementation rootProject.ext.koinCompose
     implementation rootProject.ext.kotlin
     implementation rootProject.ext.ksp
     implementation rootProject.ext.lifeCycleLiveDataKtx

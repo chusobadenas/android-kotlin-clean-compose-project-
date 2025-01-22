@@ -55,6 +55,7 @@ ext {
     fragment = "androidx.fragment:fragment-ktx:$fragmentVersion"
     koinAndroid = "io.insert-koin:koin-android:$koinAndroidVersion"
     koinAndroidCompat = "io.insert-koin:koin-android-compat:$koinAndroidVersion"
+    koinCompose = "io.insert-koin:koin-androidx-compose:$koinCoreVersion"
     koinCore = "io.insert-koin:koin-core:$koinCoreVersion"
     kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$KOTLIN_VERSION"
     ksp = "com.google.devtools.ksp:symbol-processing-api:$KSP_VERSION"
