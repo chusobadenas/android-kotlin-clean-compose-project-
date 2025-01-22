@@ -65,7 +65,6 @@ class UserRemoteDataSourceImplTest : CustomKoinJUnit4Test(dataTestModule) {
 
         coVerify { usersApi.users() }
 
-        Assert.assertNotNull(result)
         Assert.assertEquals(1, result?.size)
         Assert.assertEquals(userDTO, result?.get(0))
     }
@@ -75,7 +74,7 @@ class UserRemoteDataSourceImplTest : CustomKoinJUnit4Test(dataTestModule) {
         coEvery { usersApi.user(USER_ID) } throws exception
 
         runBlocking {
-            dataSource.getUser(USER_ID)
+            dataSource.getUser(USER_ID).firstOrNull()
         }
 
         coVerify { usersApi.user(USER_ID) }
@@ -86,7 +85,7 @@ class UserRemoteDataSourceImplTest : CustomKoinJUnit4Test(dataTestModule) {
         coEvery { usersApi.user(USER_ID) } returns userDTO
 
         val result = runBlocking {
-            dataSource.getUser(USER_ID)
+            dataSource.getUser(USER_ID).firstOrNull()
         }
 
         coVerify { usersApi.user(USER_ID) }

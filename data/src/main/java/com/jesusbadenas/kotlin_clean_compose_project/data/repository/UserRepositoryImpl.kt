@@ -7,11 +7,9 @@ import com.jesusbadenas.kotlin_clean_compose_project.data.util.toUserEntity
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.domain.repository.UserRepository
 import com.jesusbadenas.kotlin_clean_compose_project.domain.util.toList
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.withContext
 
 class UserRepositoryImpl(
     private val userLocalDataSource: UserLocalDataSource,
@@ -23,7 +21,9 @@ class UserRepositoryImpl(
         val localUsers = userLocalDataSource.getUsers().firstOrNull()
         if (localUsers.isNullOrEmpty()) {
             // If not found, get from server
-            val remoteUsers = userRemoteDataSource.getUsers().firstOrNull()?.map { it.toUser() }.orEmpty()
+            val remoteUsers = userRemoteDataSource.getUsers().firstOrNull()
+                ?.map { it.toUser() }
+                .orEmpty()
             val entities = remoteUsers.map { it.toUserEntity() }
             userLocalDataSource.insertUsers(entities)
             emit(remoteUsers)
@@ -33,12 +33,19 @@ class UserRepositoryImpl(
         }
     }
 
-    override suspend fun getUser(userId: Int): User? = withContext(Dispatchers.IO) {
-            // Get from database first
-            userLocalDataSource.getUser(userId)?.toUser()
+    override fun getUser(userId: Int): Flow<User?> = flow {
+        // Get from database first
+        val localUser = userLocalDataSource.getUser(userId).firstOrNull()
+        if (localUser == null) {
             // If not found, get from server
-                ?: userRemoteDataSource.getUser(userId)?.toUser()?.also { user ->
-                    userLocalDataSource.insertUsers(user.toUserEntity().toList())
-                }
+            val remoteUser = userRemoteDataSource.getUser(userId).firstOrNull()
+                ?.toUser()
+            val entity = remoteUser?.toUserEntity()
+            userLocalDataSource.insertUsers(entity.toList().mapNotNull { it })
+            emit(remoteUser)
+        } else {
+            // Emit database user
+            emit(localUser.toUser())
         }
+    }
 }

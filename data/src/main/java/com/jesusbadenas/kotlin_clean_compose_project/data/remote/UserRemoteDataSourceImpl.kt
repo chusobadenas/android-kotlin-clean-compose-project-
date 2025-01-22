@@ -13,5 +13,7 @@ class UserRemoteDataSourceImpl(
         emit(usersApi.users())
     }
 
-    override suspend fun getUser(userId: Int): UserDTO? = usersApi.user(userId)
+    override fun getUser(userId: Int): Flow<UserDTO?> = flow {
+        emit(usersApi.user(userId))
+    }
 }

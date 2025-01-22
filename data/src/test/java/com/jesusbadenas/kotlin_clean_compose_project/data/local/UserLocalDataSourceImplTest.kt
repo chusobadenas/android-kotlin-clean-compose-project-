@@ -78,7 +78,7 @@ class UserLocalDataSourceImplTest : CustomKoinJUnit4Test(dataTestModule) {
         coEvery { usersDao.getById(USER_ID) } throws exception
 
         runBlocking {
-            dataSource.getUser(USER_ID)
+            dataSource.getUser(USER_ID).firstOrNull()
         }
 
         coVerify { usersDao.getById(USER_ID) }
@@ -86,10 +86,10 @@ class UserLocalDataSourceImplTest : CustomKoinJUnit4Test(dataTestModule) {
 
     @Test
     fun `test get user by id success`() {
-        coEvery { usersDao.getById(USER_ID) } returns userEntity
+        coEvery { usersDao.getById(USER_ID) } returns userEntity.toFlow()
 
         val result = runBlocking {
-            dataSource.getUser(USER_ID)
+            dataSource.getUser(USER_ID).firstOrNull()
         }
 
         coVerify { usersDao.getById(USER_ID) }

@@ -66,3 +66,6 @@ fastlane/readme.md
 .DS_Store
 .directory
 .metadata
+
+# Unit tests
+*.attach_pid*

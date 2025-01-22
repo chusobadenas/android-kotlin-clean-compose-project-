@@ -11,7 +11,7 @@ import com.jesusbadenas.kotlin_clean_compose_project.test.CustomKoinJUnit4Test
 import com.jesusbadenas.kotlin_clean_compose_project.test.KoinTestApp
 import com.jesusbadenas.kotlin_clean_compose_project.test.exception.TestException
 import com.jesusbadenas.kotlin_clean_compose_project.test.rule.CoroutinesTestRule
-import io.mockk.coEvery
+import io.mockk.every
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.toList
@@ -46,7 +46,7 @@ class UserListViewModelTest : CustomKoinJUnit4Test(presentationTestModule) {
     @Test
     fun `test load user list error`() = coroutineRule.runTest {
         val exception = TestException()
-        coEvery {
+        every {
             getUsersUseCase.invoke(dispatcher = any())
         } answers {
             flow {
@@ -72,7 +72,7 @@ class UserListViewModelTest : CustomKoinJUnit4Test(presentationTestModule) {
 
     @Test
     fun `test load user list empty`() = coroutineRule.runTest {
-        coEvery {
+        every {
             getUsersUseCase.invoke(dispatcher = any())
         } answers {
             emptyList<User>().toFlow()
@@ -95,7 +95,7 @@ class UserListViewModelTest : CustomKoinJUnit4Test(presentationTestModule) {
     @Test
     fun `test load user list success`() = coroutineRule.runTest {
         val users = User(USER_ID).toList()
-        coEvery {
+        every {
             getUsersUseCase.invoke(dispatcher = any())
         } answers {
             users.toFlow()

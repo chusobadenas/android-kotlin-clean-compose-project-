@@ -7,5 +7,5 @@ interface UserRepository {
 
     fun getUsers(): Flow<List<User>>
 
-    suspend fun getUser(userId: Int): User?
+    fun getUser(userId: Int): Flow<User?>
 }

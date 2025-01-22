@@ -2,12 +2,18 @@ package com.jesusbadenas.kotlin_clean_compose_project.presentation.userdetails
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
+import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.R
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.common.BaseFragment
-import com.jesusbadenas.kotlin_clean_compose_project.presentation.util.LiveEventObserver
-import com.jesusbadenas.kotlin_clean_compose_project.presentation.util.showError
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.databinding.FragmentUserDetailsBinding
+import com.jesusbadenas.kotlin_clean_compose_project.presentation.model.UIError
+import com.jesusbadenas.kotlin_clean_compose_project.presentation.model.UIState
+import com.jesusbadenas.kotlin_clean_compose_project.presentation.util.showError
+import kotlinx.coroutines.launch
 
 /**
  * Fragment that shows details of a certain User.
@@ -24,14 +30,30 @@ class UserDetailsFragment : BaseFragment<FragmentUserDetailsBinding, UserDetails
     }
 
     override fun observeViewModel(viewModel: UserDetailsViewModel) {
-        with(viewModel) {
-            retryAction.observe(viewLifecycleOwner, LiveEventObserver { load ->
-                if (load) {
-                    loadUser(userId = navArgs.userId)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { state ->
+                    processUIState(state, viewModel)
                 }
-            })
-            uiError.observe(viewLifecycleOwner) { uiError ->
-                showError(uiError)
+            }
+        }
+    }
+
+    private fun processUIState(state: UIState<User>, viewModel: UserDetailsViewModel) {
+        with(viewModel) {
+            when (state) {
+                is UIState.Error -> {
+                    showLoading(false)
+                    showError(UIError(throwable = state.exception) {
+                        loadUser(userId = navArgs.userId)
+                    })
+                }
+                is UIState.Loading -> {
+                    showLoading(true)
+                }
+                else -> {
+                    showLoading(false)
+                }
             }
         }
     }

@@ -20,6 +20,7 @@ import io.mockk.coVerify
 import io.mockk.just
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
@@ -74,13 +75,28 @@ class UserRepositoryImplTest : CustomKoinJUnit4Test(dataTestModule) {
     }
 
     @Test
+    fun `test get users from database success`() {
+        val localUsers = userEntity.toList()
+        coEvery { userLocalDataSource.getUsers() } returns localUsers.toFlow()
+
+        val result = runBlocking {
+            userDataRepository.getUsers().firstOrNull()
+        }
+
+        coVerify { userLocalDataSource.getUsers() }
+
+        Assert.assertEquals(1, result?.size)
+        Assert.assertEquals(USER_ID, result?.get(0)?.id)
+    }
+
+    @Test
     fun `test get user from network success`() {
-        coEvery { userLocalDataSource.getUser(USER_ID) } returns null
-        coEvery { usersRemoteDataSource.getUser(USER_ID) } returns userDTO
+        coEvery { userLocalDataSource.getUser(USER_ID) } returns flowOf(null)
+        coEvery { usersRemoteDataSource.getUser(USER_ID) } returns userDTO.toFlow()
         coEvery { userLocalDataSource.insertUsers(listOf(userEntity)) } just Runs
 
         val result = runBlocking {
-            userDataRepository.getUser(USER_ID)
+            userDataRepository.getUser(USER_ID).firstOrNull()
         }
 
         coVerify { userLocalDataSource.getUser(USER_ID) }
@@ -89,6 +105,20 @@ class UserRepositoryImplTest : CustomKoinJUnit4Test(dataTestModule) {
 
         Assert.assertNotNull(result)
         Assert.assertEquals(userResult, result)
+    }
+
+    @Test
+    fun `test get user from database success`() {
+        coEvery { userLocalDataSource.getUser(USER_ID) } returns userEntity.toFlow()
+
+        val result = runBlocking {
+            userDataRepository.getUser(USER_ID).firstOrNull()
+        }
+
+        coVerify { userLocalDataSource.getUser(USER_ID) }
+
+        Assert.assertNotNull(result)
+        Assert.assertEquals(USER_ID, result?.id)
     }
 
     companion object {

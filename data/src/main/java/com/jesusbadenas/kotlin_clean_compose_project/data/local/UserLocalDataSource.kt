@@ -7,7 +7,7 @@ interface UserLocalDataSource {
 
     fun getUsers(): Flow<List<UserEntity>>
 
-    suspend fun getUser(userId: Int): UserEntity?
+    fun getUser(userId: Int): Flow<UserEntity?>
 
     suspend fun insertUsers(users: List<UserEntity>)
 }

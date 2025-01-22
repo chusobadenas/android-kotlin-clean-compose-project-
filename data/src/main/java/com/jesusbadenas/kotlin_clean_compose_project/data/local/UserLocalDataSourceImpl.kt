@@ -10,7 +10,7 @@ class UserLocalDataSourceImpl(
 
     override fun getUsers(): Flow<List<UserEntity>> = usersDao.getAll()
 
-    override suspend fun getUser(userId: Int): UserEntity? = usersDao.getById(userId)
+    override fun getUser(userId: Int): Flow<UserEntity?> = usersDao.getById(userId)
 
     override suspend fun insertUsers(users: List<UserEntity>) {
         usersDao.insert(users)

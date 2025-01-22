@@ -62,7 +62,7 @@ class UserLocalDataSourceImplAndroidTest {
         val users = userEntity.toList()
         val result = runBlocking {
             userLocalDataSource.insertUsers(users)
-            userLocalDataSource.getUser(USER_ID)
+            userLocalDataSource.getUser(USER_ID).firstOrNull()
         }
 
         Assert.assertNotNull(result)

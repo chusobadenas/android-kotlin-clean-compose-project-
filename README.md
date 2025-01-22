@@ -6,7 +6,6 @@ An Android boilerplate project using Clean Architecture with Kotlin, MVVM, Flow,
 - [Kotlin](https://developer.android.com/kotlin)
 - [Compose](https://developer.android.com/compose)
 - [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)
-- [Data Binding](https://developer.android.com/topic/libraries/data-binding)
 - [Flow](https://developer.android.com/kotlin/flow)
 - [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)
 - [Navigation Component](https://developer.android.com/guide/navigation/navigation-getting-started)

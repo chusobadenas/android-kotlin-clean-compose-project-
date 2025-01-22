@@ -7,5 +7,5 @@ interface UserRemoteDataSource {
 
     fun getUsers(): Flow<List<UserDTO>>
 
-    suspend fun getUser(userId: Int): UserDTO?
+    fun getUser(userId: Int): Flow<UserDTO?>
 }
