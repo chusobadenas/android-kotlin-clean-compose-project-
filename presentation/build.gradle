@@ -67,10 +67,10 @@ dependencies {
 
     implementation rootProject.ext.activity
     implementation rootProject.ext.androidAppCompat
-    implementation rootProject.ext.androidConstraintLayout
     implementation rootProject.ext.androidCoreKtx
-    implementation rootProject.ext.androidMaterial
     implementation rootProject.ext.archCoreCommon
+    implementation rootProject.ext.constraintLayout
+    implementation rootProject.ext.constraintLayoutCompose
     implementation rootProject.ext.coilCompose
     implementation platform(rootProject.ext.composeBom)
     implementation rootProject.ext.composeActivity
@@ -89,6 +89,7 @@ dependencies {
     implementation rootProject.ext.ksp
     implementation rootProject.ext.lifeCycleLiveDataKtx
     implementation rootProject.ext.lifeCycleViewModelKtx
+    implementation rootProject.ext.material
     implementation rootProject.ext.navigationCompose
     implementation rootProject.ext.navigationFeature
     implementation rootProject.ext.navigationFragment

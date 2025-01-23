@@ -15,6 +15,7 @@ ext {
     coilVersion = '3.0.4'
     composeBomVersion = '2024.12.01'
     constraintLayoutVersion = '2.2.0'
+    constraintLayoutComposeVersion = '1.1.0'
     coreKtx = '1.15.0'
     coroutinesVersion = '1.8.1'
     desugarVersion = '2.1.4'
@@ -36,10 +37,10 @@ ext {
 
     activity = "androidx.activity:activity-ktx:$activityVersion"
     androidAppCompat = "androidx.appcompat:appcompat:$appCompatVersion"
-    androidConstraintLayout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
     androidCoreKtx = "androidx.core:core-ktx:$coreKtx"
-    androidMaterial = "com.google.android.material:material:$materialVersion"
     archCoreCommon = "androidx.arch.core:core-common:$archCoreVersion"
+    constraintLayout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+    constraintLayoutCompose = "androidx.constraintlayout:constraintlayout-compose:$constraintLayoutComposeVersion"
     coil = "io.coil-kt.coil3:coil-android:$coilVersion"
     coilCompose = "io.coil-kt.coil3:coil-compose:$coilVersion"
     composeBom = "androidx.compose:compose-bom:$composeBomVersion"
@@ -63,6 +64,7 @@ ext {
     lifeCycleLiveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:$livedataKtxVersion"
     lifeCycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$livedataKtxVersion"
     loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+    material = "com.google.android.material:material:$materialVersion"
     moshi = "com.squareup.moshi:moshi-kotlin:$moshiVersion"
     moshiAdapters = "com.squareup.moshi:moshi-adapters:$moshiVersion"
     navigationCompose = "androidx.navigation:navigation-compose:$NAV_VERSION"

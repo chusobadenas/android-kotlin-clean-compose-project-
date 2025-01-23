@@ -34,4 +34,12 @@ class UserListViewModel(
                 }
         }
     }
+
+    fun setLoading(loading: Boolean) {
+        if (loading) {
+            _uiState.value = UIState.Loading
+        } else {
+            _uiState.value = UIState.Empty
+        }
+    }
 }

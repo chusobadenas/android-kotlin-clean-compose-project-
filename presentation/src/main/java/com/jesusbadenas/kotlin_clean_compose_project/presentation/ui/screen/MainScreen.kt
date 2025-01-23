@@ -25,7 +25,7 @@ import com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.components.
 @Preview
 @Composable
 fun MainScreen(
-    onNavigateToUsersList: (() -> Unit)? = null
+    onNavigateToUsersList: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier.fillMaxSize()
@@ -47,9 +47,7 @@ fun MainScreen(
             Button(
                 modifier = Modifier.fillMaxWidth()
                     .wrapContentHeight(),
-                onClick = {
-                    onNavigateToUsersList?.invoke()
-                }
+                onClick = onNavigateToUsersList
             ) {
                 Text(
                     style = MaterialTheme.typography.labelLarge,

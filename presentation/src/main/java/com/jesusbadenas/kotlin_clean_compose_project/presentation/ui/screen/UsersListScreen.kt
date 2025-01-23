@@ -16,42 +16,52 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
+import com.jesusbadenas.kotlin_clean_compose_project.domain.util.toList
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.model.UIState
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.components.ItemUser
-import com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.components.LoadingView
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.components.Toolbar
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.userlist.UserListViewModel
 import org.koin.androidx.compose.koinViewModel
 
-@Preview
 @Composable
 fun UsersListScreen(
-    onNavigateToUserDetail: ((userId: Int) -> Unit)? = null
+    onNavigateToUserDetail: (userId: Int) -> Unit = {}
 ) {
     val viewModel: UserListViewModel = koinViewModel()
+    viewModel.loadUserList()
     val uiState by viewModel.uiState.collectAsState()
+    UsersListBody(
+        uiState = uiState,
+        onNavigateToUserDetail = onNavigateToUserDetail,
+        onRefresh = {
+            viewModel.setLoading(loading = true)
+            viewModel.loadUserList()
+        }
+    )
+}
 
+@Composable
+fun UsersListBody(
+    uiState: UIState<List<User>>,
+    onNavigateToUserDetail: (userId: Int) -> Unit = {},
+    onRefresh: () -> Unit = {}
+) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
         Toolbar()
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .padding(top = 64.dp)
         ) {
             UsersListRecyclerView(
                 uiState = uiState,
                 users = (uiState as? UIState.Success)?.data.orEmpty(),
-                viewModel = viewModel,
-                onNavigateToUserDetail = onNavigateToUserDetail
+                onNavigateToUserDetail = onNavigateToUserDetail,
+                onRefresh = onRefresh
             )
-        }
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            LoadingView(visible = uiState is UIState.Loading)
         }
     }
 }
@@ -61,16 +71,14 @@ fun UsersListScreen(
 fun UsersListRecyclerView(
     uiState: UIState<List<User>>,
     users: List<User>,
-    viewModel: UserListViewModel,
-    onNavigateToUserDetail: ((userId: Int) -> Unit)? = null
+    onNavigateToUserDetail: (userId: Int) -> Unit = {},
+    onRefresh: () -> Unit = {}
 ) {
     PullToRefreshBox(
         contentAlignment = Alignment.Center,
         isRefreshing = uiState is UIState.Loading,
         modifier = Modifier.fillMaxSize(),
-        onRefresh = {
-            viewModel.loadUserList()
-        }
+        onRefresh = onRefresh
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxSize()
@@ -83,4 +91,20 @@ fun UsersListRecyclerView(
             }
         }
     }
+}
+
+/** Preview **/
+
+@Preview
+@Composable
+private fun UsersListBodyPreview() {
+    UsersListBody(
+        uiState = UIState.Success(
+            data = User(
+                id = 1,
+                name = "Jesús Badenas",
+                website = "https://jesusbadenas.com"
+            ).toList()
+        )
+    )
 }

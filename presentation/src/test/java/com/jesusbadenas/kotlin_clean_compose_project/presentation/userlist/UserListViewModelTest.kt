@@ -116,6 +116,39 @@ class UserListViewModelTest : CustomKoinJUnit4Test(presentationTestModule) {
         Assert.assertEquals(users, (emittedStates[1] as? UIState.Success)?.data)
     }
 
+    @Test
+    fun `test set loading true`() = coroutineRule.runTest {
+        val emittedStates = mutableListOf<UIState<List<User>>>()
+        val job = launch {
+            viewModel.uiState.toList(emittedStates)
+        }
+
+        viewModel.setLoading(loading = true)
+
+        advanceUntilIdle()
+        job.cancel()
+
+        Assert.assertEquals(1, emittedStates.size)
+        Assert.assertTrue(emittedStates[0] is UIState.Loading)
+    }
+
+    @Test
+    fun `test set loading false`() = coroutineRule.runTest {
+        val emittedStates = mutableListOf<UIState<List<User>>>()
+        val job = launch {
+            viewModel.uiState.toList(emittedStates)
+        }
+
+        viewModel.setLoading(loading = false)
+
+        advanceUntilIdle()
+        job.cancel()
+
+        Assert.assertEquals(2, emittedStates.size)
+        Assert.assertTrue(emittedStates[0] is UIState.Loading)
+        Assert.assertTrue(emittedStates[1] is UIState.Empty)
+    }
+
     companion object {
         private const val USER_ID = 1
     }
