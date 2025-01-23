@@ -5,7 +5,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.screen.MainScreen
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.screen.UserDetailScreen
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.screen.UsersListScreen
@@ -33,8 +32,8 @@ fun AppNavHost(
             )
         }
         composable<Route.UserDetail> { backStackEntry ->
-            val user = backStackEntry.toRoute<User>()
-            UserDetailScreen(user = user)
+            val userId = backStackEntry.toRoute<Int>()
+            UserDetailScreen(userId = userId)
         }
     }
 }

@@ -1,97 +1,128 @@
 package com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.screen
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import coil3.compose.rememberAsyncImagePainter
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
+import com.jesusbadenas.kotlin_clean_compose_project.presentation.R
+import com.jesusbadenas.kotlin_clean_compose_project.presentation.model.UIState
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.components.LoadingView
+import com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.components.Toolbar
+import com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.mock.mockUser
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.userdetails.UserDetailsViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun UserDetailScreen(
-    user: User
+    userId: Int
 ) {
     val viewModel: UserDetailsViewModel = koinViewModel()
+    viewModel.loadUser(userId)
     val uiState by viewModel.uiState.collectAsState()
-
-    // TODO: add user detail
-    LoadingView()
+    UserDetailBody(uiState = uiState)
 }
 
-/*
-<?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+@Composable
+fun UserDetailBody(
+    uiState: UIState<User>
+) {
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Toolbar()
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 64.dp)
+        ) {
+            (uiState as? UIState.Success)?.data?.let { user ->
+                UserDetailInfo(user = user)
+            }
+        }
+        LoadingView()
+    }
+}
 
-    <data>
+@Composable
+fun UserDetailInfo(
+    user: User
+) {
+    ConstraintLayout(
+        modifier = Modifier.fillMaxWidth()
+            .wrapContentHeight()
+    ) {
+        val (userImage, userNameText, userEmailText, userWebsiteText) = createRefs()
+        Image(
+            contentDescription = stringResource(R.string.user_image_description),
+            contentScale = ContentScale.FillWidth,
+            modifier = Modifier.constrainAs(userImage) {
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }
+                .fillMaxWidth()
+                .height(128.dp),
+            painter = rememberAsyncImagePainter(user.imageUrl)
+        )
+        Text(
+            modifier = Modifier.constrainAs(userNameText) {
+                top.linkTo(userImage.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }
+                .padding(vertical = 16.dp)
+                .wrapContentSize(),
+            style = MaterialTheme.typography.headlineMedium,
+            text = user.name.orEmpty()
+        )
+        Text(
+            modifier = Modifier.constrainAs(userEmailText) {
+                top.linkTo(userNameText.bottom)
+                start.linkTo(parent.start)
+            }
+                .padding(horizontal = 16.dp)
+                .wrapContentSize(),
+            style = MaterialTheme.typography.labelLarge,
+            text = user.email.orEmpty()
+        )
+        Text(
+            modifier = Modifier.constrainAs(userWebsiteText) {
+                top.linkTo(userEmailText.bottom)
+                start.linkTo(parent.start)
+            }
+                .padding(horizontal = 16.dp)
+                .wrapContentSize(),
+            style = MaterialTheme.typography.labelLarge,
+            text = user.website.orEmpty()
+        )
+    }
+}
 
-        <variable
-            name="viewModel"
-            type="com.jesusbadenas.kotlin_clean_compose_project.presentation.userdetails.UserDetailsViewModel" />
-    </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:id="@+id/user_detail_view"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/iv_cover"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/iv_cover_height"
-                android:contentDescription="@string/user_image_description"
-                app:imageUrl="@{viewModel.user.imageUrl}" />
-
-            <TextView
-                android:id="@+id/tv_fullname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/header_margin"
-                android:freezesText="true"
-                android:gravity="center"
-                android:text="@{viewModel.user.name}"
-                android:textSize="@dimen/header_text_size"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/TextViewField"
-                    android:text="@string/view_text_email" />
-
-                <TextView
-                    android:id="@+id/tv_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:freezesText="true"
-                    android:text="@{viewModel.user.email}" />
-
-                <TextView
-                    style="@style/TextViewField"
-                    android:text="@string/view_text_website" />
-
-                <TextView
-                    android:id="@+id/tv_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:freezesText="true"
-                    android:text="@{viewModel.user.website}" />
-            </LinearLayout>
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
- */
+/** Preview **/
+@Preview
+@Composable
+private fun UserDetailBodyPreview() {
+    UserDetailBody(uiState = UIState.Success(
+        data = mockUser
+    ))
+}

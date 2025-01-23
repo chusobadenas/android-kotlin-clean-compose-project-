@@ -23,6 +23,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import coil3.compose.rememberAsyncImagePainter
 import com.jesusbadenas.kotlin_clean_compose_project.domain.model.User
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.R
+import com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.mock.mockUser
 
 @Composable
 fun ItemUser(
@@ -101,13 +102,6 @@ fun ItemUser(
 
 @Preview
 @Composable
-private fun PreviewItemUser() {
-    ItemUser(
-        user = User(
-            id = 1,
-            name = "Jesús Badenas",
-            website = "https://jesusbadenas.com",
-            imageUrl = "https://thispersondoesnotexist.com/"
-        )
-    )
+private fun ItemUserPreview() {
+    ItemUser(user = mockUser)
 }

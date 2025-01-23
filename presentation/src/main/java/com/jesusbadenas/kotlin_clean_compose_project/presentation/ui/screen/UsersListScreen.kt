@@ -20,6 +20,7 @@ import com.jesusbadenas.kotlin_clean_compose_project.domain.util.toList
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.model.UIState
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.components.ItemUser
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.components.Toolbar
+import com.jesusbadenas.kotlin_clean_compose_project.presentation.ui.mock.mockUser
 import com.jesusbadenas.kotlin_clean_compose_project.presentation.userlist.UserListViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -100,11 +101,7 @@ fun UsersListRecyclerView(
 private fun UsersListBodyPreview() {
     UsersListBody(
         uiState = UIState.Success(
-            data = User(
-                id = 1,
-                name = "Jesús Badenas",
-                website = "https://jesusbadenas.com"
-            ).toList()
+            data = mockUser.toList()
         )
     )
 }
